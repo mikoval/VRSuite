@@ -173,7 +173,7 @@ function animationLoop(){
 			}
 			
 		}
-
+		
 		effect.render(scene, camera);
 	}
 	else{

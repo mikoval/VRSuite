@@ -127,7 +127,6 @@ function checkHover(x, y){
 		buttons[i].object.material.uniforms.hover.value = 0;
 		btns.push(buttons[i].object)
 	}
-	console.log(btns)
 	var intersects = raycaster.intersectObjects( btns );
 	//console.log(intersects.length)
 
