@@ -1,0 +1,9 @@
+{
+  "name": "node-ejs",
+  "main": "server.js",
+  "dependencies": {
+    "ejs": "~0.8.5",
+    "express": "~4.0.0",
+    "socket.io": "^2.0.4"
+  }
+}
