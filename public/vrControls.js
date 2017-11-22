@@ -452,11 +452,13 @@ var DeviceOrientationController = function ( object, domElement ) {
 						count = 0;
 
 					}
+
+					console.log(gamma - this.startGamma);
 					if(this.startOrient > 0){
 						deviceQuat = createQuaternion( 3.14159 / 2 + (alpha - this.startAlpha ) ,  beta, gamma - this.startGamma, orient );
 					}
 					else {
-						deviceQuat = createQuaternion( -3.14159 / 2 + (alpha - this.startAlpha ) ,  beta, gamma, orient );
+						deviceQuat = createQuaternion( -3.14159 / 2 + (alpha - this.startAlpha ) ,  beta, gamma-this.startGamma, orient );
 					}
 					
 
