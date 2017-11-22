@@ -43,54 +43,62 @@ mobile = true;
             float green = 0.8;
             float blue = 0.2;
             float alpha = 0.0;
-        	if(pos.x > width/2.0 - width/100.0 && pos.y > height/2.0 - height/100.0){
+            if(hover==1.0){
+                
+                alpha = 0.5;
+                red = 0.8;
+                green = 0.8;
+                blue = 0.3;
+            
+            }
+        	if(pos.x > width/2.0 - width/30.0 && pos.y > height/2.0 - height/30.0){
         		alpha = 1.0;
 
         	}
-        	if(pos.x > width/2.0 - width/100.0 && pos.y < -height/2.0 + height/100.0){
+        	if(pos.x > width/2.0 - width/30.0 && pos.y < -height/2.0 + height/30.0){
         		alpha = 1.0;
 
         	}
-        	if(pos.x > width/2.0 - width/100.0 && pos.z > depth/2.0 - depth/100.0){
+        	if(pos.x > width/2.0 - width/30.0 && pos.z > depth/2.0 - depth/30.0){
         		alpha = 1.0;
 
         	}
-        	if(pos.x > width/2.0 - width/100.0 && pos.z < -depth/2.0 + depth/100.0){
-        		alpha = 1.0;
-
-        	}
-
-        	if(pos.x < -width/2.0 + width/100.0 && pos.y > height/2.0 - height/100.0){
-        		alpha = 1.0;
-
-        	}
-        	if(pos.x < -width/2.0 + width/100.0 && pos.y < -height/2.0 + height/100.0){
-        		alpha = 1.0;
-
-        	}
-        	if(pos.x < -width/2.0 + width/100.0 && pos.z > depth/2.0 - depth/100.0){
-        		alpha = 1.0;
-
-        	}
-        	if(pos.x < -width/2.0 + width/100.0 && pos.z < -depth/2.0 + depth/100.0){
+        	if(pos.x > width/2.0 - width/30.0 && pos.z < -depth/2.0 + depth/30.0){
         		alpha = 1.0;
 
         	}
 
-        	if(pos.z > depth/2.0 - depth/100.0 && pos.y > height/2.0 - height/100.0){
+        	if(pos.x < -width/2.0 + width/30.0 && pos.y > height/2.0 - height/30.0){
         		alpha = 1.0;
 
         	}
-        	if(pos.z > depth/2.0 - depth/100.0 && pos.y < -height/2.0 + height/100.0){
+        	if(pos.x < -width/2.0 + width/30.0 && pos.y < -height/2.0 + height/30.0){
+        		alpha = 1.0;
+
+        	}
+        	if(pos.x < -width/2.0 + width/30.0 && pos.z > depth/2.0 - depth/30.0){
+        		alpha = 1.0;
+
+        	}
+        	if(pos.x < -width/2.0 + width/30.0 && pos.z < -depth/2.0 + depth/30.0){
         		alpha = 1.0;
 
         	}
 
-        	if(pos.z < -depth/2.0 + depth/100.0 && pos.y > height/2.0 - height/100.0){
+        	if(pos.z > depth/2.0 - depth/30.0 && pos.y > height/2.0 - height/30.0){
         		alpha = 1.0;
 
         	}
-        	if(pos.z < -depth/2.0 + depth/100.0 && pos.y < -height/2.0 + height/100.0){
+        	if(pos.z > depth/2.0 - depth/30.0 && pos.y < -height/2.0 + height/30.0){
+        		alpha = 1.0;
+
+        	}
+
+        	if(pos.z < -depth/2.0 + depth/30.0 && pos.y > height/2.0 - height/30.0){
+        		alpha = 1.0;
+
+        	}
+        	if(pos.z < -depth/2.0 + depth/30.0 && pos.y < -height/2.0 + height/30.0){
         		alpha = 1.0;
 
         	}
@@ -102,12 +110,7 @@ mobile = true;
         	if(hover == 0.0){
         		if ( alpha < 0.1 ) discard;
         	}
-        	else{
-        		alpha = 0.5;
-        		red = 0.8;
-        		green = 0.8;
-        		blue = 0.3;
-        	}
+        	
  			
 
  
@@ -119,7 +122,7 @@ mobile = true;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
 <script src = "three.js"></script>
 <script src="stereo.js"></script>
-<script src = "socketPhone.js"></script>
+<script src = "socketPhoneUI.js"></script>
 <script src="controls.js"></script>
 <script src="vrControls.js"></script>
 <script src = "ui.js"></script>

@@ -69,10 +69,15 @@ function initScene(){
 	loader.load( 'fonts/helvetiker_regular.typeface.json', function ( loadedFont ) {
 		font = loadedFont;
 
-		b = new button(0, 40, -200,40,20,10,  "Ball Collisions");
-		c= new button(0, 10, -200, 40,20,10, "Platformer");
+		b = new button(0, 60, -200,80,30,20,  "Ball Collisions");
+		c= new button(0, 20, -200, 80,30,20, "Platformer");
+		d= new button(0, -20, -200, 80,30,20, "Cloth");
+		e= new button(0, -60, -200, 80,30,20, "Raytracing");
 		buttons.push(b);
 		buttons.push(c);
+		buttons.push(d);
+		buttons.push(e);
+
 	});
 
 
@@ -117,7 +122,7 @@ function initScene(){
 		effect= new THREE.StereoEffect(renderer);
 	
 	}
-	var curse = new cursor();
+	curs = new cursor();
 
 	socketLoop();
 
@@ -173,7 +178,7 @@ function animationLoop(){
 			}
 			
 		}
-		
+
 		effect.render(scene, camera);
 	}
 	else{

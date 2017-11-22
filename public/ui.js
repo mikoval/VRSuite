@@ -38,7 +38,7 @@ function button(x, y, z, width, height, depth,  text){
 	this.addText = function(){
 		var geometry = new THREE.TextGeometry( text, {
 			font: font,
-			size: 3,
+			size: 5,
 			height: 1,
 			curveSegments: 12,
 			bevelEnabled: true,
@@ -112,14 +112,22 @@ function cursor(){
 		ctx.obj.position.z = pos.z;
 
 
-		checkHover(mouse.x, mouse.y);
+		
+		checkHover();
 
 
 	})
+
 }
-function checkHover(x, y){
+function checkHover(){
+		var origin = camera.position.clone();
+		var dir = curs.obj.position.clone().sub(origin);
+		dir = dir.normalize();
+		computeHover(origin, dir);
+}
+function computeHover(o, d){
 	// update the picking ray with the camera and mouse position
-	raycaster.setFromCamera( {x:x, y:y}, camera );
+	raycaster.set( o, d );
 
 	// calculate objects intersecting the picking ray
 	var btns = [];
