@@ -17,11 +17,8 @@ $(document).ready(function(){
 				curs.obj.position.y  = data.p.y;
 				curs.obj.position.z  = data.p.z;
 
-				console.time('someFunction');
 
-				checkHover();
 
-				console.timeEnd('someFunction');
 
 				checkHover();
 
