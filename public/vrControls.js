@@ -454,7 +454,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 					}
 					var pi = 3.1415926
 					console.log(gamma - this.startGamma);
-					if( this.startAlpha >  -pi/2  && this.startAlpha  < 3 * pi/2  ){
+					if( this.startAlpha >  -pi/2  && this.startAlpha  <  pi/2  ){
 						deviceQuat = createQuaternion( 3.14159 / 2 + (alpha - this.startAlpha ) ,  beta, gamma , orient );
 					}
 					else {
