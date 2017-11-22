@@ -432,7 +432,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 					totalMovement += Math.abs(alpha - prevAlpha) + Math.abs(beta-prevBeta ) + Math.abs(gamma - prevGamma );
 					count++;
 					totalCount++;
-					if(totalCount -- 100){
+					if(totalCount == 100){
 						this.startAlpha = alpha ;
 						this.startGamma = gamma;
 						this.startBeta = beta;
