@@ -18,7 +18,7 @@ $(document).ready(function(){
 				curs.obj.position.z  = data.p.z;
 
 
-				//checkHover();
+				checkHover();
 
 				prevTime = time;
 			}
