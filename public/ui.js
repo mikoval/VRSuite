@@ -25,7 +25,7 @@ function button(x, y, z, width, height, depth,  text){
 
 		
 
-		var geometry = new THREE.BoxGeometry(width, height,depth, 100, 100, 100);
+		var geometry = new THREE.BoxGeometry(width, height,depth, 10, 10, 10);
 		var obj = new THREE.Mesh(geometry, material);
 
 		obj.material.side = THREE.DoubleSide;

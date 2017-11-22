@@ -8,6 +8,7 @@ $(document).ready(function(){
 	lastTime = 0;
 	
 	socket.on('testMessage', function(data){
+		return;
 		var time = data.t;
 	
 		if(time > lastTime){
