@@ -417,7 +417,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 				prevBeta = beta;
 				totalMovement = 0;
 				count = 0;
-				ctotalCount = 0;
+				totalCount = 0;
 
 
 				this.calibrate = false;
