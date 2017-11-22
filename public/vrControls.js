@@ -417,7 +417,8 @@ var DeviceOrientationController = function ( object, domElement ) {
 				prevBeta = beta;
 				totalMovement = 0;
 				count = 0;
-				
+				ctotalCount = 0;
+
 
 				this.calibrate = false;
 			}
@@ -430,6 +431,13 @@ var DeviceOrientationController = function ( object, domElement ) {
 
 					totalMovement += Math.abs(alpha - prevAlpha) + Math.abs(beta-prevBeta ) + Math.abs(gamma - prevGamma );
 					count++;
+					totalCount++;
+					if(totalCount -- 100){
+						this.startAlpha = alpha ;
+						this.startGamma = gamma;
+						this.startBeta = beta;
+						this.startOrient = orient;
+					}
 					if(count == 50){
 
 						if(totalMovement > 50){
