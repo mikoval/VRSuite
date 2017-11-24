@@ -38,8 +38,8 @@ function Game(scene, camera, res, pathsize, type){
 			var val = this.objs[i].update(this.player.position, centers);
 			
 			for(var j = 0; j < val.length; j++){
-				
-				
+
+
 				this[val[j].side].addColor(val[j].x, val[j].y, this.objs[i].pathColor)
 				this[val[j].side].update();
 			}
@@ -54,7 +54,7 @@ function Game(scene, camera, res, pathsize, type){
 		
 			
 
-		var position = new THREE.Vector3(0, 3, 2);
+		var position = new THREE.Vector3(0, 3.5, 2);
 		var axis = new THREE.Vector3( 0, 1, 0 );
 		var angle = -this.player.rotation;
 		position.applyAxisAngle( axis, angle );
@@ -67,7 +67,7 @@ function Game(scene, camera, res, pathsize, type){
 			
 		
 		var look = this.player.position.clone();
-		look.y += 3;
+		look.y += 3.5;
 		this.camera.lookAt(look); 
 	}
 	this.collisions = function(){
