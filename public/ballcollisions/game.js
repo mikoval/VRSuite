@@ -267,7 +267,7 @@ $(document).keyup(function(e) {
     	input.jump = false;
     }
     if(e.key == "q"){
-    	input.jump = true;
+    	input.false = false;
     }
 });
 
