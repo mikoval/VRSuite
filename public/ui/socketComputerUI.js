@@ -8,6 +8,7 @@ function socketLoop(){
 		obj.t = d.getTime();
 
 		obj.i = input;
+		console.log(obj);
 		socket.emit('testMessage',obj);
 	}
 

@@ -13,10 +13,12 @@ $(document).ready(function(){
 	
 		if(time > lastTime){
 			if(curs != undefined){
-				curs.obj.position.x  = data.p.x;
-				curs.obj.position.y  = data.p.y;
-				curs.obj.position.z  = data.p.z;
-
+				if(data.p != undefined){
+					curs.obj.position.x  = data.p.x;
+					curs.obj.position.y  = data.p.y;
+					curs.obj.position.z  = data.p.z;
+				}
+				
 
 				input = data.i;
 
