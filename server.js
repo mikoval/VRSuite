@@ -16,6 +16,7 @@ io.on('connection', function(socket){
     socket.broadcast.volatile.emit("testMessage", msg);
   });
   socket.on('newpage', function(msg){
+  	socket.broadcast.emit("newpage", msg);
     socket.emit("newpage", msg);
   });
 });
