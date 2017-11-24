@@ -19,7 +19,7 @@ io.on('connection', function(socket){
 
 
 app.get('/', function (req, res) {
-	res.render('ui.ejs', {})
+	res.render('main.ejs', {})
 })
 app.get('/ui', function (req, res) {
 	res.render('ui.ejs', {})

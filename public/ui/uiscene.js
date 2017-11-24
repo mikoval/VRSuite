@@ -66,7 +66,7 @@ function initScene(){
 	font = undefined;
 	var loader = new THREE.FontLoader();
 	buttons = [];
-	loader.load( 'fonts/helvetiker_regular.typeface.json', function ( loadedFont ) {
+	loader.load( '/fonts/helvetiker_regular.typeface.json', function ( loadedFont ) {
 		font = loadedFont;
 
 		b = new button(0, 60, -200,80,30,20,  "Movie Theater");
@@ -79,8 +79,6 @@ function initScene(){
 		buttons.push(e);
 
 	});
-
-
 
 
 
