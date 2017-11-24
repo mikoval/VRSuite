@@ -29,9 +29,11 @@ $(document).ready(function(){
 		}
 	});
 	socket.on('newpage', function(page){
-
+		console.log("going to new page");
 		window.location = page+"phone";
+		
 	});
+
 	controls = new DeviceOrientationController( cameraVR, renderer.domElement );
 	controls.connect();
 })
