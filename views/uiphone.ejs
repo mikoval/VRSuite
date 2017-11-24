@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html>
+<style>
+body{margin:0px;
+ cursor: none; }
+.canvas{
+	width: 100%;
+	height: 100%;
+}
+</style>
+
+<body>
+
+</body>
+<script>
+mobile = true;
+</script>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
+  <script id="cubeVertexShader" type="x-shader/x-vertex">
+    uniform float time;
+    varying vec3 pos;
+ 
+    void main() {
+        pos = position;
+   
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+</script>
+
+<script id="cubeFragmentShader" type="x-shader/x-fragment">
+        uniform float time;
+        uniform float width;
+        uniform float height;
+        uniform float depth;
+        uniform float hover;
+        varying vec3 pos;
+ 		
+        void main() {
+        	float red = 0.2;
+            float green = 0.8;
+            float blue = 0.2;
+            float alpha = 0.0;
+            if(hover==1.0){
+                
+                alpha = 0.5;
+                red = 0.8;
+                green = 0.8;
+                blue = 0.3;
+            
+            }
+        	if(pos.x > width/2.0 - width/30.0 && pos.y > height/2.0 - height/30.0){
+        		alpha = 1.0;
+
+        	}
+        	if(pos.x > width/2.0 - width/30.0 && pos.y < -height/2.0 + height/30.0){
+        		alpha = 1.0;
+
+        	}
+        	if(pos.x > width/2.0 - width/30.0 && pos.z > depth/2.0 - depth/30.0){
+        		alpha = 1.0;
+
+        	}
+        	if(pos.x > width/2.0 - width/30.0 && pos.z < -depth/2.0 + depth/30.0){
+        		alpha = 1.0;
+
+        	}
+
+        	if(pos.x < -width/2.0 + width/30.0 && pos.y > height/2.0 - height/30.0){
+        		alpha = 1.0;
+
+        	}
+        	if(pos.x < -width/2.0 + width/30.0 && pos.y < -height/2.0 + height/30.0){
+        		alpha = 1.0;
+
+        	}
+        	if(pos.x < -width/2.0 + width/30.0 && pos.z > depth/2.0 - depth/30.0){
+        		alpha = 1.0;
+
+        	}
+        	if(pos.x < -width/2.0 + width/30.0 && pos.z < -depth/2.0 + depth/30.0){
+        		alpha = 1.0;
+
+        	}
+
+        	if(pos.z > depth/2.0 - depth/30.0 && pos.y > height/2.0 - height/30.0){
+        		alpha = 1.0;
+
+        	}
+        	if(pos.z > depth/2.0 - depth/30.0 && pos.y < -height/2.0 + height/30.0){
+        		alpha = 1.0;
+
+        	}
+
+        	if(pos.z < -depth/2.0 + depth/30.0 && pos.y > height/2.0 - height/30.0){
+        		alpha = 1.0;
+
+        	}
+        	if(pos.z < -depth/2.0 + depth/30.0 && pos.y < -height/2.0 + height/30.0){
+        		alpha = 1.0;
+
+        	}
+
+
+
+        	
+        
+        	if(hover == 0.0){
+        		if ( alpha < 0.1 ) discard;
+        	}
+        	
+ 			
+
+ 
+           
+            gl_FragColor = vec4(red, green, blue, alpha);
+        }
+    </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+<script src = "/general/three.js"></script>
+<script src="/general/stereo.js"></script>
+<script src = "/ui/socketPhoneUI.js"></script>
+<script src="/general/controls.js"></script>
+<script src="/general/vrControls.js"></script>
+<script src = "/ui/ui.js"></script>
+<script src = "/ui/uiscene.js"></script>
+
+
+
+
+
+
+</html>
