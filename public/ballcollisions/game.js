@@ -228,7 +228,7 @@ function Game(scene, camera, res, pathsize, type){
 
 
 }
-var input = {up:false, down:false, left:false, right:false};
+var input = {up:false, down:false, left:false, right:false, home: false};
 $(document).keydown(function(e) {
     if(e.key == "w"|| e.key =="up"|| e.key == "ArrowUp"){
     	input.up = true;
@@ -242,8 +242,12 @@ $(document).keydown(function(e) {
     if(e.key == "s"|| e.key =="down"|| e.key == "ArrowDown"){
     	input.down = true;
     }
+
     if(e.key == " "){
     	input.jump = true;
+    }
+    if(e.key == "q"){
+    	input.home = true;
     }
 });
 $(document).keyup(function(e) {
@@ -261,6 +265,9 @@ $(document).keyup(function(e) {
     }
     if(e.key == " "){
     	input.jump = false;
+    }
+    if(e.key == "q"){
+    	input.jump = true;
     }
 });
 

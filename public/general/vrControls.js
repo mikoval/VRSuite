@@ -10,7 +10,7 @@
  * License: The MIT License
  *
 **/
-
+input = undefined;
 var DeviceOrientationController = function ( object, domElement ) {
 
 	this.object = object;
@@ -437,6 +437,12 @@ var DeviceOrientationController = function ( object, domElement ) {
 						this.startGamma = gamma;
 						this.startBeta = beta;
 						this.startOrient = orient;
+					}
+					if(input != undefined && input.home != false){
+							this.startAlpha = alpha ;
+							this.startGamma = gamma;
+							this.startBeta = beta;
+							this.startOrient = orient;
 					}
 					if(count == 50){
 
