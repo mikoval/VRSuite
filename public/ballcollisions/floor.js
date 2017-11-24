@@ -13,7 +13,7 @@ function Floor(res, pathsize, type){
 	this.densityB = new THREE.WebGLRenderTarget( fluidWidth , fluidHeight, {type: THREE.FloatType} );
 	var geometry = new THREE.PlaneGeometry( 50, 50 );
 	var material = new THREE.MeshPhongMaterial({map: this.densityA});
-	
+
 
 	//material = new THREE.MeshPhongMaterial({color: 0xFF0000});
 	var mesh = new THREE.Mesh( geometry, material );
@@ -23,8 +23,8 @@ function Floor(res, pathsize, type){
 		mesh.position.z = 0
 		mesh.position.y = 0;
 		mesh.position.x = 0;
-		//mesh.castShadow = true;
-		//mesh.receiveShadow = true;
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
 	}
 	else if(type == "front"){
 		mesh.rotateY(3.14);
@@ -32,8 +32,8 @@ function Floor(res, pathsize, type){
 		mesh.position.z = 25;
 		mesh.position.y = 25;
 		mesh.position.x = 0;
-		//mesh.castShadow = true;
-		//mesh.receiveShadow = true;
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
 	}
 	else if(type == "back"){
 
@@ -41,8 +41,8 @@ function Floor(res, pathsize, type){
 		mesh.position.z = -25;
 		mesh.position.y = 25;
 		mesh.position.x = 0;
-		//mesh.castShadow = true;
-		//mesh.receiveShadow = true;
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
 	}
 	else if(type == "left"){
 		mesh.rotateY(-3.14/2);
@@ -50,8 +50,8 @@ function Floor(res, pathsize, type){
 		mesh.position.z = 0;
 		mesh.position.y = 25;
 		mesh.position.x = 25;
-		//mesh.castShadow = true;
-		//mesh.receiveShadow = true;
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
 	}
 	else if(type == "right"){
 		mesh.rotateY(3.14/2);
@@ -59,8 +59,8 @@ function Floor(res, pathsize, type){
 		mesh.position.z = 0;
 		mesh.position.y = 25;
 		mesh.position.x = -25;
-		//mesh.castShadow = true;
-		//mesh.receiveShadow = true;
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
 	}
 
 	this.obj = mesh;
