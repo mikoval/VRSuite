@@ -437,7 +437,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 						this.startBeta = beta;
 						this.startOrient = orient;
 					}
-					conso
+	
 					if(input != undefined && input.home != false){
 						console.log("resetting home")
 							this.startAlpha = alpha ;
