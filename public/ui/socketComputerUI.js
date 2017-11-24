@@ -7,7 +7,7 @@ function socketLoop(){
 		var d = new Date();
 		obj.t = d.getTime();
 
-
+		obj.i = input;
 		socket.emit('testMessage',obj);
 	}
 
