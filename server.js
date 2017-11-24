@@ -21,6 +21,10 @@ io.on('connection', function(socket){
 app.get('/', function (req, res) {
 	res.render('main.ejs', {})
 })
+app.get('/phone', function (req, res) {
+	res.render('mainphone.ejs', {})
+})
+
 app.get('/ui', function (req, res) {
 	res.render('ui.ejs', {})
 })

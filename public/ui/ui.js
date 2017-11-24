@@ -151,11 +151,16 @@ function checkClick(){
 
 		if(intersects.length > 0){
 			var txt = intersects[0].object.target.val;
+			var url = ""
 			if(txt == "Movie Theater"){
-				window.location  = "/movie";
+				url = "/movie"
 			}
 			else if(txt == "Ball Collisions"){
-				window.location  = "/collisions";
+				url =  "/collisions";
+			}
+			if(mobile){
+				url += "phone";
+				window.location = url;
 			}
 		}
 
