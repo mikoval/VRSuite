@@ -19,10 +19,10 @@ io.on('connection', function(socket){
 
 
 app.get('/', function (req, res) {
-	res.render('UI.ejs', {})
+	res.render('ui.ejs', {})
 })
 app.get('/ui', function (req, res) {
-	res.render('UI.ejs', {})
+	res.render('ui.ejs', {})
 })
 
 app.get('/uiphone', function (req, res) {
@@ -30,16 +30,16 @@ app.get('/uiphone', function (req, res) {
 })
 
 app.get('/movie', function (req, res) {
-	res.render('Movie.ejs', {})
+	res.render('movie.ejs', {})
 })
 
 app.get('/collisions', function (req, res) {
-	res.render('Collisions.ejs', {})
+	res.render('collisions.ejs', {})
 })
 app.get('/collisionsphone', function (req, res) {
-	res.render('CollisionsPhone.ejs', {})
+	res.render('collisionsphone.ejs', {})
 })
 
 app.get('/moviephone', function (req, res) {
-	res.render('MoviePhone.ejs', {})
+	res.render('moviephone.ejs', {})
 })
