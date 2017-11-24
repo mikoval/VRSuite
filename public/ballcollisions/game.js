@@ -76,7 +76,8 @@ function Game(scene, camera, res, pathsize, type){
 		var obj = this.player;
 		for(var j = 0; j < this.objs.length; j++){
 			var obj2 = this.objs[j];
-			if(obj.position.distanceTo(obj2.position) < obj.radius + obj2.radius){
+			var dist = obj.position.distanceTo(obj2.position) 
+			if(dist < obj.radius + obj2.radius){
 					var p1 = obj.position.clone();
 					var p2 = obj2.position.clone();
 					var n = p1.clone().sub(p2.clone()).normalize();
@@ -105,6 +106,10 @@ function Game(scene, camera, res, pathsize, type){
 					var vel1 = v1.sub( n.clone().multiplyScalar(optimizedP * m2))
 					var vel2 = v2.add( n.clone().multiplyScalar( optimizedP * Math.abs(optimizedP)  * m1))
 					
+					obj2.position.x -= n.x * ( (obj.radius + obj2.radius) -dist  );
+					obj2.position.y -= n.y * ( (obj.radius + obj2.radius)  - dist );
+					obj2.position.z -= n.z * ( (obj.radius + obj2.radius) - dist );
+
 					obj.velocity = vel1;
 					obj2.velocity = vel2;
 					
@@ -132,6 +137,8 @@ function Game(scene, camera, res, pathsize, type){
 					var v =  v4.sub(v3);
 					var d = p4.sub(p3);
 					
+
+
 					if(v.dot(d) >=0)
 						continue;
 					
@@ -147,6 +154,8 @@ function Game(scene, camera, res, pathsize, type){
 					var vel2 = v2.add( n.clone().multiplyScalar(optimizedP * m1))
 					
 					obj.velocity = vel1;
+
+					
 					obj2.velocity = vel2;
 					
 
