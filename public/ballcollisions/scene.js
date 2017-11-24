@@ -148,7 +148,7 @@ function update () {
 
        if(effect){
           //console.log(controls);
-          controls  = undefined;
+        
           if(controls != undefined){
             controls.update();
 

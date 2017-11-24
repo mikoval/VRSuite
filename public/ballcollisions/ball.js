@@ -40,14 +40,14 @@ function Ball(x, z, color){
 	scene.add( this.obj );
 
 	this.update= function(){
-		var dt = (Date.now() - this.time) / 200;
+		var dt = (Date.now() - this.time) / 1500;
 		this.time = Date.now();
 		this.velocity.y -= 0.3;
 		this.velocity.multiplyScalar(0.99)
 		if(this.velocity.length() >16.0)
 			this.velocity.normalize().multiplyScalar(16.0);
 
-		this.position = this.position.add(this.velocity.clone().multiplyScalar(0.1));
+		this.position = this.position.add(this.velocity.clone().multiplyScalar(0.05));
 		this.changed = true;
 		var ret = [];
 		if(this.position.y < 3){
