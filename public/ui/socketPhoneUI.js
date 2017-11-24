@@ -28,6 +28,10 @@ $(document).ready(function(){
 
 		}
 	});
+	socket.on('newpage', function(page){
+
+		window.location = page+"phone";
+	});
 	controls = new DeviceOrientationController( cameraVR, renderer.domElement );
 	controls.connect();
 })

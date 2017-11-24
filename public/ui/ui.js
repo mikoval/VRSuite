@@ -158,10 +158,8 @@ function checkClick(){
 			else if(txt == "Ball Collisions"){
 				url =  "/collisions";
 			}
-			if(mobile){
-				url += "phone";
-				window.location = url;
-			}
+			socket.emit("newpage", url);
+
 		}
 
 		

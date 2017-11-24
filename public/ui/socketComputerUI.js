@@ -13,3 +13,9 @@ function socketLoop(){
 
 	setTimeout(socketLoop, 30);
 }
+$(document).ready(function(){
+	socket.on('newpage', function(page){
+
+		window.location = page;
+	});
+})
