@@ -14,7 +14,7 @@ function Player(z, color){
 	var geometry = new THREE.SphereGeometry(this.radius, 128,128);
 	
 	 
-	var material = new THREE.MeshPhongMaterial();
+	var material = new THREE.MeshPhongMaterial({map: playerTextureColor,transparent: false, normalMap:playerTextureNormal, specularMap: playerTextureSpecular,  overdraw: 0.5});
 	var mesh = new THREE.Mesh(geometry, material);
 	mesh.position.y = this.position.x;
 	mesh.position.y = this.position.y;

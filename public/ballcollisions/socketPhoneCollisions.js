@@ -7,11 +7,10 @@ quaternion = new THREE.Quaternion();
 $(document).ready(function(){
 	lastTime = 0;
 	socket.on('testMessage', function(data){
-		console.log("got data");
 		var time = data.t;
 	
 		if(time > lastTime){
-			console.log("updating input")
+			
 			input  = data.i;
 			
 
