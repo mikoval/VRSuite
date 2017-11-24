@@ -29,8 +29,8 @@ $(document).ready(function(){
 		}
 	});
 	socket.on('newpage', function(page){
-		alert("going to new page");
-		window.location = page+"phone";
+		var page = page + "phone";
+		window.location = page;
 
 	});
 
