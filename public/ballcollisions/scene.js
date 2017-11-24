@@ -155,6 +155,11 @@ function update () {
             if(quaternion != undefined){
               var quat = new  THREE.Quaternion()
               
+              quaternion = new THREE.Quaternion();
+              quaternion._x = camera.quaternion._x;
+              quaternion._y = camera.quaternion._y;
+              quaternion._z = camera.quaternion._z;
+              quaternion._w = camera.quaternion._w;
               quat.multiplyQuaternions (quaternion, cameraVR.quaternion )
               
 

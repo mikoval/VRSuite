@@ -21,8 +21,8 @@ $(document).ready(function(){
 
 		}
 	});
-	//controls = new DeviceOrientationController( cameraVR, renderer.domElement );
-	//controls.connect();
+	controls = new DeviceOrientationController( cameraVR, renderer.domElement );
+	controls.connect();
 })
 
 
