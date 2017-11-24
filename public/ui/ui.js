@@ -3,7 +3,7 @@ function button(x, y, z, width, height, depth,  text){
 	var x = x;
 	var y = y;
 	var z = z;
-
+	this.val = text;
 
 	this.addBox = function(){
 		var uniforms = {
@@ -27,6 +27,7 @@ function button(x, y, z, width, height, depth,  text){
 
 		var geometry = new THREE.BoxGeometry(width, height,depth, 10, 10, 10);
 		var obj = new THREE.Mesh(geometry, material);
+		obj.target = this;
 
 		obj.material.side = THREE.DoubleSide;
 		obj.position.x = x,
@@ -118,12 +119,47 @@ function cursor(){
 
 	})
 
+	$(document).on("click", function(event){
+		checkClick();
+	})
+
 }
 function checkHover(){
 		var origin = camera.position.clone();
 		var dir = curs.obj.position.clone().sub(origin);
 		dir = dir.normalize();
 		computeHover(origin, dir);
+}
+function checkClick(){
+		var origin = camera.position.clone();
+		var dir = curs.obj.position.clone().sub(origin);
+		dir = dir.normalize();
+		// update the picking ray with the camera and mouse position
+
+
+
+		raycaster.set( origin, dir );
+
+		// calculate objects intersecting the picking ray
+		var btns = [];
+		for(var i = 0; i < buttons.length; i++){
+			buttons[i].object.material.uniforms.hover.value = 0;
+			btns.push(buttons[i].object)
+		}
+		var intersects = raycaster.intersectObjects( btns );
+		//console.log(intersects.length)
+
+		if(intersects.length > 0){
+			var txt = intersects[0].object.target.val;
+			if(txt == "Movie Theater"){
+				window.location  = "/movie";
+			}
+			else if(txt == "Ball Collisions"){
+				window.location  = "/collisions";
+			}
+		}
+
+		
 }
 function computeHover(o, d){
 	// update the picking ray with the camera and mouse position

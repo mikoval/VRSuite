@@ -1,0 +1,87 @@
+<html>
+<head>
+    
+</head>
+<body>
+<div id = "container" ></div>
+
+
+<script src="general/three.js"></script>
+<script id="EraseShader" type="shader-code"> 
+        
+        void main() {
+            gl_FragColor = vec4(0.2, 0.2, 0.2, 1.0);
+    
+            
+        }
+    </script>
+
+<script id="AddDensityShader" type="shader-code">
+        uniform vec2 res;//The width and height of our screen
+        uniform sampler2D bufferTexture;//Our input texture
+        uniform vec4 densitySource;
+        uniform float densitySize;
+        void main() {
+            vec2 pixel = gl_FragCoord.xy / res.xy;
+            gl_FragColor = texture2D( bufferTexture, pixel );
+            
+            float t = 1.0;
+                
+            float dist = distance(densitySource.zw,gl_FragCoord.xy);
+            if(dist < densitySize){
+                if(densitySource.y == 1.0){
+                    if(gl_FragColor.r <=   1.0 - 0.5 * dist/densitySize/5.0){
+                        gl_FragColor.r = 1.0 - 0.5 * dist/densitySize/5.0;
+                        gl_FragColor.g =  0.2 *  dist/densitySize;
+                        gl_FragColor.b = 0.2 *  dist/densitySize;
+
+                        
+                    }
+
+                    
+                   
+                    
+                    
+                }
+                else if(densitySource.y == 2.0){
+                    if(gl_FragColor.g <=   1.0 - 0.5 * dist/densitySize/5.0){
+                        gl_FragColor.g = 1.0 - 0.5 * dist/densitySize/5.0;
+                        gl_FragColor.r =  0.2 *  dist/densitySize;
+                        gl_FragColor.b = 0.2 *  dist/densitySize;
+
+                        
+                    }
+                    
+            
+                    
+                }
+                else if(densitySource.y == 3.0){
+                    if(gl_FragColor.b <=   1.0 - 0.5 * dist/densitySize/5.0){
+                        gl_FragColor.b = 1.0 - 0.5 * dist/densitySize/5.0;
+                        gl_FragColor.g =  0.2 *  dist/densitySize;
+                        gl_FragColor.r = 0.2 *  dist/densitySize;
+
+                        
+                    }                 
+                    
+                }
+            }
+            
+             
+
+         
+                   
+                    
+           
+        }
+    </script>
+
+
+<script src="general/jquery-3.2.1.min.js"></script>
+<script src="collisions/game.js"></script>
+<script src="collisions/player.js"></script>
+<script src="collisions/floor.js"></script>
+<script src="collisions/ball.js"></script>
+<script src="collisions/scene.js"></script>
+</body> 
+</html>

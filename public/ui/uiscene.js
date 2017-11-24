@@ -69,9 +69,9 @@ function initScene(){
 	loader.load( 'fonts/helvetiker_regular.typeface.json', function ( loadedFont ) {
 		font = loadedFont;
 
-		b = new button(0, 60, -200,80,30,20,  "Ball Collisions");
-		c= new button(0, 20, -200, 80,30,20, "Platformer");
-		d= new button(0, -20, -200, 80,30,20, "Cloth");
+		b = new button(0, 60, -200,80,30,20,  "Movie Theater");
+		c= new button(0, 20, -200, 80,30,20, "Ball Collisions");
+		d= new button(0, -20, -200, 80,30,20, "Platformer");
 		e= new button(0, -60, -200, 80,30,20, "Raytracing");
 		buttons.push(b);
 		buttons.push(c);

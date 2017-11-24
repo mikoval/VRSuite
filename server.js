@@ -21,18 +21,25 @@ io.on('connection', function(socket){
 app.get('/', function (req, res) {
 	res.render('UI.ejs', {})
 })
-app.get('/UI', function (req, res) {
+app.get('/ui', function (req, res) {
 	res.render('UI.ejs', {})
 })
 
-app.get('/UIPhone', function (req, res) {
-	res.render('phone.ejs', {})
+app.get('/uiphone', function (req, res) {
+	res.render('uiphone.ejs', {})
 })
 
-app.get('/Movie', function (req, res) {
+app.get('/movie', function (req, res) {
 	res.render('Movie.ejs', {})
 })
 
-app.get('/MoviePhone', function (req, res) {
+app.get('/collisions', function (req, res) {
+	res.render('Collisions.ejs', {})
+})
+app.get('/collisionsphone', function (req, res) {
+	res.render('CollisionsPhone.ejs', {})
+})
+
+app.get('/moviephone', function (req, res) {
 	res.render('MoviePhone.ejs', {})
 })
