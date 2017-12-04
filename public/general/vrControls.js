@@ -487,11 +487,14 @@ var DeviceOrientationController = function ( object, domElement ) {
 				prevBeta = beta;
 
 
+
+
+				this.object.quaternion.copy( deviceQuat );
 				if(this.calibrate){
-					var v1 =  new THREE.Vector3( 0, 0, -1 );
-					var v2 =  new THREE.Vector3( 0, 0, -1 );
-					v1.applyQuaternion( camera.quaternion );
-					v2.applyQuaternion( cameraVR.quaternion );
+					var v1 =  new THREE.Vector3();
+					var v2 =  new THREE.Vector3();
+					camera.getWorldDirection( v1 );
+					camera.getWorldDirection( v2 );
 					var dot = v1.dot(v2);
 					//alert("x: " + v1.x + " y: " + v1.y + " z: "  + v1.z);
 					//alert("x: " + v2.x + " y: " + v2.y + " z: "  + v2.z);
@@ -504,9 +507,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 					this.calibrate = false;
 				}
 				
-
-				this.object.quaternion.copy( deviceQuat );
-
+				
 			}
 
 		};
