@@ -32,6 +32,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 	this.startOrient = 0;
 	this.calibrate = true;
 
+
 	// Manual rotate override components
 	var startX = 0, startY = 0,
 	    currentX = 0, currentY = 0,
@@ -406,7 +407,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 			beta   = THREE.Math.degToRad( this.deviceOrientation.beta  || 0 ); // X'
 			gamma  = THREE.Math.degToRad( this.deviceOrientation.gamma || 0 ); // Y''
 			orient = THREE.Math.degToRad( this.screenOrientation       || 0 ); // O
-			if(this.calibrate == true ){
+			if(this.calibrate ){
 				this.startAlpha = alpha ;
 				this.startGamma = gamma;
 				this.startBeta = beta;
@@ -419,7 +420,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 				totalCount = 0;
 
 
-				this.calibrate = false;
+			
 			}
 			
 
@@ -465,12 +466,14 @@ var DeviceOrientationController = function ( object, domElement ) {
 					else {
 						deviceQuat = createQuaternion( -3.14159 / 2 + (alpha - this.startAlpha ) ,  beta, gamma, orient );
 					}
+					var dir = new THREE.Vector3();
+
 					
 
 
 				} else {
 
-					deviceMatrix = createRotationMatrix( alpha- this.startAlpha, beta- this.startBeta, gamma- this.startGamma, orient );
+					deviceMatrix = createRotationMatrix( alpha, beta, gamma, orient );
 
 					deviceQuat.setFromRotationMatrix( deviceMatrix );
 
@@ -482,6 +485,22 @@ var DeviceOrientationController = function ( object, domElement ) {
 				prevAlpha = alpha;
 				prevGamma = gamma;
 				prevBeta = beta;
+
+				if(this.calibrate){
+					var v1 = new Vector3();
+					var v2 = new Vector3();
+					v1.applyQuaternion( camera.quaternion );
+					v2.applyQuaternion( cameraVR.quaternion );
+					var dot = v1.dot(v2);
+
+					if(dot < 0){
+						this.startAlpha = -this.startAlpha;
+						
+					}
+					this.calibrate = false;
+				}
+				
+
 				this.object.quaternion.copy( deviceQuat );
 
 			}
