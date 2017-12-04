@@ -418,6 +418,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 				totalMovement = 0;
 				count = 0;
 				totalCount = 0;
+				alert("calibrating");
 
 
 			
@@ -486,7 +487,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 				prevGamma = gamma;
 				prevBeta = beta;
 
-				alert ("test");
+
 				if(this.calibrate){
 					var v1 = new THREE.Vector3();
 					var v2 = new THREE.Vector3();
