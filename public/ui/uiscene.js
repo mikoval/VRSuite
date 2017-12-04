@@ -16,9 +16,7 @@ function initScene(){
 
 	renderer = new THREE.WebGLRenderer();
 	
-	renderer.shadowMapEnabled = true;   
-	renderer.shadowMapSoft = true;
-	renderer.shadowMapType = THREE.PCFShadowMap;
+
 
 
 	camera =
@@ -90,12 +88,6 @@ function initScene(){
 	// mess around with this point light, play with spheres and play with plane 
 	var light = new THREE.PointLight(0xAAAAAA, 1.0, 0);
 	light.position.set( buttonWidth, buttonHeight, buttonDepth );
-	light.castShadow = true;
-
-	light.shadowBias = 0.0001;
-	light.shadowDarkness = 0.2;
-	light.shadowMapWidth = 2048;
-	light.shadowMapHeight = 2048;
 
 	scene.add( light );
 
