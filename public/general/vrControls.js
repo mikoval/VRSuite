@@ -488,13 +488,14 @@ var DeviceOrientationController = function ( object, domElement ) {
 
 
 				if(this.calibrate){
-					var v1 = new THREE.Vector3();
-					var v2 = new THREE.Vector3();
+					var v1 = = new THREE.Vector3( 0, 0, -1 );
+					var v2 = = new THREE.Vector3( 0, 0, -1 );
 					v1.applyQuaternion( camera.quaternion );
 					v2.applyQuaternion( cameraVR.quaternion );
 					var dot = v1.dot(v2);
-					alert("x: " + v1.x + " y: " + v1.y + " z: "  + v1.z);
-					alert("x: " + v2.x + " y: " + v2.y + " z: "  + v2.z);
+					//alert("x: " + v1.x + " y: " + v1.y + " z: "  + v1.z);
+					//alert("x: " + v2.x + " y: " + v2.y + " z: "  + v2.z);
+					alert(dot);
 					if(dot < 0){
 
 						this.startAlpha = -this.startAlpha;
