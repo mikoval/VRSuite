@@ -486,19 +486,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 				prevGamma = gamma;
 				prevBeta = beta;
 
-				if(this.calibrate){
-					var v1 = new Vector3();
-					var v2 = new Vector3();
-					v1.applyQuaternion( camera.quaternion );
-					v2.applyQuaternion( cameraVR.quaternion );
-					var dot = v1.dot(v2);
-
-					if(dot < 0){
-						this.startAlpha = -this.startAlpha;
-						
-					}
-					this.calibrate = false;
-				}
+			
 				
 
 				this.object.quaternion.copy( deviceQuat );
