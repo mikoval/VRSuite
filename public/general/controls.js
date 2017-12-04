@@ -116,11 +116,15 @@ document.addEventListener( 'keyup', onKeyUp, false );
 window.addEventListener( 'resize', onWindowResize, false );
 
 function onWindowResize() {
-	WIDTH = window.innerWidth;
-	HEIGTH = window.innerHeight;
-	camera.aspect = window.innerWidth / window.innerHeight;
-	camera.updateProjectionMatrix();
-	renderer.setSize( window.innerWidth, window.innerHeight );
+	var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+	if(!iOS){
+		WIDTH = window.innerWidth;
+		HEIGTH = window.innerHeight;
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+		renderer.setSize( window.innerWidth, window.innerHeight );
+	}
+	
 }
 
 
