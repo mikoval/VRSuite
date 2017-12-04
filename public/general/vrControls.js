@@ -501,7 +501,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 					alert(dot);
 					if(dot < 0){
 
-						this.startAlpha = -this.startAlpha;
+						this.startOrient = -this.startOrient;
 						
 					}
 					this.calibrate = false;
