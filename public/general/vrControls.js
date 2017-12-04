@@ -498,7 +498,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 					var dot = v1.dot(v2);
 					//alert("x: " + v1.x + " y: " + v1.y + " z: "  + v1.z);
 					//alert("x: " + v2.x + " y: " + v2.y + " z: "  + v2.z);
-					alert(dot);
+					//alert(dot);
 					if(dot < 0){
 
 						this.startOrient = -this.startOrient;
