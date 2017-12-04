@@ -403,6 +403,11 @@ var DeviceOrientationController = function ( object, domElement ) {
 
 		return function () {
 
+			if(input != undefined && input.home != false){
+					this.calibrate = true;
+			}
+
+					
 			alpha  = THREE.Math.degToRad( this.deviceOrientation.alpha || 0 ); // Z
 			beta   = THREE.Math.degToRad( this.deviceOrientation.beta  || 0 ); // X'
 			gamma  = THREE.Math.degToRad( this.deviceOrientation.gamma || 0 ); // Y''
@@ -440,13 +445,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 						this.startOrient = orient;
 					}
 	
-					if(input != undefined && input.home != false){
-						console.log("resetting home")
-							this.startAlpha = alpha ;
-							this.startGamma = gamma;
-							this.startBeta = beta;
-							this.startOrient = orient;
-					}
+					
 					if(count == 50){
 
 						if(totalMovement > 50){
