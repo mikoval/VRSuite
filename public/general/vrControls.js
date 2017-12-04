@@ -488,8 +488,8 @@ var DeviceOrientationController = function ( object, domElement ) {
 
 
 				if(this.calibrate){
-					var v1 = = new THREE.Vector3( 0, 0, -1 );
-					var v2 = = new THREE.Vector3( 0, 0, -1 );
+					var v1 =  new THREE.Vector3( 0, 0, -1 );
+					var v2 =  new THREE.Vector3( 0, 0, -1 );
 					v1.applyQuaternion( camera.quaternion );
 					v2.applyQuaternion( cameraVR.quaternion );
 					var dot = v1.dot(v2);
