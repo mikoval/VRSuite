@@ -407,7 +407,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 					this.calibrate = true;
 			}
 
-					
+
 			alpha  = THREE.Math.degToRad( this.deviceOrientation.alpha || 0 ); // Z
 			beta   = THREE.Math.degToRad( this.deviceOrientation.beta  || 0 ); // X'
 			gamma  = THREE.Math.degToRad( this.deviceOrientation.gamma || 0 ); // Y''
@@ -423,7 +423,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 				totalMovement = 0;
 				count = 0;
 				totalCount = 0;
-				alert("calibrating");
+				
 
 
 			
@@ -493,7 +493,8 @@ var DeviceOrientationController = function ( object, domElement ) {
 					v1.applyQuaternion( camera.quaternion );
 					v2.applyQuaternion( cameraVR.quaternion );
 					var dot = v1.dot(v2);
-					alert(dot);
+					alert("x: " + v1.x + " y: " + v1.y + " z: "  + v1.z);
+					alert("x: " + v2.x + " y: " + v2.y + " z: "  + v2.z);
 					if(dot < 0){
 
 						this.startAlpha = -this.startAlpha;
