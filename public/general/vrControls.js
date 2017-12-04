@@ -466,7 +466,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 					else {
 						deviceQuat = createQuaternion( -3.14159 / 2 + (alpha - this.startAlpha ) ,  beta, gamma, orient );
 					}
-					var dir = new THREE.Vector3();
+					
 
 					
 
@@ -486,6 +486,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 				prevGamma = gamma;
 				prevBeta = beta;
 
+				alert ("test");
 				if(this.calibrate){
 					var v1 = new THREE.Vector3();
 					var v2 = new THREE.Vector3();
@@ -494,7 +495,7 @@ var DeviceOrientationController = function ( object, domElement ) {
 					var dot = v1.dot(v2);
 					alert(dot);
 					if(dot < 0){
-						
+
 						this.startAlpha = -this.startAlpha;
 						
 					}
