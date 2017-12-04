@@ -492,8 +492,9 @@ var DeviceOrientationController = function ( object, domElement ) {
 					v1.applyQuaternion( camera.quaternion );
 					v2.applyQuaternion( cameraVR.quaternion );
 					var dot = v1.dot(v2);
-
+					alert(dot);
 					if(dot < 0){
+						
 						this.startAlpha = -this.startAlpha;
 						
 					}
