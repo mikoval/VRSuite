@@ -158,6 +158,9 @@ function checkClick(){
 			else if(txt == "Ball Collisions"){
 				url =  "/collisions";
 			}
+			else if(txt == "Pool"){
+				url =  "/pool";
+			}
 			socket.emit("newpage", url);
 
 		}

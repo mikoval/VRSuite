@@ -40,6 +40,9 @@ app.get('/uiphone', function (req, res) {
 app.get('/movie', function (req, res) {
 	res.render('movie.ejs', {})
 })
+app.get('/moviephone', function (req, res) {
+	res.render('moviephone.ejs', {})
+})
 
 app.get('/collisions', function (req, res) {
 	res.render('collisions.ejs', {})
@@ -47,7 +50,11 @@ app.get('/collisions', function (req, res) {
 app.get('/collisionsphone', function (req, res) {
 	res.render('collisionsphone.ejs', {})
 })
-
-app.get('/moviephone', function (req, res) {
-	res.render('moviephone.ejs', {})
+app.get('/pool', function (req, res) {
+	res.render('pool.ejs', {})
 })
+app.get('/poolphone', function (req, res) {
+	res.render('poolphone.ejs', {})
+})
+
+

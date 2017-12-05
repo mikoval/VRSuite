@@ -1,5 +1,8 @@
-var input = {up:false, down:false, left:false, right:false, home: false};
+input = {up:false, down:false, left:false, right:false, home: false};
 $(document).keydown(function(e) {
+    if(input == undefined){
+        input = {up:false, down:false, left:false, right:false, home: false};
+    }
     if(e.key == "w"|| e.key =="up"|| e.key == "ArrowUp"){
     	input.up = true;
     }
