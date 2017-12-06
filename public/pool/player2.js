@@ -3,7 +3,7 @@ function Player2(z, color){
 	this.position = new THREE.Vector3(0, -5, 5);
 	this.velocity = new THREE.Vector3(0, 0, 0);
 	this.rotation = 0;
-	this.speed = .5;
+	this.speed = 1.0;
 	this.changed = true;
 	this.orientation =  new THREE.Quaternion();
 	this.pathColor = 1;
@@ -24,7 +24,7 @@ function Player2(z, color){
 
 
 
-	coll = new Physijs.ConvexMesh(geometry, collMat, 5)
+	coll = new Physijs.ConvexMesh(geometry, collMat, 100)
 	//coll.visible = false;
 	scene.add(coll);
 
@@ -106,7 +106,7 @@ function Player2(z, color){
 		if(input.right){
 			this.changed = true;
 			var axis = new THREE.Vector3( 0, 1, 0 );
-			var angle = -0.02;
+			var angle = -0.05;
 			this.rotation -= angle;
 			this.direction.applyAxisAngle( axis, angle );
 
@@ -114,7 +114,7 @@ function Player2(z, color){
 		if(input.left){
 			this.changed = true;
 			var axis = new THREE.Vector3( 0, 1, 0 );
-			var angle = 0.02;
+			var angle = 0.05;
 			this.rotation -= angle;
 			this.direction.applyAxisAngle( axis, angle );
 		}
