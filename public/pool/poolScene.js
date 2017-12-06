@@ -1,6 +1,5 @@
 
-function initScene(){
-	effect = undefined;
+effect = undefined;
 	WIDTH = $(document).width();
 	HEIGHT = $(document).height();
 
@@ -29,6 +28,17 @@ function initScene(){
 	    );
 
 	camera.position.z = 5;
+	cameraVR = new THREE.PerspectiveCamera(
+        VIEW_ANGLE,
+        ASPECT,
+        NEAR,
+        FAR
+    );
+
+
+function initScene(){
+	
+
 
 
 	objs = [];
@@ -74,7 +84,7 @@ function initScene(){
 
 	//var player = new Player();
 
-	renderer.shadowMapEnabled = true;
+	//renderer.shadowMapEnabled = true;
 renderer.shadowMapSoft = true;
 	renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
@@ -108,7 +118,7 @@ renderer.shadowMapSoft = true;
  	objloader.load( "/pool/donutCollider.json", addDonutColliderToScene );
 
  	objloader.load( "/pool/cup.json", addCupModelToScene );
- 	objloader.load( "/pool/cup.json", addCupColliderToScene );
+ 	objloader.load( "/pool/cupCollider.json", addCupColliderToScene );
 
 
 
@@ -133,7 +143,14 @@ renderer.shadowMapSoft = true;
 	scene.add( ground );
 	
 	player = new Player2();
-	
+	effect = undefined;
+	if(mobile){
+
+	     effect= new THREE.StereoEffect(renderer);
+	    
+	  }
+
+
 	scene.simulate();
 	animationLoop();
 
@@ -158,10 +175,42 @@ function animationLoop(){
 	 	}
 	}
 	
-	renderer.render(scene, camera);
+	if(effect){
+          //console.log(controls);
+        
+      	if(controls != undefined){
+	        controls.update();
 
-	setTimeout(animationLoop, 30);
-}
+	        if(quaternion != undefined){
+	          var quat = new  THREE.Quaternion()
+	          
+	          quaternion = new THREE.Quaternion();
+	          quaternion._x = camera.quaternion._x;
+	          quaternion._y = camera.quaternion._y;
+	          quaternion._z = camera.quaternion._z;
+	          quaternion._w = camera.quaternion._w;
+	          quat.multiplyQuaternions (quaternion, cameraVR.quaternion )
+	          
+
+	          
+	        
+	          camera.quaternion._x = quat._x;
+	          camera.quaternion._y = quat._y;
+	          camera.quaternion._z = quat._z;
+	          camera.quaternion._w = quat._w;
+	          
+	        }
+	        
+	      }
+	    
+	      effect.render(scene, camera);
+	    }
+	    else{
+	      renderer.render(scene, camera);
+	    }
+
+		setTimeout(animationLoop, 30);
+	}
 
 $(document).ready(function(){
 	ground_material = Physijs.createMaterial(
@@ -321,7 +370,7 @@ function checkLoaded(){
 }
 checkLoaded();
 function createScene(){
-	for(var i = 0; i < 20; i++){
+	for(var i = 0; i < 50; i++){
 		
 		var r = Math.floor(Math.random() * 2);
 		if(r == 0){
