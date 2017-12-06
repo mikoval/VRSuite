@@ -3,7 +3,7 @@ function Player2(z, color){
 	this.position = new THREE.Vector3(0, -5, 5);
 	this.velocity = new THREE.Vector3(0, 0, 0);
 	this.rotation = 0;
-	this.speed = .2;
+	this.speed = .5;
 	this.changed = true;
 	this.orientation =  new THREE.Quaternion();
 	this.pathColor = 1;

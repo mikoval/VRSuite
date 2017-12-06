@@ -1,3 +1,4 @@
+
 function initScene(){
 	effect = undefined;
 	WIDTH = $(document).width();
@@ -14,7 +15,7 @@ function initScene(){
 
 	renderer = new THREE.WebGLRenderer({antialias :true});
 	
-	renderer.shadowMapEnabled = true;   
+	//renderer.shadowMapEnabled = true;   
 	renderer.shadowMapSoft = true;
 	renderer.shadowMapType = THREE.PCFShadowMap;
 
@@ -30,8 +31,8 @@ function initScene(){
 	camera.position.z = 5;
 
 
-	donuts = [];
-	donuts2 = [];
+	objs = [];
+	objs2 = [];
 
 	
 	scene = new Physijs.Scene;
@@ -73,10 +74,28 @@ function initScene(){
 
 	//var player = new Player();
 
-	var light = new THREE.PointLight(0xAAAAAA, 1.0, 0);
-	light.position.set( 3,3, 0 );
+	renderer.shadowMapEnabled = true;
+renderer.shadowMapSoft = true;
+	renderer.shadowMapType = THREE.PCFSoftShadowMap;
+
+
+
+
+
+
+
+	var light = new THREE.PointLight(0xffffff, 1.0, 0, 2);
+	light.position.set( 100, 200, -100 );
+	light.castShadow = true;
+
+	light.shadowBias = 0.01;
+	light.shadowDarkness = 0.2;
+	light.shadowMapWidth = 1024;
+	light.shadowMapHeight = 1024;
 
 	scene.add( light );
+
+
 
 	var light = new THREE.AmbientLight(0x404040);
 
@@ -84,8 +103,13 @@ function initScene(){
 
 	model = undefined;
 	 var objloader = new THREE.JSONLoader();
- 	objloader.load( "/pool/donut4.json", addModelToScene );
- 	objloader.load( "/pool/donutCollider.json", addColliderToScene );
+ 	objloader.load( "/pool/donut4.json", addDonutModelPinkToScene );
+ 	objloader.load( "/pool/Chocolatedonut.json", addDonutModelChocolateToScene );
+ 	objloader.load( "/pool/donutCollider.json", addDonutColliderToScene );
+
+ 	objloader.load( "/pool/cup.json", addCupModelToScene );
+ 	objloader.load( "/pool/cup.json", addCupColliderToScene );
+
 
 
 
@@ -93,12 +117,7 @@ function initScene(){
 	Physijs.scripts.ammo = '/general/js/ammo.js';
 
 	// Materials
-	ground_material = Physijs.createMaterial(
-		new THREE.MeshPhongMaterial({ color:0x33FF66 }),
-		.8, // high friction
-		.4 // low restitution
-	);
-
+	
 	
 	// Ground
 	ground = new Physijs.BoxMesh(
@@ -107,10 +126,9 @@ function initScene(){
 		0 // mass
 	);
 	ground.position.y = -10
-	//ground.receiveShadow = true;
+	ground.receiveShadow = true;
 
 	ground.position.z = -10;
-	console.log(ground);
 
 	scene.add( ground );
 	
@@ -126,28 +144,63 @@ function initScene(){
 function animationLoop(){
 	player.update();
 	setCamera();
-	for(var i =0 ; i < donuts.length; i++){
-		if(donuts[i] != undefined){
-	 		donuts[i].position.x = donuts2[i].position.x;
-	 		donuts[i].position.y = donuts2[i].position.y;
-	 		donuts[i].position.z = donuts2[i].position.z;
-	 		donuts[i].quaternion._x = donuts2[i].quaternion._x;
-	 		donuts[i].quaternion._y = donuts2[i].quaternion._y;
-	 		donuts[i].quaternion._z = donuts2[i].quaternion._z;
-	 		donuts[i].quaternion._w = donuts2[i].quaternion._w;
+	for(var i =0 ; i < objs2.length; i++){
+		if(objs[i] != undefined){
+	 		objs[i].position.x = objs2[i].position.x;
+	 		objs[i].position.y = objs2[i].position.y;
+	 		objs[i].position.z = objs2[i].position.z;
+	 		objs[i].quaternion._x = objs2[i].quaternion._x;
+	 		objs[i].quaternion._y = objs2[i].quaternion._y;
+	 		objs[i].quaternion._z = objs2[i].quaternion._z;
+	 		objs[i].quaternion._w = objs2[i].quaternion._w;
 
 
 	 	}
 	}
-	if(donuts[i] != undefined){
-		console.log(donuts[0].position);
-	}
+	
 	renderer.render(scene, camera);
 
 	setTimeout(animationLoop, 30);
 }
 
 $(document).ready(function(){
+	ground_material = Physijs.createMaterial(
+		new THREE.MeshPhongMaterial({ displacementScale: 0.0}),
+		.8, // high friction
+		.4 // low restitution
+
+	);
+
+	 loader.load('/pool/textures/lego/CityStreetSidewalk002_COL_3K.jpg', function ( texture){
+	 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+	      texture.offset.set( 0, 0 );
+	      texture.repeat.set( 8, 8 );
+	      ground_material.map = texture;
+	  })
+	 loader.load('/pool/textures/lego/CityStreetSidewalk002_NRM_3K.jpg', function ( texture){
+	 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+	      texture.offset.set( 0, 0 );
+	      texture.repeat.set( 8, 8 );
+	      ground_material.normalMap = texture;
+	  })
+		loader.load('/pool/textures/lego/CityStreetSidewalk002_DISP_3K.jpg', function ( texture){
+			texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+			texture.offset.set( 0, 0 );
+			texture.repeat.set( 8, 8 );
+			ground_material.displacementMap = texture;
+
+			
+
+	  })
+		loader.load('/pool/textures/lego/CityStreetSidewalk002_GLOSS_3K.jpg', function ( texture){
+			  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		      texture.offset.set( 0, 0 );
+		      texture.repeat.set( 8, 8 );
+	      ground_material.SpecularMap = texture;
+
+	  })
+
+
 	textureLoadLoop();
 })
 function textureLoadLoop(){
@@ -204,16 +257,24 @@ function adjustTexture(texture){
 
 
  // After loading JSON from our file, we add it to the scene
- function addModelToScene( geometry, materials ) {
+ function addDonutModelPinkToScene( geometry, materials ) {
 
  	var material = new THREE.MeshFaceMaterial(materials);
 	model = new THREE.Mesh( geometry, material );
 
 
 
-	donutModel = model;
+	donutModelPink = model;
  }
- function addColliderToScene(geometry, materials){
+
+  function addDonutModelChocolateToScene( geometry, materials ) {
+
+ 	var material = new THREE.MeshFaceMaterial(materials);
+	model = new THREE.Mesh( geometry, material );
+
+	donutModelChocolate = model;
+ }
+ function addDonutColliderToScene(geometry, materials){
  		donutMaterial = Physijs.createMaterial(
 			new THREE.MeshPhongMaterial({ color:0x33FF66 }),
 			.8, // high friction
@@ -223,11 +284,34 @@ function adjustTexture(texture){
 		donutCollider = new Physijs.ConvexMesh(geometry, donutMaterial)
  }
 
+ // After loading JSON from our file, we add it to the scene
+ function addCupModelToScene( geometry, materials ) {
+
+ 	var material = new THREE.MeshFaceMaterial(materials);
+	model = new THREE.Mesh( geometry, material );
+
+
+
+	cupModel = model;
+ }
+
+   function addCupColliderToScene(geometry, materials){
+ 		cupMaterial = Physijs.createMaterial(
+			new THREE.MeshPhongMaterial({ color:0x33FF66 }),
+			2.0, // high friction
+			.0 // low restitution
+		);
+
+		cupCollider = new Physijs.ConvexMesh(geometry, cupMaterial)
+ }
+
+
  donutCollider = undefined;
- donutModel = undefined;
+ donutModelPink = undefined;
+ donutModelChocolate= undefined;
 function checkLoaded(){
-	console.log(donutCollider)
-	if(donutCollider != undefined && donutModel != undefined){
+
+	if(donutCollider != undefined && donutModelPink != undefined && donutModelChocolate != undefined && cupModel != undefined && cupCollider != undefined){
 		createScene();
 	}
 	else{
@@ -237,32 +321,71 @@ function checkLoaded(){
 }
 checkLoaded();
 function createScene(){
-	for(var i = 0; i < 50; i++){
-		console.log("adding donut: " + i)
-		m2 = donutCollider.clone();
-		model2 = donutModel.clone();
-		m2.position.set(
-					Math.random() * 10 - 5,
-					10 + Math.random() * 5,
-					Math.random() * 20 - 30
-				);
-
-		m2.rotation.set(
-				Math.random() * Math.PI * 2,
-				Math.random() * Math.PI * 2,
-				Math.random() * Math.PI * 2
-			);
-		var r = Math.random();
-
-
-		donuts.push(model2);
-		donuts2.push(m2);
-		m2.visible = false;
-		scene.add(m2);
-
-
-		scene.add( model2 );
+	for(var i = 0; i < 20; i++){
+		
+		var r = Math.floor(Math.random() * 2);
+		if(r == 0){
+			addDonut();
+		}
+		if(r == 1){
+			addCup();
+		}
+		
 	}
+}
+
+addDonut = function(){
+	m2 = donutCollider.clone();
+	var r = Math.floor(Math.random()*2);
+	if(r == 0)
+		model2 = donutModelPink.clone();
+	else
+		model2 = donutModelChocolate.clone();
+	
+	m2.position.set(
+				Math.random() * 10 - 5,
+				10 + Math.random() * 5,
+				Math.random() * 20 - 30
+			);
+
+	m2.rotation.set(
+			Math.random() * Math.PI * 2,
+			Math.random() * Math.PI * 2,
+			Math.random() * Math.PI * 2
+		);
+	var r = Math.random();
+
+	objs.push(model2);
+	objs2.push(m2);
+	m2.visible = false;
+	model2.castShadow = true;
+	
+	scene.add(m2);
+	scene.add( model2 );
+}
+addCup = function(){
+	console.log("adding cup")
+	m2 = cupCollider.clone();
+	model2 = cupModel.clone();
+	m2.position.set(
+				Math.random() * 10 - 5,
+				10 + Math.random() * 5,
+				Math.random() * 20 - 30
+			);
+
+	m2.rotation.set(
+			Math.random() * Math.PI * 2,
+			Math.random() * Math.PI * 2,
+			Math.random() * Math.PI * 2
+		);
+	var r = Math.random();
+
+	objs.push(model2);
+	objs2 .push(m2);
+	m2.visible = false;
+	model2.castShadow = true;
+	scene.add(m2);
+	scene.add( model2 );
 }
 setCamera = function(){
 		
@@ -284,6 +407,5 @@ setCamera = function(){
 		look.y += 0.55;
 		camera.lookAt(look); 
 	}
-
 
 
