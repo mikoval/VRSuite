@@ -3,7 +3,7 @@ function Player2(z, color){
 	this.position = new THREE.Vector3(0, -5, 5);
 	this.velocity = new THREE.Vector3(0, 0, 0);
 	this.rotation = 0;
-	this.speed = 1.0;
+	this.speed = 0.5;
 	this.changed = true;
 	this.orientation =  new THREE.Quaternion();
 	this.pathColor = 1;
@@ -11,7 +11,7 @@ function Player2(z, color){
 
 	this.time = Date.now();
 
-	var geometry = new THREE.SphereGeometry(this.radius, 256,256);
+	var geometry = new THREE.SphereGeometry(this.radius, 20,20);
 	
 	 
 
@@ -106,7 +106,7 @@ function Player2(z, color){
 		if(input.right){
 			this.changed = true;
 			var axis = new THREE.Vector3( 0, 1, 0 );
-			var angle = -0.05;
+			var angle = -0.03;
 			this.rotation -= angle;
 			this.direction.applyAxisAngle( axis, angle );
 
@@ -114,7 +114,7 @@ function Player2(z, color){
 		if(input.left){
 			this.changed = true;
 			var axis = new THREE.Vector3( 0, 1, 0 );
-			var angle = 0.05;
+			var angle = 0.03;
 			this.rotation -= angle;
 			this.direction.applyAxisAngle( axis, angle );
 		}

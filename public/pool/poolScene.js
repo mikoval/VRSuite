@@ -158,18 +158,21 @@ renderer.shadowMapSoft = true;
 	      texture.offset.set( 0, 0 );
 	      texture.repeat.set( 8, 8 );
 	      ground_material.map = texture;
+	      ground_material.needsUpdate= true;
 	  })
 	 loader.load('/pool/textures/lego/CityStreetSidewalk002_NRM_3K.jpg', function ( texture){
 	 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 	      texture.offset.set( 0, 0 );
 	      texture.repeat.set( 8, 8 );
 	      ground_material.normalMap = texture;
+	      ground_material.needsUpdate= true;
 	  })
 		loader.load('/pool/textures/lego/CityStreetSidewalk002_DISP_3K.jpg', function ( texture){
 			texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 			texture.offset.set( 0, 0 );
 			texture.repeat.set( 8, 8 );
 			ground_material.displacementMap = texture;
+			ground_material.needsUpdate= true;
 
 			
 
