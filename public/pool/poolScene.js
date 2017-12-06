@@ -14,7 +14,7 @@ effect = undefined;
 
 	renderer = new THREE.WebGLRenderer({antialias :true});
 	
-	//renderer.shadowMapEnabled = true;   
+	renderer.shadowMapEnabled = true;   
 	renderer.shadowMapSoft = true;
 	renderer.shadowMapType = THREE.PCFShadowMap;
 
@@ -95,13 +95,15 @@ renderer.shadowMapSoft = true;
 
 
 	var light = new THREE.PointLight(0xffffff, 1.0, 0, 2);
-	light.position.set( 100, 200, -100 );
+	light.position.x = 10;
+	light.position.y = 10;
+	light.position.z = 10;
 	light.castShadow = true;
-
-	light.shadowBias = 0.01;
-	light.shadowDarkness = 0.2;
-	light.shadowMapWidth = 1024;
-	light.shadowMapHeight = 1024;
+    light.shadowBias = -0.001;
+    light.shadowCameraNear = 1;
+    light.shadowCameraFar = 100;
+    light.shadowMapWidth = 1024;
+    light.shadowMapHeight = 1024;
 
 	scene.add( light );
 
@@ -131,11 +133,12 @@ renderer.shadowMapSoft = true;
 	
 	// Ground
 	ground = new Physijs.BoxMesh(
-		new THREE.BoxGeometry(100, 1, 100),
+		new THREE.BoxGeometry(40, 1, 40),
 		ground_material,
 		0 // mass
 	);
 	ground.position.y = -10
+	ground.position.z = -30
 	ground.receiveShadow = true;
 
 	ground.position.z = -10;
@@ -149,6 +152,73 @@ renderer.shadowMapSoft = true;
 	     effect= new THREE.StereoEffect(renderer);
 	    
 	  }
+
+	  loader.load('/pool/textures/lego/CityStreetSidewalk002_COL_3K.jpg', function ( texture){
+	 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+	      texture.offset.set( 0, 0 );
+	      texture.repeat.set( 8, 8 );
+	      ground_material.map = texture;
+	  })
+	 loader.load('/pool/textures/lego/CityStreetSidewalk002_NRM_3K.jpg', function ( texture){
+	 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+	      texture.offset.set( 0, 0 );
+	      texture.repeat.set( 8, 8 );
+	      ground_material.normalMap = texture;
+	  })
+		loader.load('/pool/textures/lego/CityStreetSidewalk002_DISP_3K.jpg', function ( texture){
+			texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+			texture.offset.set( 0, 0 );
+			texture.repeat.set( 8, 8 );
+			ground_material.displacementMap = texture;
+
+			
+
+	  })
+		loader.load('/pool/textures/lego/CityStreetSidewalk002_GLOSS_3K.jpg', function ( texture){
+			  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		      texture.offset.set( 0, 0 );
+		      texture.repeat.set( 8, 8 );
+	      ground_material.SpecularMap = texture;
+	    
+
+	  })
+
+		//
+		loader.load('/pool/textures/rocks/PaintingModernArtAbstract004_COL_VAR1_2K.jpg', function ( texture){
+	 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+	
+	      player.obj.material.map = texture;
+	      player.obj.material.map.needsUpdate = true
+	      player.obj.material.needsUpdate = true;
+	      console.log("set");
+	  })
+	 loader.load('/pool/textures/rocks/PaintingModernArtAbstract004_NRM_2K.jpg', function ( texture){
+	 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+	      
+	      player.obj.material.normalMap = texture;
+	      player.obj.material.normalMap.needsUpdate = true;
+	      player.obj.material.needsUpdate = true;
+	      console.log("set");
+	  })
+		loader.load('/pool/textures/rocks/PaintingModernArtAbstract004_DISP_2K.jpg', function ( texture){
+			texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+			
+			player.obj.material.displacementMap = texture;
+			player.obj.material.displacementMap.needsUpdate = true;
+			player.obj.material.needsUpdate = true;
+			console.log("set");
+			
+
+	  })
+		loader.load('/pool/textures/rocks/PaintingModernArtAbstract004_GLOSS_2K.jpg', function ( texture){
+			  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		      
+	      player.obj.material.specularMap = texture;
+	      player.obj.material.specularMap.needsUpdate = true;
+	      player.obj.material.needsUpdate = true;
+	      console.log("set");
+
+	  })
 
 
 	scene.simulate();
@@ -220,36 +290,7 @@ $(document).ready(function(){
 
 	);
 
-	 loader.load('/pool/textures/lego/CityStreetSidewalk002_COL_3K.jpg', function ( texture){
-	 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-	      texture.offset.set( 0, 0 );
-	      texture.repeat.set( 8, 8 );
-	      ground_material.map = texture;
-	  })
-	 loader.load('/pool/textures/lego/CityStreetSidewalk002_NRM_3K.jpg', function ( texture){
-	 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-	      texture.offset.set( 0, 0 );
-	      texture.repeat.set( 8, 8 );
-	      ground_material.normalMap = texture;
-	  })
-		loader.load('/pool/textures/lego/CityStreetSidewalk002_DISP_3K.jpg', function ( texture){
-			texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-			texture.offset.set( 0, 0 );
-			texture.repeat.set( 8, 8 );
-			ground_material.displacementMap = texture;
-
-			
-
-	  })
-		loader.load('/pool/textures/lego/CityStreetSidewalk002_GLOSS_3K.jpg', function ( texture){
-			  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-		      texture.offset.set( 0, 0 );
-		      texture.repeat.set( 8, 8 );
-	      ground_material.SpecularMap = texture;
-
-	  })
-
-
+	 
 	textureLoadLoop();
 })
 function textureLoadLoop(){
@@ -307,7 +348,7 @@ function adjustTexture(texture){
 
  // After loading JSON from our file, we add it to the scene
  function addDonutModelPinkToScene( geometry, materials ) {
-
+ 	console.log(materials);
  	var material = new THREE.MeshFaceMaterial(materials);
 	model = new THREE.Mesh( geometry, material );
 
@@ -408,6 +449,7 @@ addDonut = function(){
 	objs2.push(m2);
 	m2.visible = false;
 	model2.castShadow = true;
+	model2.receiveShadow = true;
 	
 	scene.add(m2);
 	scene.add( model2 );
@@ -433,6 +475,7 @@ addCup = function(){
 	objs2 .push(m2);
 	m2.visible = false;
 	model2.castShadow = true;
+	model2.receiveShadow = true;
 	scene.add(m2);
 	scene.add( model2 );
 }
@@ -440,7 +483,7 @@ setCamera = function(){
 		
 			
 
-		var position = new THREE.Vector3(0, 0.55, 0.05);
+		var position = new THREE.Vector3(0, 0.64, 0.2);
 		var axis = new THREE.Vector3( 0, 1, 0 );
 		var angle = player.rotation;
 		position.applyAxisAngle( axis, -angle );
@@ -453,7 +496,7 @@ setCamera = function(){
 			
 		
 		var look = player.position.clone();
-		look.y += 0.55;
+		look.y += 0.63;
 		camera.lookAt(look); 
 	}
 

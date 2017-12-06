@@ -11,7 +11,7 @@ function Player2(z, color){
 
 	this.time = Date.now();
 
-	var geometry = new THREE.SphereGeometry(this.radius, 128,128);
+	var geometry = new THREE.SphereGeometry(this.radius, 256,256);
 	
 	 
 
@@ -25,11 +25,11 @@ function Player2(z, color){
 
 
 	coll = new Physijs.ConvexMesh(geometry, collMat, 100)
-	//coll.visible = false;
+	coll.visible = false;
 	scene.add(coll);
 
 
-	var material = new THREE.MeshPhongMaterial();
+	var material = new THREE.MeshPhongMaterial({ displacementScale: 0.1});
 	var mesh = new THREE.Mesh(geometry, material);
 	mesh.position.y = this.position.x;
 	mesh.position.y = this.position.y;
@@ -39,7 +39,7 @@ function Player2(z, color){
 
 	this.coll = coll;
 	this.obj = mesh;
-	//scene.add( this.obj );
+	scene.add( this.obj );
 
 	this.update= function(){
 		var dt = (Date.now() - this.time) / 200;
