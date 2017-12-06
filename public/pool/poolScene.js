@@ -102,8 +102,8 @@ renderer.shadowMapSoft = true;
     light.shadowBias = -0.001;
     light.shadowCameraNear = 1;
     light.shadowCameraFar = 100;
-    light.shadowMapWidth = 1024;
-    light.shadowMapHeight = 1024;
+    light.shadowMapWidth = 2048;
+    light.shadowMapHeight = 2048;
 
 	scene.add( light );
 
