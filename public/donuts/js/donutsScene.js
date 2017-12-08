@@ -1,39 +1,40 @@
 
 effect = undefined;
-	WIDTH = $(document).width();
-	HEIGHT = $(document).height();
+WIDTH = $(document).width();
+HEIGHT = $(document).height();
 
-	// Set some camera attributes.
-	const VIEW_ANGLE = 45;
-	const ASPECT = WIDTH / HEIGHT;
-	const NEAR = 0.01;
-	const FAR = 100000;
-	controls = undefined;
+// Set some camera attributes.
+const VIEW_ANGLE = 45;
+const ASPECT = WIDTH / HEIGHT;
+const NEAR = 0.1;
+const FAR = 100000;
+controls = undefined;
 
-	canJump = true;
+canJump = true;
 
-	renderer = new THREE.WebGLRenderer({antialias :true});
-	
-	renderer.shadowMapEnabled = true;   
-	renderer.shadowMapSoft = true;
-	renderer.shadowMapType = THREE.PCFShadowMap;
+renderer = new THREE.WebGLRenderer( { antialias: true } );
+renderer.setPixelRatio( window.devicePixelRatio );
+renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.BasicShadowMap;
+renderer.shadowMap.renderSingleSided = false; // must be set to false to honor double-sided materials
 
 
-	camera =
-	    new THREE.PerspectiveCamera(
-	        VIEW_ANGLE,
-	        ASPECT,
-	        NEAR,
-	        FAR
-	    );
-
-	camera.position.z = 5;
-	cameraVR = new THREE.PerspectiveCamera(
+camera =
+    new THREE.PerspectiveCamera(
         VIEW_ANGLE,
         ASPECT,
         NEAR,
         FAR
     );
+
+camera.position.z = 5;
+cameraVR = new THREE.PerspectiveCamera(
+    VIEW_ANGLE,
+    ASPECT,
+    NEAR,
+    FAR
+);
 
 
 function initScene(){
@@ -99,11 +100,11 @@ renderer.shadowMapSoft = true;
 	light.position.y = 10;
 	light.position.z = 10;
 	light.castShadow = true;
-    light.shadowBias = -0.001;
+   	light.shadow.bias = - 0.005;
     light.shadowCameraNear = 1;
     light.shadowCameraFar = 100;
-    light.shadowMapWidth = 2048;
-    light.shadowMapHeight = 2048;
+    light.shadowMapWidth = 1024;
+    light.shadowMapHeight = 1024;
 
 	scene.add( light );
 
@@ -114,13 +115,10 @@ renderer.shadowMapSoft = true;
 	scene.add( light );
 
 	model = undefined;
-	 var objloader = new THREE.JSONLoader();
- 	objloader.load( "/pool/donut4.json", addDonutModelPinkToScene );
- 	objloader.load( "/pool/Chocolatedonut.json", addDonutModelChocolateToScene );
- 	objloader.load( "/pool/donutCollider.json", addDonutColliderToScene );
+	
 
- 	objloader.load( "/pool/cup.json", addCupModelToScene );
- 	objloader.load( "/pool/cupCollider.json", addCupColliderToScene );
+ 	//objloader.load( "/pool/Meshes/cup.json", addCupModelToScene );
+ 	//objloader.load( "/pool/Meshes/cupCollider.json", addCupColliderToScene );
 
 
 
@@ -153,21 +151,21 @@ renderer.shadowMapSoft = true;
 	    
 	  }
 
-	  loader.load('/pool/textures/lego/CityStreetSidewalk002_COL_3K.jpg', function ( texture){
+	  loader.load('/donuts/textures/lego/CityStreetSidewalk002_COL_3K.jpg', function ( texture){
 	 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 	      texture.offset.set( 0, 0 );
 	      texture.repeat.set( 8, 8 );
 	      ground_material.map = texture;
 	      ground_material.needsUpdate= true;
 	  })
-	 loader.load('/pool/textures/lego/CityStreetSidewalk002_NRM_3K.jpg', function ( texture){
+	 loader.load('/donuts/textures/lego/CityStreetSidewalk002_NRM_3K.jpg', function ( texture){
 	 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 	      texture.offset.set( 0, 0 );
 	      texture.repeat.set( 8, 8 );
 	      ground_material.normalMap = texture;
 	      ground_material.needsUpdate= true;
 	  })
-		loader.load('/pool/textures/lego/CityStreetSidewalk002_DISP_3K.jpg', function ( texture){
+		loader.load('/donuts/textures/lego/CityStreetSidewalk002_DISP_3K.jpg', function ( texture){
 			texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 			texture.offset.set( 0, 0 );
 			texture.repeat.set( 8, 8 );
@@ -177,7 +175,7 @@ renderer.shadowMapSoft = true;
 			
 
 	  })
-		loader.load('/pool/textures/lego/CityStreetSidewalk002_GLOSS_3K.jpg', function ( texture){
+		loader.load('/donuts/textures/lego/CityStreetSidewalk002_GLOSS_3K.jpg', function ( texture){
 			  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 		      texture.offset.set( 0, 0 );
 		      texture.repeat.set( 8, 8 );
@@ -187,7 +185,7 @@ renderer.shadowMapSoft = true;
 	  })
 
 		//
-		loader.load('/pool/textures/rocks/PaintingModernArtAbstract004_COL_VAR1_2K.jpg', function ( texture){
+		loader.load('/donuts/textures/rocks/PaintingModernArtAbstract004_COL_VAR1_2K.jpg', function ( texture){
 	 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 	
 	      player.obj.material.map = texture;
@@ -195,7 +193,7 @@ renderer.shadowMapSoft = true;
 	      player.obj.material.needsUpdate = true;
 	      console.log("set");
 	  })
-	 loader.load('/pool/textures/rocks/PaintingModernArtAbstract004_NRM_2K.jpg', function ( texture){
+	 loader.load('/donuts/textures/rocks/PaintingModernArtAbstract004_NRM_2K.jpg', function ( texture){
 	 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 	      
 	      player.obj.material.normalMap = texture;
@@ -203,7 +201,7 @@ renderer.shadowMapSoft = true;
 	      player.obj.material.needsUpdate = true;
 	      console.log("set");
 	  })
-		loader.load('/pool/textures/rocks/PaintingModernArtAbstract004_DISP_2K.jpg', function ( texture){
+		loader.load('/donuts/textures/rocks/PaintingModernArtAbstract004_DISP_2K.jpg', function ( texture){
 			texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 			
 			player.obj.material.displacementMap = texture;
@@ -213,7 +211,7 @@ renderer.shadowMapSoft = true;
 			
 
 	  })
-		loader.load('/pool/textures/rocks/PaintingModernArtAbstract004_GLOSS_2K.jpg', function ( texture){
+		loader.load('/donuts/textures/rocks/PaintingModernArtAbstract004_GLOSS_2K.jpg', function ( texture){
 			  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 		      
 	      player.obj.material.specularMap = texture;
@@ -288,22 +286,22 @@ function animationLoop(){
 $(document).ready(function(){
 	ground_material = Physijs.createMaterial(
 		new THREE.MeshPhongMaterial({ displacementScale: 0.0}),
-		.8, // high friction
-		.4 // low restitution
+		1.0, // high friction
+		0.0 // low restitution
 
 	);
 
 	 
-	textureLoadLoop();
+	
+	initScene();
+	createScene()
+	
 })
-function textureLoadLoop(){
-	if(checkTextures()){
-		initScene();
-	}
-	else{
-		setTimeout(textureLoadLoop, 100);
-	}
-}
+
+
+	
+	
+
 function checkTextures(){
 
 	if(tileColorTexture == undefined){
@@ -329,10 +327,10 @@ tileSpecTexture = undefined;
 tileNormTexture = undefined;
 tileDIspTexture = undefined;
 
-loader.load('/pool/textures/tiles/TilesSquarePoolMixed001_COL_3K.jpg',function ( texture ) {tileColorTexture = adjustTexture(texture)});
-loader.load('/pool/textures/tiles/TilesSquarePoolMixed001_GLOSS_3K.jpg',function ( texture ) {tileSpecTexture = adjustTexture(texture)});
-loader.load('/pool/textures/tiles/TilesSquarePoolMixed001_NRM_3K.jpg',function ( texture ) {tileNormTexture = adjustTexture(texture)});
-loader.load('/pool/textures/tiles/TilesSquarePoolMixed001_DISP_3K.jpg',function ( texture ) {tileDispTexture = adjustTexture(texture)});
+loader.load('/donuts/textures/tiles/TilesSquarePoolMixed001_COL_3K.jpg',function ( texture ) {tileColorTexture = adjustTexture(texture)});
+loader.load('/donuts/textures/tiles/TilesSquarePoolMixed001_GLOSS_3K.jpg',function ( texture ) {tileSpecTexture = adjustTexture(texture)});
+loader.load('/donuts/textures/tiles/TilesSquarePoolMixed001_NRM_3K.jpg',function ( texture ) {tileNormTexture = adjustTexture(texture)});
+loader.load('/donuts/textures/tiles/TilesSquarePoolMixed001_DISP_3K.jpg',function ( texture ) {tileDispTexture = adjustTexture(texture)});
 function adjustTexture(texture){
 	texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
@@ -349,33 +347,6 @@ function adjustTexture(texture){
 
 
 
- // After loading JSON from our file, we add it to the scene
- function addDonutModelPinkToScene( geometry, materials ) {
- 	console.log(materials);
- 	var material = new THREE.MeshFaceMaterial(materials);
-	model = new THREE.Mesh( geometry, material );
-
-
-
-	donutModelPink = model;
- }
-
-  function addDonutModelChocolateToScene( geometry, materials ) {
-
- 	var material = new THREE.MeshFaceMaterial(materials);
-	model = new THREE.Mesh( geometry, material );
-
-	donutModelChocolate = model;
- }
- function addDonutColliderToScene(geometry, materials){
- 		donutMaterial = Physijs.createMaterial(
-			new THREE.MeshPhongMaterial({ color:0x33FF66 }),
-			.8, // high friction
-			.4 // low restitution
-		);
-
-		donutCollider = new Physijs.ConvexMesh(geometry, donutMaterial)
- }
 
  // After loading JSON from our file, we add it to the scene
  function addCupModelToScene( geometry, materials ) {
@@ -402,86 +373,25 @@ function adjustTexture(texture){
  donutCollider = undefined;
  donutModelPink = undefined;
  donutModelChocolate= undefined;
-function checkLoaded(){
+ donutModelCosmic =  undefined;
+ cupModel = undefined;
 
-	if(donutCollider != undefined && donutModelPink != undefined && donutModelChocolate != undefined && cupModel != undefined && cupCollider != undefined){
-		createScene();
-	}
-	else{
-		setTimeout(checkLoaded, 100);
-	}
-	
-}
-checkLoaded();
+
+
+
 function createScene(){
-	for(var i = 0; i < 50; i++){
-		
-		var r = Math.floor(Math.random() * 2);
-		if(r == 0){
-			addDonut();
+	
+	for(var i = 0; i < 10; i++){
+		var settings = {
+			baseColor :0xf5b602,
+			frostingColor :Math.random() * 0xFFFFFF,
+			sprinkleColor :Math.random() * 0xFFFFFF,
 		}
-		if(r == 1){
-			addCup();
-		}
-		
+		var x = new Donut(10 * Math.random(), 10 * Math.random(), -10 + 10 * Math.random(), settings);
 	}
-}
-
-addDonut = function(){
-	m2 = donutCollider.clone();
-	var r = Math.floor(Math.random()*2);
-	if(r == 0)
-		model2 = donutModelPink.clone();
-	else
-		model2 = donutModelChocolate.clone();
 	
-	m2.position.set(
-				Math.random() * 10 - 5,
-				10 + Math.random() * 5,
-				Math.random() * 20 - 30
-			);
-
-	m2.rotation.set(
-			Math.random() * Math.PI * 2,
-			Math.random() * Math.PI * 2,
-			Math.random() * Math.PI * 2
-		);
-	var r = Math.random();
-
-	objs.push(model2);
-	objs2.push(m2);
-	m2.visible = false;
-	model2.castShadow = true;
-	model2.receiveShadow = true;
-	
-	scene.add(m2);
-	scene.add( model2 );
 }
-addCup = function(){
-	console.log("adding cup")
-	m2 = cupCollider.clone();
-	model2 = cupModel.clone();
-	m2.position.set(
-				Math.random() * 10 - 5,
-				10 + Math.random() * 5,
-				Math.random() * 20 - 30
-			);
 
-	m2.rotation.set(
-			Math.random() * Math.PI * 2,
-			Math.random() * Math.PI * 2,
-			Math.random() * Math.PI * 2
-		);
-	var r = Math.random();
-
-	objs.push(model2);
-	objs2 .push(m2);
-	m2.visible = false;
-	model2.castShadow = true;
-	model2.receiveShadow = true;
-	scene.add(m2);
-	scene.add( model2 );
-}
 setCamera = function(){
 		
 			
@@ -502,5 +412,4 @@ setCamera = function(){
 		look.y += 0.63;
 		camera.lookAt(look); 
 	}
-
 

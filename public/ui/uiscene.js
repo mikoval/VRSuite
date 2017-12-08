@@ -70,7 +70,7 @@ function initScene(){
 		b = new button(0, 60, -200,80,30,20,  "Movie Theater");
 		c= new button(0, 20, -200, 80,30,20, "Ball Collisions");
 		d= new button(0, -20, -200, 80,30,20, "Pool");
-		e= new button(0, -60, -200, 80,30,20, "Raytracing");
+		e= new button(0, -60, -200, 80,30,20, "Donuts");
 		buttons.push(b);
 		buttons.push(c);
 		buttons.push(d);

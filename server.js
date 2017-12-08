@@ -56,5 +56,11 @@ app.get('/pool', function (req, res) {
 app.get('/poolphone', function (req, res) {
 	res.render('poolphone.ejs', {})
 })
+app.get('/donut', function (req, res) {
+	res.render('donut.ejs', {})
+})
+app.get('/donutPhone', function (req, res) {
+	res.render('donutPhone.ejs', {})
+})
 
 
