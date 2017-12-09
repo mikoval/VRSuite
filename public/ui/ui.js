@@ -161,6 +161,9 @@ function checkClick(){
 			else if(txt == "Donuts"){
 				url =  "/donut";
 			}
+			else if(txt == "Pool"){
+				url =  "/pool";
+			}
 			socket.emit("newpage", url);
 
 		}

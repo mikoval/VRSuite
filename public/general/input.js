@@ -3,7 +3,6 @@ $(document).keydown(function(e) {
     if(input == undefined){
         input = {up:false, down:false, left:false, right:false, home: false};
     }
-    console.log(e.keyCode)
     if(e.keyCode == 87|| e.key =="up"|| e.key == "ArrowUp"){
     	input.up = true;
     }
@@ -23,7 +22,6 @@ $(document).keydown(function(e) {
     if(e.keyCode == 81 || e.key == "q"){
     	input.home = true;
     }
-    console.log(input)
 });
 $(document).keyup(function(e) {
     if(e.keyCode == 87|| e.key =="up"|| e.key == "ArrowUp"){
