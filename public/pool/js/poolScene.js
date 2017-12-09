@@ -95,7 +95,7 @@ function animationLoop(){
 
 
 	player.update();
-	water.update();ball
+	water.update();
 	for(var i = 0; i < s.length; i++){
 		balls[i].update();
 	}
