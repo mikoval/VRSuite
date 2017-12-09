@@ -381,7 +381,7 @@ function adjustTexture(texture){
 
 function createScene(){
 	
-	for(var i = 0; i < 3; i++){
+	for(var i = 0; i < 10; i++){
 		var settings = {
 			baseColor :0xf5b602,
 			frostingColor :Math.random() * 0xFFFFFF,
