@@ -54,7 +54,7 @@ function Water (x,y,z, width, height){
 	speedArr = [];
 	directionArr = [];
 	for(var i = 0; i < 8; i++){
-		amplitudesArr.push(0.003);
+		amplitudesArr.push(0.01);
 		wavelengthArr.push(  5 + Math.random() *  10);
 		speedArr.push( (Math.random() - 0.5) * 5);
 		directionArr.push( new THREE.Vector2((Math.random() - 0.5), (Math.random() - 0.5)).normalize() );
@@ -74,12 +74,7 @@ function Water (x,y,z, width, height){
 	heightmapVariable.material.uniforms.speed= { value: speedArr };
 	heightmapVariable.material.uniforms.direction= { value: directionArr };
 
-	this.cubeCamera = new THREE.CubeCamera(1, 100, 1024); 
-	this.cubeCamera.position.x = this.x;
-	this.cubeCamera.position.y = this.y;
-	this.cubeCamera.position.z = this.z;
-
-	scene.add(this.cubeCamera);
+	
 
 	var error = gpuCompute.init();
 	if ( error !== null ) {
@@ -88,21 +83,58 @@ function Water (x,y,z, width, height){
 
 
 	time = 0;
-	var counter = 0;
+	
+	//waterMesh.visible = false;
+	var reflector = new THREE.Reflector( 10, 10, {
+		clipBias: 0.003,
+		textureWidth: $(document).width()/2,
+		textureHeight: $(document).height()/2,
+		color: 0x777777,
+		recursion: 1
+	} );
+	reflector.visible = true;
+	reflector.rotateX( - Math.PI / 2 );
+	reflector.position.y = -4.5;
+	var refractor = new THREE.Refractor( 10, 10, {
+		clipBias: 0.003,
+		textureWidth: $(document).width()/2,
+		textureHeight: $(document).height()/2,
+		color: 0x777777,
+		recursion: 1
+	} );
+	refractor.visible = true;
+	refractor.rotateX( - Math.PI / 2 );
+	refractor.position.y = -4.5;
+
+	waterMesh.material.uniforms.refractTexture = {value: refractor.material.uniforms.tDiffuse.value};
+	waterMesh.material.uniforms.reflectTexture = {value: reflector.material.uniforms.tDiffuse.value};
+	waterMesh.material.uniforms.textureMatrixReflect = {value: reflector.material.uniforms.textureMatrix.value};
+	waterMesh.material.uniforms.textureMatrixRefract = {value: refractor.material.uniforms.textureMatrix.value};
+
+	scene.add( refractor );
+	scene.add( reflector );
+
+
 	this.update = function(){
 		
 		
-		if(counter%1 == 0){
-			waterMesh.visible = false;
-			this.cubeCamera.update( renderer, scene );
-			waterMesh.visible = true;
-		}
-		counter++;
+		
+		this.updateReflection();
+		this.updateRefraction();
 
-		waterMesh.material.uniforms.envMap = {value: this.cubeCamera.renderTarget.texture};
-		waterMesh.material.uniforms.cameraPosition = {value: new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z)};
-		//waterMesh.material.envMap.needsUpdate =true;
-		waterMesh.material.needsUpdate = true;
+		reflector.visible = true;
+		refractor.visible = false;
+		reflector.test(renderer, scene, camera);
+		reflector.visible = false;
+
+		reflector.visible = false;
+		refractor.visible = true;
+		refractor.test(renderer, scene, camera);
+		refractor.visible = false;
+
+		
+
+		//// code for the water simulation
 		
 		time += 0.1;
 		// Set uniforms: mouse interaction
@@ -110,14 +142,25 @@ function Water (x,y,z, width, height){
 		
 		uniforms.time= { value: time };
 		var campos = camera.position;
+
 		waterMesh.material.uniforms.camPos = {value: new THREE.Vector3(campos.x, campos.y, campos.z)};
-			
+		//waterMesh.material.uniforms.reflectTexture = {value: reflector.material.uniforms.tDiffuse.value};
+		//waterMesh.material.uniforms.textureMatrix = {value: reflector.material.uniforms.textureMatrix.value};
+
+		waterMesh.material.needsUpdate = true;
+
 		
 			
 		// Do the gpu computation
 		gpuCompute.compute();
 		// Get compute output in custom uniform
 		waterUniforms.heightmap.value = gpuCompute.getCurrentRenderTarget( heightmapVariable ).texture;
+	}
+	this.updateReflection = function(){
+
+	}
+	this.updateRefraction = function(){
+
 	}
 
 }

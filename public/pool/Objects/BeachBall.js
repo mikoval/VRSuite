@@ -45,7 +45,7 @@ function BeachBall(x, y, z){
 			);
 
 		collider.castShadow = true;
-		collider.receiveShadow = true;
+		//collider.receiveShadow = true;
 		
 		this.collider = collider;
 

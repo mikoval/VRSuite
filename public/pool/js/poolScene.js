@@ -4,8 +4,8 @@ function initScene(){
 	
 
 	effect = undefined;
-	WIDTH = $(document).width();
-	HEIGHT = $(document).height();
+	WIDTH = $(document).width()/2;
+	HEIGHT = $(document).height()/2;
 
 	// Set some camera attributes.
 	const VIEW_ANGLE = 45;
@@ -14,12 +14,16 @@ function initScene(){
 	const FAR = 100000;
 	controls = undefined;
 
+
+
+
+
 	renderer = new THREE.WebGLRenderer( { antialias: false } );
 	renderer.setPixelRatio( window.devicePixelRatio );
-	renderer.setSize( window.innerWidth/2, window.innerHeight/2 );
-	//renderer.shadowMap.enabled = true;
+	renderer.setSize(WIDTH, HEIGHT);
+	renderer.shadowMap.enabled = true;
 	renderer.shadowMap.type = THREE.BasicShadowMap;
-	renderer.shadowMap.renderSingleSided = false; // must be set to false to honor double-sided materials
+	//renderer.shadowMap.renderSingleSided = false; // must be set to false to honor double-sided materials
 
 
 	camera =
@@ -53,7 +57,7 @@ function initScene(){
 
 	scene.add(camera);
 
-	renderer.setSize(WIDTH, HEIGHT);
+	//renderer.setSize(WIDTH, HEIGHT);
 
 
 	document.body.appendChild( renderer.domElement );
@@ -62,8 +66,9 @@ function initScene(){
 	element.style.width = "100%";
 	element.style.height = "100%";
 
-	renderer.shadowMapSoft = true;
-	renderer.shadowMapType = THREE.PCFSoftShadowMap;
+
+	//renderer.shadowMapSoft = true;
+	//renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
 
 
@@ -175,11 +180,12 @@ function createScene(){
 	player = new Player2();
 
 	water = new Water(0, -4.5, 0, 10, 10);
+	
 
-	for(var i = 0; i < 5; i++){
-		var x = (Math.random() - 0.5) * 20;
+	for(var i = 0; i < 10; i++){
+		var x = (Math.random() - 0.5) * 15;
 		var y = 10;
-		var z = (Math.random() - 0.5) * 20;
+		var z = (Math.random() - 0.5) * 15;
 		var ball = new BeachBall( x, y, z);
 		balls.push(ball); 
 	}

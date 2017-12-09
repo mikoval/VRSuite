@@ -21,7 +21,7 @@ function PoolWorld(){
 		var geometry = new THREE.BoxGeometry(20, 10, 1, 1, 1, 1)
 		coll = new Physijs.BoxMesh(geometry, wallMat, 0)
 		coll.position.z = -10;
-		coll.castShadow = true;
+		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
@@ -30,7 +30,7 @@ function PoolWorld(){
 		var geometry = new THREE.BoxGeometry(20, 10, 1, 1, 1, 1)
 		coll = new Physijs.BoxMesh(geometry, wallMat, 0)
 		coll.position.z = 10
-		coll.castShadow = true;
+		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
@@ -38,14 +38,14 @@ function PoolWorld(){
 		var geometry = new THREE.BoxGeometry(1, 10, 20, 1, 1, 1)
 		coll = new Physijs.BoxMesh(geometry, wallMat, 0)
 		coll.position.x = -10
-		coll.castShadow = true;
+		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
 		var geometry = new THREE.BoxGeometry(1, 10, 20, 1, 1, 1)
 		coll = new Physijs.BoxMesh(geometry, wallMat, 0)
 		coll.position.x = 10
-		coll.castShadow = true;
+		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
@@ -55,7 +55,7 @@ function PoolWorld(){
 		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
 		coll.position.y = -5
 		coll.position.x = -7.5
-		coll.castShadow = true;
+		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
@@ -63,7 +63,7 @@ function PoolWorld(){
 		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
 		coll.position.y = -5
 		coll.position.x = 7.5
-		coll.castShadow = true;
+		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
@@ -71,7 +71,7 @@ function PoolWorld(){
 		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
 		coll.position.y = -5
 		coll.position.z = -7.5
-		coll.castShadow = true;
+		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
@@ -79,7 +79,7 @@ function PoolWorld(){
 		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
 		coll.position.y = -5
 		coll.position.z = 7.5
-		coll.castShadow = true;
+		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
@@ -91,7 +91,7 @@ function PoolWorld(){
 		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
 		coll.position.z = -5;
 		coll.position.y = -6.5;
-		coll.castShadow = true;
+		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
@@ -101,7 +101,7 @@ function PoolWorld(){
 		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
 		coll.position.z = 5
 		coll.position.y = -6.5
-		coll.castShadow = true;
+		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
@@ -110,7 +110,7 @@ function PoolWorld(){
 		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
 		coll.position.x = -5
 		coll.position.y = -6.5
-		coll.castShadow = true;
+		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
@@ -118,7 +118,7 @@ function PoolWorld(){
 		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
 		coll.position.x = 5
 		coll.position.y = -6.5
-		coll.castShadow = true;
+		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
@@ -126,7 +126,7 @@ function PoolWorld(){
 		var geometry = new THREE.BoxGeometry(10, 0.1, 10, 1, 1, 1)
 		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
 		coll.position.y = -6.5
-		coll.castShadow = true;
+		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
@@ -146,7 +146,7 @@ function PoolWorld(){
 		light.position.y = 10;
 		light.position.z = 0;
 		light.castShadow = true;
-	   	light.shadow.bias = - 0.001;
+	   	light.shadow.bias = - 0.0001;
 	    light.shadowCameraNear = 0.1;
 	    light.shadowCameraFar = 100;
 	    light.shadowMapWidth = 1024;

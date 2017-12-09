@@ -36,8 +36,8 @@ function Player2(z, color){
 	mesh.position.y = this.position.x;
 	mesh.position.y = this.position.y;
 	mesh.position.z = this.position.z;
-	mesh.castShadow = true;
-	mesh.receiveShadow = true;
+	//mesh.castShadow = true;
+	//mesh.receiveShadow = true;
 	coll.setDamping(0.1,0.7);
 
 
