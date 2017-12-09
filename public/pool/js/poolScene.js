@@ -4,8 +4,8 @@ function initScene(){
 	
 
 	effect = undefined;
-	WIDTH = $(document).width()/2;
-	HEIGHT = $(document).height()/2;
+	WIDTH = $(document).width();
+	HEIGHT = $(document).height();
 
 	// Set some camera attributes.
 	const VIEW_ANGLE = 45;
@@ -18,7 +18,7 @@ function initScene(){
 
 
 
-	renderer = new THREE.WebGLRenderer( { antialias: false } );
+	renderer = new THREE.WebGLRenderer( { antialias: true } );
 	renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.setSize(WIDTH, HEIGHT);
 	renderer.shadowMap.enabled = true;
@@ -95,8 +95,8 @@ function animationLoop(){
 
 
 	player.update();
-	water.update();
-	for(var i = 0; i < balls.length; i++){
+	water.update();ball
+	for(var i = 0; i < s.length; i++){
 		balls[i].update();
 	}
 	scene.simulate();
@@ -182,7 +182,7 @@ function createScene(){
 	water = new Water(0, -4.5, 0, 10, 10);
 	
 
-	for(var i = 0; i < 10; i++){
+	for(var i = 0; i < 4; i++){
 		var x = (Math.random() - 0.5) * 15;
 		var y = 10;
 		var z = (Math.random() - 0.5) * 15;
