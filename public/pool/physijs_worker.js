@@ -924,6 +924,10 @@ public_functions.constraint_setBreakingImpulseThreshold = function( details ) {
 };
 
 public_functions.simulate = function simulate( params ) {
+	console.time('simulation');
+
+
+
 	if ( world ) {
 		params = params || {};
 
@@ -955,6 +959,8 @@ public_functions.simulate = function simulate( params ) {
 		last_simulation_duration = ( Date.now() - last_simulation_duration ) / 1000;
 		last_simulation_time = Date.now();
 	}
+
+	console.timeEnd('simulation');
 };
 
 

@@ -88,14 +88,22 @@ function Water (x,y,z, width, height){
 
 
 	time = 0;
+	var counter = 0;
 	this.update = function(){
-		waterMesh.visible = false;
-		this.cubeCamera.update( renderer, scene );
-		waterMesh.visible = true;
+		
+		
+		if(counter%100 == 0){
+			waterMesh.visible = false;
+			this.cubeCamera.update( renderer, scene );
+			waterMesh.visible = true;
+		}
+		counter++;
+
 		waterMesh.material.uniforms.envMap = {value: this.cubeCamera.renderTarget.texture};
 		waterMesh.material.uniforms.cameraPosition = {value: new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z)};
 		//waterMesh.material.envMap.needsUpdate =true;
 		waterMesh.material.needsUpdate = true;
+		
 		time += 0.1;
 		// Set uniforms: mouse interaction
 		var uniforms = heightmapVariable.material.uniforms;
