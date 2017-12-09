@@ -14,10 +14,10 @@ function initScene(){
 	const FAR = 100000;
 	controls = undefined;
 
-	renderer = new THREE.WebGLRenderer( { antialias: true } );
+	renderer = new THREE.WebGLRenderer( { antialias: false } );
 	renderer.setPixelRatio( window.devicePixelRatio );
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	renderer.shadowMap.enabled = true;
+	renderer.setSize( window.innerWidth/2, window.innerHeight/2 );
+	//renderer.shadowMap.enabled = true;
 	renderer.shadowMap.type = THREE.BasicShadowMap;
 	renderer.shadowMap.renderSingleSided = false; // must be set to false to honor double-sided materials
 

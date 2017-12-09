@@ -92,7 +92,7 @@ function Water (x,y,z, width, height){
 	this.update = function(){
 		
 		
-		if(counter%100 == 0){
+		if(counter%1 == 0){
 			waterMesh.visible = false;
 			this.cubeCamera.update( renderer, scene );
 			waterMesh.visible = true;
