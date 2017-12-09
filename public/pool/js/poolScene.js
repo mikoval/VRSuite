@@ -96,7 +96,7 @@ function animationLoop(){
 
 	player.update();
 	water.update();
-	for(var i = 0; i < s.length; i++){
+	for(var i = 0; i < balls.length; i++){
 		balls[i].update();
 	}
 	scene.simulate();
