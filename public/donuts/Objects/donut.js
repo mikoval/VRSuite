@@ -3,7 +3,7 @@ var donutCollider = undefined;
 
 var donuts = [];
 var objloader = new THREE.JSONLoader();
-objloader.load( "/donuts/Meshes/sprinkleDonut.json", addDonutModelToScene );
+objloader.load( "/donuts/Meshes/donut4.json", addDonutModelToScene );
 objloader.load( "/donuts/Meshes/donutCollider.json", addDonutColliderToScene );
 
 
@@ -63,7 +63,7 @@ function Donut(x, y, z, settings = {} ){
 		}
 		model.material[0].color = new THREE.Color(this.settings.baseColor);
 		model.material[1].color = new THREE.Color(this.settings.frostingColor);
-		model.material[2].color = new THREE.Color(this.settings.sprinkleColor);
+		//model.material[2].color = new THREE.Color(this.settings.sprinkleColor);
 		
 
 		

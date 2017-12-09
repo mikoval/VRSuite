@@ -30,7 +30,7 @@ function Player2(z, color){
 
 
 	var material = new THREE.MeshPhongMaterial({ displacementScale: 0.1});
-	var mesh = new THREE.Mesh(new THREE.SphereGeometry(this.radius, 64,64), material);
+	var mesh = new THREE.Mesh(new THREE.SphereGeometry(this.radius, 16,16), material);
 
 	mesh.position.y = this.position.x;
 	mesh.position.y = this.position.y;
