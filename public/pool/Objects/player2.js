@@ -26,6 +26,7 @@ function Player2(z, color){
 
 
 	coll = new Physijs.SphereMesh(geometry, collMat, 30)
+	coll.position.z  = 7;
 	coll.visible = false;
 	scene.add(coll);
 
