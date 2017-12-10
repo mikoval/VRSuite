@@ -1,7 +1,7 @@
 
 effect = undefined;
-WIDTH = $(document).width();
-HEIGHT = $(document).height();
+WIDTH = $(document).width()/2;
+HEIGHT = $(document).height()/2;
 
 // Set some camera attributes.
 const VIEW_ANGLE = 45;
@@ -12,9 +12,9 @@ controls = undefined;
 
 canJump = true;
 
-renderer = new THREE.WebGLRenderer( { antialias: true } );
+renderer = new THREE.WebGLRenderer( { antialias: false } );
 renderer.setPixelRatio( window.devicePixelRatio );
-renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.setSize( WIDTH, HEIGHT );
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.BasicShadowMap;
 renderer.shadowMap.renderSingleSided = false; // must be set to false to honor double-sided materials
