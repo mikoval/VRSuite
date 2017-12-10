@@ -4,7 +4,7 @@ $(document).ready(function(){
 
 	BeachBallMaterial = Physijs.createMaterial(
 		new THREE.MeshPhongMaterial({  }),
-		0.0, // high friction
+		0.4, // high friction
 		1.0 // low restitution
 	);
 })

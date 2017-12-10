@@ -44,6 +44,7 @@ function PoolWorld(){
 		//add walls
 
 		var wallMat = new THREE.MeshPhongMaterial({color: 0xCCCCCC});
+		
 		var geometry = new THREE.BoxGeometry(20, 10, 1, 1, 1, 1)
 		coll = new Physijs.BoxMesh(geometry, wallMat, 0)
 		coll.position.z = -10;
