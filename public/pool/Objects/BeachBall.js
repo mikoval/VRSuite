@@ -4,8 +4,8 @@ $(document).ready(function(){
 
 	BeachBallMaterial = Physijs.createMaterial(
 		new THREE.MeshPhongMaterial({  }),
-		1.0, // high friction
-		0 // low restitution
+		0.0, // high friction
+		1.0 // low restitution
 	);
 })
 var loader = new THREE.TextureLoader();
@@ -25,7 +25,7 @@ function BeachBall(x, y, z){
 
 
 	this.update = function(){
-				this.collider.applyCentralImpulse(new THREE.Vector3(0,1,0).multiplyScalar ( 0.2 ));
+		this.collider.applyCentralImpulse(new THREE.Vector3(0,1,0).multiplyScalar ( 0.2 ));
 
 	}
 	this.init  = function(){
@@ -35,7 +35,7 @@ function BeachBall(x, y, z){
 
 		
 		var collider = new Physijs.SphereMesh(geometry, BeachBallMaterial, 1)
-		
+	
 		collider.position.set(this.x,this.y,this.z);
 
 		collider.rotation.set(
@@ -46,6 +46,8 @@ function BeachBall(x, y, z){
 
 		collider.castShadow = true;
 		//collider.receiveShadow = true;
+		collider.setCcdMotionThreshold(1);
+		collider.setCcdSweptSphereRadius(0.2);
 		
 		this.collider = collider;
 

@@ -244,6 +244,25 @@ mobile = false;
 				*/
 			}
 		</script>
+		<!-- This is the water visualization shader, copied from the MeshPhongMaterial and modified: -->
+		<script id="causticsVertexShader" type="x-shader/x-vertex">
+			varying vec2 vuv;
+
+			void main() {
+				vuv = uv;
+				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+			}
+			
+		</script>
+		<script id="causticsFragmentShader" type="x-shader/x-vertex">
+		varying vec2 vuv;
+		uniform sampler2D map;
+		void main() {
+
+			vec4 color = texture2D(map, vuv.xy * 2.0);
+			gl_FragColor = vec4( color.r );
+		}
+		</script>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>

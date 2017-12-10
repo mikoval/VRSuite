@@ -22,7 +22,7 @@ objloader.load( "/donuts/Meshes/donutCollider.json", addDonutColliderToScene );
  		var donutMaterial = Physijs.createMaterial(
 			new THREE.MeshPhongMaterial({ color:0x33FF66 }),
 			.8, // high friction
-			.4 // low restitution
+			0.4 // low restitution
 		);
 
 		donutCollider = new Physijs.ConvexMesh(geometry, donutMaterial)

@@ -1,15 +1,41 @@
 tileMaterial = undefined;
+causticsMaterial = undefined;
+
+caustics = new Array(32);
+
 function PoolWorld(){
 	tileMaterial = Physijs.createMaterial(
 			new THREE.MeshPhongMaterial({displacementScale: 0.0}),
 			1.0, // high friction
-			0 // low restitution
+			1.0, // low restitution
 		);
+
+	causticsMaterial = Physijs.createMaterial(
+			new THREE.ShaderMaterial({
+				uniforms:
+					{
+						map: { value: null },
+					}
+				,
+				vertexShader: document.getElementById( 'causticsVertexShader' ).textContent,
+				fragmentShader: document.getElementById( 'causticsFragmentShader' ).textContent
+			}),
+			1.0, // high friction
+			1.0, // low restitution
+		);
+	causticsMaterial.transparent = true;
 
 	this.init = function(){
 		this.generateGeometry();
 		this.addLights();
 	};
+	this.causticsInd = 0;
+	this.update = function(){
+		this.caustics.material.uniforms.map.value = caustics[this.causticsInd];
+		this.caustics.material.needsUpdate = true;
+		
+		this.causticsInd = (this.causticsInd + 1)%32;
+	}
 
 	this.generateGeometry = function(){
 
@@ -130,7 +156,16 @@ function PoolWorld(){
 		coll.receiveShadow = true;
 		scene.add(coll);
 
+		var causticsPlane = new THREE.PlaneGeometry(10, 0.1, 10, 1, 1, 1)
+		coll = new Physijs.PlaneMesh(geometry, causticsMaterial);
+		coll.position.y = -6.49
+		coll.castShadow = false;
+		coll.receiveShadow = true;
+		this.caustics = coll;
+		scene.add(coll);
+
 		
+
 		
 		
 
@@ -165,7 +200,7 @@ function PoolWorld(){
 
 var loader = new THREE.TextureLoader();
 loader.load('/pool/textures/tiles/TilesSquarePoolMixed001_COL_3K.jpg',function ( texture ) {
-	console.log("HERELJDSF")
+
 	tileMaterial.map = adjustTexture(texture)
 	tileMaterial.map.needsUpdate = true;
 	tileMaterial.needsUpdate = true;
@@ -185,6 +220,32 @@ loader.load('/pool/textures/tiles/TilesSquarePoolMixed001_DISP_3K.jpg',function 
 	tileMaterial.displacementMap.needsUpdate = true;
 	tileMaterial.needsUpdate = true;
 });
+
+for(var i = 0; i < 32; i++){
+	var s = ""
+	if(i + 1 < 10){
+		s = "0" + (i + 1);
+	}
+	else{
+		s = (i + 1);
+	}
+	loader.load('/pool/textures/caus8/save.' + s + '.jpeg',function ( texture , i) {
+		var str = texture.image.currentSrc
+		var substr = str.substr(str.length - 7);
+		var num = parseInt(substr.split(".")[0]) -1;
+
+		texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+
+
+
+		texture.repeat.set(32, 32);
+
+		texture.needsUpdate = true;
+		
+		caustics[num] = texture;
+	});
+}
 function adjustTexture(texture){
 	//texture.wrapS = THREE.RepeatWrapping;
     //texture.wrapT = THREE.RepeatWrapping;

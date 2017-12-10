@@ -130,16 +130,16 @@ renderer.shadowMapSoft = true;
 	
 	
 	// Ground
-	ground = new Physijs.BoxMesh(
-		new THREE.BoxGeometry(40, 1, 40),
-		ground_material,
-		0 // mass
+	ground = new Physijs.PlaneMesh(
+		new THREE.PlaneGeometry(400, 400),
+		ground_material
 	);
+
 	ground.position.y = -10
 	ground.position.z = -30
 	ground.receiveShadow = true;
 
-	ground.position.z = -10;
+	ground.rotation.x = (Math.PI / 2) * 3;
 
 	scene.add( ground );
 	
@@ -232,6 +232,8 @@ renderer.shadowMapSoft = true;
 function animationLoop(){
 	player.update();
 	setCamera();
+
+
 	for(var i =0 ; i < objs2.length; i++){
 		if(objs[i] != undefined){
 	 		objs[i].position.x = objs2[i].position.x;
@@ -287,7 +289,7 @@ $(document).ready(function(){
 	ground_material = Physijs.createMaterial(
 		new THREE.MeshPhongMaterial({ displacementScale: 0.0}),
 		1.0, // high friction
-		0.0 // low restitution
+		1.0 // low restitution
 
 	);
 

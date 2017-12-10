@@ -68,7 +68,6 @@ THREE.Reflector = function ( width, height, options ) {
 
 
 	this.test = function ( renderer, scene, camera ) {
-		console.log("here")
 		if ( 'recursion' in camera.userData ) {
 
 			if ( camera.userData.recursion === recursion ) return;
