@@ -184,9 +184,9 @@ function createScene(){
 	
 
 	for(var i = 0; i < 6; i++){
-		var x = (Math.random() - 0.5) * 15;
+		var x = (Math.random() - 0.5) * 20;
 		var y = 10 * Math.random() * 20;
-		var z = (Math.random() - 0.5) * 15;
+		var z = (Math.random() - 0.5) * 20;
 		var ball = new BeachBall( x, y, z);
 		balls.push(ball); 
 	}
