@@ -183,10 +183,10 @@ function createScene(){
 	water = new Water(0, -4.5, 0, 10, 10);
 	
 
-	for(var i = 0; i < 4; i++){
-		var x = (Math.random() - 0.5) * 15;
-		var y = 10;
-		var z = (Math.random() - 0.5) * 15;
+	for(var i = 0; i < 6; i++){
+		var x = (Math.random() - 0.5) * 10;
+		var y = 10 * Math.random() * 20;
+		var z = (Math.random() - 0.5) * 10;
 		var ball = new BeachBall( x, y, z);
 		balls.push(ball); 
 	}
