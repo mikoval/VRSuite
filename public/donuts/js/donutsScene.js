@@ -230,10 +230,15 @@ renderer.shadowMapSoft = true;
 
 
 function animationLoop(){
+
+	//this is the update part
+	//update the player and set the camera based on changes
+	//the effect line is for vr.
+
 	player.update();
 	setCamera();
 
-
+	//this for loop I can explain. just ask me
 	for(var i =0 ; i < objs2.length; i++){
 		if(objs[i] != undefined){
 	 		objs[i].position.x = objs2[i].position.x;
@@ -382,7 +387,7 @@ function adjustTexture(texture){
 
 
 function createScene(){
-	
+	//this is where the objects are created
 	for(var i = 0; i < 10; i++){
 		var settings = {
 			baseColor :0xf5b602,
@@ -390,6 +395,9 @@ function createScene(){
 			sprinkleColor :Math.random() * 0xFFFFFF,
 		}
 		var x = new Donut(10 * Math.random(), 10 * Math.random(), -10 + 10 * Math.random(), settings);
+	}
+	for(var i = 0; i < 10; i++){
+		BeachBall(10 * Math.random(), 10 * Math.random(), -10 + 10 * Math.random());
 	}
 	
 }
