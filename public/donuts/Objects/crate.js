@@ -1,21 +1,25 @@
 var BeachBallMaterial = undefined; 
 
+
+
 $(document).ready(function(){
 
 	BeachBallMaterial = Physijs.createMaterial(
 		new THREE.MeshPhongMaterial({  }),
 		0.4, // high friction
-		1.0 // low restitution
+		0.5 // low restitution
 	);
 })
 var loader = new THREE.TextureLoader();
 loader.load('/pool/textures/beachball.jpg', function ( texture){
+
 	  BeachBallMaterial.map = texture;
+
 	  BeachBallMaterial.needsUpdate = true;
 })
 
 
-function BeachBall(x, y, z){
+function crate(x, y, z){
 
 	this.x = x;
 	this.y = y;

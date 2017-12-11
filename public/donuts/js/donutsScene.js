@@ -299,9 +299,11 @@ $(document).ready(function(){
 	);
 
 	 
+	setTimeout(function(){
+		initScene();
+		createScene()
+	},100)
 	
-	initScene();
-	createScene()
 	
 })
 
@@ -388,6 +390,8 @@ function adjustTexture(texture){
 
 function createScene(){
 	//this is where the objects are created
+	crate(0,10,-20);
+	/*
 	for(var i = 0; i < 10; i++){
 		var settings = {
 			baseColor :0xf5b602,
@@ -399,6 +403,7 @@ function createScene(){
 	for(var i = 0; i < 10; i++){
 		BeachBall(10 * Math.random(), 10 * Math.random(), -10 + 10 * Math.random());
 	}
+	*/
 	
 }
 

@@ -9,7 +9,7 @@ objloader.load( "/donuts/Meshes/donutCollider.json", addDonutColliderToScene );
 
  // After loading JSON from our file, we add it to the scene
  function addDonutModelToScene( geometry, materials ) {
-
+ 	
  	var material = new THREE.MeshFaceMaterial(materials);
 	var model = new THREE.Mesh( geometry, material );
 
