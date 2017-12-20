@@ -1,50 +1,56 @@
+var playerMaterial = new THREE.MeshPhongMaterial({ displacementScale: 0});
 function Player2(z, color){
 	this.direction = new THREE.Vector3( 0, 0, -1 );
 	this.position = new THREE.Vector3(0, -5, 5);
 	this.velocity = new THREE.Vector3(0, 0, 0);
 	this.rotation = 0;
-	this.speed = 0.2;
+	this.speed = 2;
 	this.changed = true;
 	this.orientation =  new THREE.Quaternion();
 	this.pathColor = 1;
-	this.radius = 0.5;
+	this.radius = 1.0;
 
 	this.time = Date.now();
 
-	var geometry = new THREE.SphereGeometry(this.radius, 4,4);
+
 	
 	 
+	var coll = world.add({ 
+	    type:'sphere', // type of shape : sphere, box, cylinder 
+	    size:[this.radius,this.radius,this.radius], // size of shape
+	    pos:[0,0,0], // start position in degree
+	    rot:[0,0,90], // start rotation in degree
+	    move:true, // dynamic or statique
+	    density: 5,
+	    friction: 0.4,
+	    restitution: 0.2,
+	    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
+	    collidesWith: 0xffffffff // The bits of the collision groups with which the shape collides.
+	});
+	
 
-	collMat = Physijs.createMaterial(
-		new THREE.MeshPhongMaterial({ color:0x33AAFF }),
-		1.0, // high friction
-		0 // low restitution
-	);
 
 
 
-
-	coll = new Physijs.SphereMesh(geometry, collMat, 5)
-	coll.visible = false;
-	scene.add(coll);
-
-
-	var material = new THREE.MeshPhongMaterial({ displacementScale: 0.1});
-	var mesh = new THREE.Mesh(new THREE.SphereGeometry(this.radius, 16,16), material);
+	var mesh = new THREE.Mesh(new THREE.SphereGeometry(this.radius, 64,64), playerMaterial);
 
 	mesh.position.y = this.position.x;
 	mesh.position.y = this.position.y;
 	mesh.position.z = this.position.z;
 	mesh.castShadow = true;
 	mesh.receiveShadow = true;
-	coll.setDamping(0.1,0.7);
+	
 
-
+	console.log(coll);
 	this.coll = coll;
 	this.obj = mesh;
 	scene.add( this.obj );
 
 	this.update= function(){
+
+		this.coll.linearVelocity.multiplyScalar(0.95);
+		this.coll.angularVelocity.multiplyScalar(0.95);
+
 		var dt = (Date.now() - this.time) / 200;
 		this.time = Date.now();
 		if(dt > 2.0)
@@ -68,14 +74,8 @@ function Player2(z, color){
 
 
 		var mesh = this.obj;
-		mesh.position.x = this.position.x;
-		mesh.position.y = this.position.y;
-		mesh.position.z = this.position.z;
-
-		mesh.quaternion._x = this.coll.quaternion._x;
-		mesh.quaternion._y = this.coll.quaternion._y;
-		mesh.quaternion._z = this.coll.quaternion._z;
-		mesh.quaternion._w = this.coll.quaternion._w;
+		this.obj.position.copy( this.coll.getPosition() );
+		this.obj.quaternion.copy( this.coll.getQuaternion() );
 
 
 		//mesh.rotation.setFromQuaternion(this.orientation);
@@ -91,7 +91,7 @@ function Player2(z, color){
 		
 			
 
-			this.coll.applyCentralImpulse(this.direction.clone().multiplyScalar ( this.speed * 10 ));
+			this.coll.applyImpulse(this.coll.position, this.direction.clone().multiplyScalar ( this.speed * 10 ));
 
 			
 
@@ -101,7 +101,7 @@ function Player2(z, color){
 			this.changed = true;
 			//this.velocity = this.velocity.add(this.direction.clone().multiplyScalar ( -this.speed ))
 
-			this.coll.applyCentralImpulse(this.direction.clone().multiplyScalar ( -this.speed  * 10) );
+			this.coll.applyImpulse(this.coll.position, this.direction.clone().multiplyScalar ( -this.speed * 10 ));
 
 
 		
@@ -124,12 +124,47 @@ function Player2(z, color){
 			this.direction.applyAxisAngle( axis, angle );
 		}
 		if(input.jump){
-			if(this.position.y < 3.1 && this.velocity.y < 1.0) {
-				console.log('jumping')
-				this.coll.applyCentralImpulse(new THREE.Vector3(0,1,0).multiplyScalar ( 10 ));
-			}
+		
+			this.coll.applyImpulse(this.coll.position, new THREE.Vector3(0.0, 20, 0.0));
+			
 		}
 		
 	}
 	
 }
+
+var loader = new THREE.TextureLoader();
+loader.load('/pool/textures/rocks/PaintingModernArtAbstract004_COL_VAR1_2K.jpg', function ( texture){
+	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+
+  playerMaterial.map = texture;
+  playerMaterial.map.needsUpdate = true
+  playerMaterial.needsUpdate = true;
+})
+loader.load('/pool/textures/rocks/PaintingModernArtAbstract004_NRM_2K.jpg', function ( texture){
+	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  
+  playerMaterial.normalMap = texture;
+  playerMaterial.normalMap.needsUpdate = true;
+  playerMaterial.needsUpdate = true;
+loader.load('/pool/textures/rocks/PaintingModernArtAbstract004_DISP_2K.jpg', function ( texture){
+})
+	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+	
+	playerMaterial.displacementMap = texture;
+	playerMaterial.displacementMap.needsUpdate = true;
+	playerMaterial.needsUpdate = true;
+
+	
+
+})
+loader.load('/pool/textures/rocks/PaintingModernArtAbstract004_GLOSS_2K.jpg', function ( texture){
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+      
+  playerMaterial.specularMap = texture;
+  playerMaterial.specularMap.needsUpdate = true;
+  playerMaterial.needsUpdate = true;
+
+
+})
+

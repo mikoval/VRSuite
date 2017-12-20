@@ -7,12 +7,13 @@ $(document).ready(function(){
 		0.4, // high friction
 		1.0 // low restitution
 	);
+	var loader = new THREE.TextureLoader();
+	loader.load('/pool/textures/beachball.jpg', function ( texture){
+		  BeachBallMaterial.map = texture;
+		  BeachBallMaterial.needsUpdate = true;
+	})
 })
-var loader = new THREE.TextureLoader();
-loader.load('/pool/textures/beachball.jpg', function ( texture){
-	  BeachBallMaterial.map = texture;
-	  BeachBallMaterial.needsUpdate = true;
-})
+
 
 
 function BeachBall(x, y, z){
@@ -28,6 +29,7 @@ function BeachBall(x, y, z){
 		this.collider.applyCentralImpulse(new THREE.Vector3(0,1,0).multiplyScalar ( 0.2 ));
 
 	}
+
 	this.init  = function(){
 		var geometry = new THREE.SphereGeometry(this.radius, 16,16);
 	
@@ -49,7 +51,10 @@ function BeachBall(x, y, z){
 		collider.setCcdMotionThreshold(1);
 		collider.setCcdSweptSphereRadius(0.2);
 		
-		this.collider = collider;
+	
+
+
+		
 
 		scene.add(collider);
 

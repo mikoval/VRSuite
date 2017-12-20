@@ -1,22 +1,21 @@
 var BeachBallMaterial = undefined; 
 
-
-
 $(document).ready(function(){
 
 	BeachBallMaterial = Physijs.createMaterial(
 		new THREE.MeshPhongMaterial({  }),
 		0.4, // high friction
-		0.5 // low restitution
+		0.0 // low restitution
 	);
-})
-var loader = new THREE.TextureLoader();
-loader.load('/pool/textures/beachball.jpg', function ( texture){
+	var loader = new THREE.TextureLoader();
+	loader.load('/pool/textures/beachball.jpg', function ( texture){
 
-	  BeachBallMaterial.map = texture;
+		  BeachBallMaterial.map = texture;
 
-	  BeachBallMaterial.needsUpdate = true;
+		  BeachBallMaterial.needsUpdate = true;
+	})
 })
+
 
 
 function crate(x, y, z){
@@ -34,10 +33,7 @@ function crate(x, y, z){
 	}
 	this.init  = function(){
 		var geometry = new THREE.SphereGeometry(this.radius, 16,16);
-	
-		 
 
-		
 		var collider = new Physijs.SphereMesh(geometry, BeachBallMaterial, 1)
 	
 		collider.position.set(this.x,this.y,this.z);

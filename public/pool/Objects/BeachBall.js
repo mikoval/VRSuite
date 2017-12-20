@@ -27,6 +27,14 @@ function BeachBall(x, y, z){
 	this.update = function(){
 		this.collider.applyCentralImpulse(new THREE.Vector3(0,1,0).multiplyScalar ( 0.2 ));
 
+		/*
+		if(this.collider.position.y < water.y){
+			var velocity = this.collider._physijs.linearVelocity.clone();
+			this.collider.setLinearVelocity(velocity.multiplyScalar(0.7));
+			this.collider.applyCentralImpulse(new THREE.Vector3(0,1,0).multiplyScalar ( 0.4));
+		}
+		*/
+
 	}
 	this.init  = function(){
 		var geometry = new THREE.SphereGeometry(this.radius, 16,16);
@@ -35,7 +43,14 @@ function BeachBall(x, y, z){
 
 		
 		var collider = new Physijs.SphereMesh(geometry, BeachBallMaterial, 1)
-	
+		
+		/*collider.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+			var velocity = this._physijs.linearVelocity.clone();
+			var d = velocity.dot(contact_normal);
+			this.setLinearVelocity(velocity.add(contact_normal.multiplyScalar(d * -1.6)))
+			
+		});
+		*/
 		collider.position.set(this.x,this.y,this.z);
 
 		collider.rotation.set(

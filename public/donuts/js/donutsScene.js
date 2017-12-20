@@ -19,7 +19,7 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.BasicShadowMap;
 renderer.shadowMap.renderSingleSided = false; // must be set to false to honor double-sided materials
 
-
+clothHolder = undefined;
 camera =
     new THREE.PerspectiveCamera(
         VIEW_ANGLE,
@@ -46,15 +46,7 @@ function initScene(){
 	objs2 = [];
 
 	
-	scene = new Physijs.Scene;
-	scene.setGravity(new THREE.Vector3( 0, -30, 0 ));
-	scene.addEventListener(
-		'update',
-		function() {
-
-			scene.simulate( undefined, 1 );
-		}
-	);
+	scene = new THREE.Scene();
 	
 
 
@@ -83,11 +75,10 @@ function initScene(){
 	
 	//var world = new PoolWorld();
 
-	//var player = new Player();
+	
 
 	//renderer.shadowMapEnabled = true;
-renderer.shadowMapSoft = true;
-	renderer.shadowMapType = THREE.PCFSoftShadowMap;
+
 
 
 
@@ -96,11 +87,11 @@ renderer.shadowMapSoft = true;
 
 
 	var light = new THREE.PointLight(0xffffff, 1.0, 0, 2);
-	light.position.x = 10;
-	light.position.y = 10;
-	light.position.z = 10;
+	light.position.x = 3;
+	light.position.y = 3;
+	light.position.z = 30;
 	light.castShadow = true;
-   	light.shadow.bias = - 0.005;
+   	light.shadow.bias = - 0.0001;
     light.shadowCameraNear = 1;
     light.shadowCameraFar = 100;
     light.shadowMapWidth = 1024;
@@ -123,27 +114,7 @@ renderer.shadowMapSoft = true;
 
 
 
-	Physijs.scripts.worker = '/general/physijs_worker.js';
-	Physijs.scripts.ammo = '/general/js/ammo.js';
-
-	// Materials
 	
-	
-	// Ground
-	ground = new Physijs.PlaneMesh(
-		new THREE.PlaneGeometry(400, 400),
-		ground_material
-	);
-
-	ground.position.y = -10
-	ground.position.z = -30
-	ground.receiveShadow = true;
-
-	ground.rotation.x = (Math.PI / 2) * 3;
-
-	scene.add( ground );
-	
-	player = new Player2();
 	effect = undefined;
 	if(mobile){
 
@@ -151,85 +122,20 @@ renderer.shadowMapSoft = true;
 	    
 	  }
 
-	  loader.load('/donuts/textures/lego/CityStreetSidewalk002_COL_3K.jpg', function ( texture){
-	 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-	      texture.offset.set( 0, 0 );
-	      texture.repeat.set( 8, 8 );
-	      ground_material.map = texture;
-	      ground_material.needsUpdate= true;
-	  })
-	 loader.load('/donuts/textures/lego/CityStreetSidewalk002_NRM_3K.jpg', function ( texture){
-	 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-	      texture.offset.set( 0, 0 );
-	      texture.repeat.set( 8, 8 );
-	      ground_material.normalMap = texture;
-	      ground_material.needsUpdate= true;
-	  })
-		loader.load('/donuts/textures/lego/CityStreetSidewalk002_DISP_3K.jpg', function ( texture){
-			texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-			texture.offset.set( 0, 0 );
-			texture.repeat.set( 8, 8 );
-			ground_material.displacementMap = texture;
-			ground_material.needsUpdate= true;
-
-			
-
-	  })
-		loader.load('/donuts/textures/lego/CityStreetSidewalk002_GLOSS_3K.jpg', function ( texture){
-			  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-		      texture.offset.set( 0, 0 );
-		      texture.repeat.set( 8, 8 );
-	      ground_material.SpecularMap = texture;
-	    
-
-	  })
-
-		//
-		loader.load('/donuts/textures/rocks/PaintingModernArtAbstract004_COL_VAR1_2K.jpg', function ( texture){
-	 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-	
-	      player.obj.material.map = texture;
-	      player.obj.material.map.needsUpdate = true
-	      player.obj.material.needsUpdate = true;
-	      console.log("set");
-	  })
-	 loader.load('/donuts/textures/rocks/PaintingModernArtAbstract004_NRM_2K.jpg', function ( texture){
-	 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-	      
-	      player.obj.material.normalMap = texture;
-	      player.obj.material.normalMap.needsUpdate = true;
-	      player.obj.material.needsUpdate = true;
-	      console.log("set");
-	  })
-		loader.load('/donuts/textures/rocks/PaintingModernArtAbstract004_DISP_2K.jpg', function ( texture){
-			texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-			
-			player.obj.material.displacementMap = texture;
-			player.obj.material.displacementMap.needsUpdate = true;
-			player.obj.material.needsUpdate = true;
-			console.log("set");
-			
-
-	  })
-		loader.load('/donuts/textures/rocks/PaintingModernArtAbstract004_GLOSS_2K.jpg', function ( texture){
-			  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-		      
-	      player.obj.material.specularMap = texture;
-	      player.obj.material.specularMap.needsUpdate = true;
-	      player.obj.material.needsUpdate = true;
-	      console.log("set");
-
-	  })
-
-
-	scene.simulate();
-	animationLoop();
 
 }
 
 
 
 function animationLoop(){
+
+	world.step();
+
+	// and copy position and rotation to three mesh
+
+
+
+
 
 	//this is the update part
 	//update the player and set the camera based on changes
@@ -241,13 +147,14 @@ function animationLoop(){
 	//this for loop I can explain. just ask me
 	for(var i =0 ; i < objs2.length; i++){
 		if(objs[i] != undefined){
-	 		objs[i].position.x = objs2[i].position.x;
-	 		objs[i].position.y = objs2[i].position.y;
-	 		objs[i].position.z = objs2[i].position.z;
-	 		objs[i].quaternion._x = objs2[i].quaternion._x;
-	 		objs[i].quaternion._y = objs2[i].quaternion._y;
-	 		objs[i].quaternion._z = objs2[i].quaternion._z;
-	 		objs[i].quaternion._w = objs2[i].quaternion._w;
+			objs2[i].linearVelocity.multiplyScalar(0.98);
+
+		}
+	}
+	for(var i =0 ; i < objs2.length; i++){
+		if(objs[i] != undefined){
+	 			objs[i].position.copy( objs2[i].getPosition() );
+				objs[i].quaternion.copy( objs2[i].getQuaternion() );
 
 
 	 	}
@@ -285,6 +192,11 @@ function animationLoop(){
 	    }
 	    else{
 	      renderer.render(scene, camera);
+
+	      if( clothHolder){
+	      	clothHolder.update();
+	      	//cloth.render();
+	      }
 	    }
 
 		setTimeout(animationLoop, 30);
@@ -298,12 +210,14 @@ $(document).ready(function(){
 
 	);
 
+
 	 
 	setTimeout(function(){
 		initScene();
 		createScene()
 	},100)
 	
+
 	
 })
 
@@ -390,20 +304,152 @@ function adjustTexture(texture){
 
 function createScene(){
 	//this is where the objects are created
-	crate(0,10,-20);
-	/*
+	
+	
+	 world = new OIMO.World({ 
+	    timestep: 1/30, 
+	    iterations: 8, 
+	    broadphase: 2, // 1 brute force, 2 sweep and prune, 3 volume tree
+	    worldscale: 1, // scale full world 
+	    random: true,  // randomize sample
+	    info: false,   // calculate statistic or not
+	    gravity: [0,-9.8,0] 
+	});
+	 
+
+	
+	plane = world.add({ 
+	    type:'plane', // type of shape : sphere, box, cylinder 
+	    size:[100,100], // size of shape
+	    pos:[0,-10,0], // start position in degree
+	    rot:[0,0,90], // start rotation in degree
+	    move:false, // dynamic or statique
+	    density: 1,
+	    friction: 0.2,
+	    restitution: 1.0,
+	    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
+	    collidesWith: 0xffffffff // The bits of the collision groups with which the shape collides.
+	}); 
+	ground = new THREE.Mesh(
+		new THREE.PlaneGeometry(100.0, 100,  1, 1),
+		new THREE.MeshPhongMaterial()
+	)
+
+	loader.load('/donuts/textures/lego/CityStreetSidewalk002_COL_3K.jpg', function ( texture){
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		texture.offset.set( 0, 0 );
+		texture.repeat.set( 8, 8 );
+
+		ground.material.map = texture;
+
+		ground.material.needsUpdate = true;
+	})
+	loader.load('/donuts/textures/lego/CityStreetSidewalk002_NRM_3K.jpg', function ( texture){
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		texture.offset.set( 0, 0 );
+		texture.repeat.set( 8, 8 );
+
+		ground.material.normalMap = texture;
+
+		ground.material.needsUpdate = true;
+	})
+
+	loader.load('/donuts/textures/lego/CityStreetSidewalk002_DISP_3K.jpg', function ( texture){
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		texture.offset.set( 0, 0 );
+		texture.repeat.set( 8, 8 );
+
+		ground.material.displacementMap = texture;
+		ground.material.displacementScale = 0.1;
+
+		ground.material.needsUpdate = true;
+	})
+
+
+
+
+
+	// create ground 
+
+
+	ground.receiveShadow = true;
+	ground.rotation.x = -3.14/2;
+	ground.position.y = -10;
+	scene.add(ground);
+
+	// create balls 
+
 	for(var i = 0; i < 10; i++){
-		var settings = {
-			baseColor :0xf5b602,
-			frostingColor :Math.random() * 0xFFFFFF,
-			sprinkleColor :Math.random() * 0xFFFFFF,
-		}
-		var x = new Donut(10 * Math.random(), 10 * Math.random(), -10 + 10 * Math.random(), settings);
+
+		var radius = Math.random() * 3;
+
+		var x = (Math.random() - 0.5 ) * 20;
+		var y = (Math.random() - 0.5 ) * 20;
+		var z = (Math.random()  ) * 20;
+
+		var sphere = new THREE.Mesh(
+			new THREE.SphereGeometry(radius, 64, 64),
+			new THREE.MeshPhongMaterial({ color : 0xffffffff * Math.random()})
+		)
+		sphere.radius = radius;
+		sphere.castShadow = true;
+		objs.push(sphere);
+		scene.add(sphere);
+
+		var body = world.add({ 
+		    type:'sphere', // type of shape : sphere, box, cylinder 
+		    size:[radius,radius, radius], // size of shape
+		    pos:[x,y,z], // start position in degree
+		    rot:[0,0,90], // start rotation in degree
+		    move:true, // dynamic or statique
+		    density: 1,
+		    friction: 0.2,
+		    restitution: 0.2,
+		    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
+		    collidesWith: 0xffffffff, // The bits of the collision groups with which the shape collides.
+		});
+
+		objs2.push(body);
+
+
 	}
-	for(var i = 0; i < 10; i++){
-		BeachBall(10 * Math.random(), 10 * Math.random(), -10 + 10 * Math.random());
+	
+	// create player 
+
+	player = new Player2();
+
+
+
+	// create cloth holder
+	var settings = {
+		width: 20,
+		height: 10,
+		resolutionX: 20,
+		resolutionY: 20,
 	}
-	*/
+	clothHolder = new ClothStand(settings);
+	clothHolder.setMap('/donuts/textures/persianRug/RugPersian004_COL_1K.jpg');
+	clothHolder.setNormal('/donuts/textures/persianRug/RugPersian004_NRM_1K.jpg');
+
+	clothHolder.cloth.settings.balls = objs;
+	clothHolder.cloth.settings.balls.push(player.obj);
+	clothHolder.obj.position.y = -6;
+	clothHolder.obj.position.z = -6;
+
+
+
+	// create cloth ramp
+
+	var clothRamp = new ClothRamp();
+
+	
+
+
+
+
+	animationLoop();
+
+
 	
 }
 
@@ -411,7 +457,7 @@ setCamera = function(){
 		
 			
 
-		var position = new THREE.Vector3(0, 0.64, 0.2);
+		var position = new THREE.Vector3(0, 1.1, 0.2);
 		var axis = new THREE.Vector3( 0, 1, 0 );
 		var angle = player.rotation;
 		position.applyAxisAngle( axis, -angle );
@@ -424,7 +470,7 @@ setCamera = function(){
 			
 		
 		var look = player.position.clone();
-		look.y += 0.63;
+		look.y += 1.08;
 		camera.lookAt(look); 
 	}
 

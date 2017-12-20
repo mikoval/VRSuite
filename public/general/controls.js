@@ -86,8 +86,7 @@ switch ( event.keyCode ) {
 		moveRight = true;
 		break;
 	case 32: // space
-		if ( canJump === true ) velocity.y += 350;
-		canJump = false;
+		
 		break;
 }
 };
