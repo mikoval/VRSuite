@@ -1,32 +1,106 @@
 function ClothRamp(settings){
 	
 	settings = settings || {};
-	settings.Point1 = settings.Point1 || new THREE.Vector3(5.0, -4.0, 0.0);
-	settings.Point2 = settings.Point2 || new THREE.Vector3(10.0, 0.0, 10.0);
+	settings.Point1 = settings.Point1 || new THREE.Vector3(0.0, 3.0, 0.0);
+	settings.Point2 = settings.Point2 || new THREE.Vector3(0.0, 13.0, 30.0);
 
+	this.settings = settings;
 
 	var avgPosition = new THREE.Vector3().addVectors(settings.Point1, settings.Point2).multiplyScalar(0.5);
 
+	var dir = new THREE.Vector3().subVectors(settings.Point1, settings.Point2);
+	dir.normalize();
+
+
+	var pieceWidth = 3;
 
 	
 	this.pieces = [];
 
 	var length = settings.Point1.distanceTo( settings.Point2 );
 
-	console.log(length);
-
-	var piece = new THREE.Mesh(
-		new THREE.BoxGeometry(2.0, 0.2, length),
-		new THREE.MeshPhongMaterial()
-		)
-
-	piece.position.copy(avgPosition)
-
-	piece.material.side = THREE.DoubleSide;
-
-	scene.add(piece);
+	settings.height = length;
+	settings.width = 10;
+	settings.resolutionX = 16;
+	settings.resolutionY =32;
+	settings.iterations = settings.iterations || 5;
+	//console.log(length);
 
 
+	var right = new THREE.Vector3(1, 0, 0);
+
+	var res = 10;
+	var obj = new THREE.Object3D();
+	//
+	//obj.add(this.RightLeg);
+	//obj.add(this.Top);
+
+
+	for(var i = 0; i < res; i++){
+		var piece = new THREE.Mesh(
+			new THREE.BoxGeometry(pieceWidth, 0.2, length),
+			new THREE.MeshPhongMaterial()
+			)
+
+
+		piece.position.copy(avgPosition);
+		piece.lookAt(settings.Point1);
+
+
+
+
+		var dx = 3 * Math.cos( (3.14/2  -3.14 * i/(res-1)) - 3.14/2 );
+
+		var dy = 3 * Math.sin( (3.14/2  -3.14 * i/(res-1)) - 3.14/2 );
+
+
+		//dy *= 0.6;
+		dx *= 2.0;
+
+
+		piece.position.add(right.clone().multiplyScalar(dx));
+		piece.position.add(piece.up.clone().multiplyScalar(dy));
+
+
+
+
+		piece.rotation.z = -3.14/2  + 3.14 * i/(res-1);
+
+
+		console.log(piece);
+
+		world.add({ 
+		    type:'box', // type of shape : sphere, box, cylinder 
+		    size:[pieceWidth,0.2,length], // size of shape
+		    pos:[piece.position.x, piece.position.y, piece.position.z], // start position in degree
+		    rot:[piece.rotation.x * 180/3.14,piece.rotation.y* 180/3.14,piece.rotation.z* 180/3.14], // start rotation in degree
+		    move:false, // dynamic or statique
+		    density: 100,
+		    friction: 0.3,
+		    restitution: 1.0,
+		    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
+		    collidesWith: 0xffffffff, // The bits of the collision groups with which the shape collides.
+		});
+
+
+
+
+		scene.add(piece);
+
+		
+
+		//piece.visible= false;
+
+
+
+
+	}
+	
+
+
+
+		obj.position.copy(avgPosition)
+		obj.lookAt(settings.Point1)
 
 
 
@@ -41,7 +115,7 @@ function ClothRamp(settings){
 
 	tmp.position.copy( settings.Point1);
 
-	scene.add(tmp);
+	//scene.add(tmp);
 	var tmp = new THREE.Mesh(
 		new THREE.SphereGeometry(1.0),
 		new THREE.MeshPhongMaterial({color: 0xffff00})
@@ -49,7 +123,7 @@ function ClothRamp(settings){
 
 	tmp.position.copy( settings.Point2);
 
-	scene.add(tmp);
+	//scene.add(tmp);
 
 	// END TMP CODE
 
@@ -58,13 +132,35 @@ function ClothRamp(settings){
 
 
 
-	var obj = new THREE.Object3D();
-	//obj.add(this.LeftLeg);
-	//obj.add(this.RightLeg);
-	//obj.add(this.Top);
+	 
 
 
-	//this.cloth = new Cloth(settings);
+	this.cloth = new Cloth(settings);
+	this.cloth.leftConstrain();
+	this.cloth.rightConstrain();
+
+
+	this.cloth.mesh.rotation.x = -3.14/2
+	this.cloth.mesh.position.y += 1;
+	obj.add(this.cloth.mesh);
+	var context = this;
+	this.setMap = function(url){
+		loader.load(url, function ( texture){
+
+			  context.cloth.ClothMaterial.uniforms.map.value = texture;
+			  context.cloth.ClothMaterial.uniforms.shininess.value = 10.0;
+			  context.cloth.ClothMaterial.needsUpdate = true;
+			 
+
+		})
+	}
+
+	this.setNormal = function(url){
+			loader.load(url, function ( texture){
+			  context.cloth.ClothMaterial.uniforms.normalMap.value = texture;
+			  context.cloth.ClothMaterial.needsUpdate = true;
+		})
+	}
 
 	var context = this;
 	var loader = new THREE.TextureLoader();
@@ -105,24 +201,51 @@ function ClothRamp(settings){
 
 
 
-
+	this.counter = 0;
 	this.update = function(){
+		this.cloth.updateMatrices();
+		this.cloth.update();
+		this.counter++;
+		if(this.counter % 60 != 0 || objs.length > 10){
+			return;
+		}
 		//console.time('someFunction');
 		
-		this.rightCollider.setPosition( this.RightLeg.position.clone().applyMatrix4 ( this.obj.matrixWorld));
-		this.leftCollider.setPosition( this.LeftLeg.position.clone().applyMatrix4 ( this.obj.matrixWorld));
-		this.rightCollider.setQuaternion( this.RightLeg.quaternion.clone() );
-		this.leftCollider.setQuaternion( this.LeftLeg.quaternion.clone() );
+		var radius = 1.3 + Math.random() * 1;
 
-		this.rightCollider.updatePosition();
-		this.leftCollider.updatePosition();
+		var startPos = new THREE.Vector3().addVectors(this.settings.Point1.clone().multiplyScalar(0.1),this.settings.Point2.clone().multiplyScalar(0.9) );
+		startPos.y += 2;
+		var x = startPos.x;
+		var y = startPos.y;
+		var z = startPos.z;
 
-		//console.log(this.rightCollider);
-		
-		this.cloth.updateMatrices();
+		var sphere = new THREE.Mesh(
+			new THREE.SphereGeometry(radius, 64, 64),
+			new THREE.MeshPhongMaterial({ color : 0xffffffff * Math.random()})
+		)
+		sphere.radius = radius;
+		sphere.castShadow = true;
+
+		sphere.position.y = -1000;
+		objs.push(sphere);
+		scene.add(sphere);
 
 
-		this.cloth.update();
+		var body = world.add({ 
+		    type:'sphere', // type of shape : sphere, box, cylinder 
+		    size:[radius,radius, radius], // size of shape
+		    pos:[x,y,z], // start position in degree
+		    //pos:[0,0,0], // start position in degree
+		    rot:[0,0,0], // start rotation in degree
+		    move:true, // dynamic or statique
+		    density: 1,
+		    friction: 0.2,
+		    restitution: 0.2,
+		    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
+		    collidesWith: 0xffffffff, // The bits of the collision groups with which the shape collides.
+		});
+
+		objs2.push(body);
 		//console.timeEnd('someFunction');
 	}
 

@@ -4,6 +4,8 @@ function ClothStand(settings){
 	settings.width = settings.width || 10;
 	settings.height = settings.height || 10;
 
+	settings.iterations = settings.iterations || 5;
+
 	var width = settings.width;
 	var height = settings.height;
 
@@ -81,6 +83,8 @@ function ClothStand(settings){
 
 
 	this.cloth = new Cloth(settings);
+	this.cloth.topConstrain();
+    
 
 	var context = this;
 	var loader = new THREE.TextureLoader();

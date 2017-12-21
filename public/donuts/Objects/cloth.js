@@ -14,7 +14,12 @@ function Cloth(settings){
 	settings.width = settings.width || 10;
 	
 	settings.height = settings.height || 10;
-	settings.height = settings.height * 0.8
+
+	settings.iterations = settings.iterations || 5;
+
+	if(settings.modifyHeight){
+		settings.height = settings.height * 0.8
+	}
 	settings.resolutionX = settings.resolutionX || 10;
 	settings.resolutionY = settings.resolutionY || 10;
 	var tmp = settings.resolutionX 
@@ -25,6 +30,7 @@ function Cloth(settings){
 
 	settings.width  = settings.height 
 	settings.height = tmp;
+
 	
 
 
@@ -62,8 +68,10 @@ function Cloth(settings){
 		mesh.castShadow = true;
 		//mesh.receivesShadow = true;
 		this.mesh = mesh;
-	
-		this.mesh.position.y += (this.settings.width * .125)
+		
+		if(settings.modifyHeight){
+			this.mesh.position.y += (this.settings.width * .125)
+		}
 		//	this.mesh.updateMatrixWorld();
 		this.createVertexLookup();
 
@@ -177,6 +185,19 @@ function Cloth(settings){
 	this.render = function(){
 		renderer.render(this.updateScene, this.camera2);
 	}
+	this.topConstrain = function(){
+		console.log("here")
+		this.constrainMaterial.uniforms.topConstrain.value = 1;
+	}
+	this.bottomConstrain = function(){
+		this.constrainMaterial.uniforms.bottomConstrain.value = 1;
+	}
+	this.leftConstrain = function(){
+		this.constrainMaterial.uniforms.leftConstrain.value = 1;
+	}
+	this.rightConstrain = function(){
+		this.constrainMaterial.uniforms.rightConstrain.value = 1;
+	}
 	this.createVertexLookup = function(){
 		var lkpWidth = this.settings.resolutionX + 1;
 		var lkpHeight = this.settings.resolutionY + 1;
@@ -268,7 +289,7 @@ function Cloth(settings){
 		for(var j = 0; j < 1; j++){
 			this.updateVertices();
 
-			for(var i = 0; i < 10; i++){
+			for(var i = 0; i < this.settings.iterations; i++){
 				this.constrainVertices();
 				this.collisions();
 			}
@@ -677,7 +698,7 @@ function ClothUpdateShader(){
 		'	pos = transformation * pos;',
 		'	vec4 posOld = texture2D(vertexPositionsOld, vuv.xy );',
 		'	posOld = transformation * posOld;',
-		'	vec4 velocity = (pos - posOld) * 0.95 - vec4(0.0, 0.03, 0.0, 0.0);',
+		'	vec4 velocity = (pos - posOld) * 0.95 - vec4(0.0, 0.01, 0.0, 0.0);',
 
 
 			'	if(pos.w == 0.0){gl_FragColor =  vec4( (inverse *pos).xyz, 1.0 );}',
@@ -751,7 +772,20 @@ function ClothConstrainShader(){
 		},
 		transformation: {
 			type:'m4', value: null
-		}
+		},
+		leftConstrain:{
+			type:'i', value:0
+		},
+		rightConstrain:{
+			type:'i', value:0
+		},
+		topConstrain:{
+			type:'i', value:0
+		},
+		bottomConstrain:{
+			type:'i', value:0
+		},
+
 
 	}
 	this.vertexShader  = [
@@ -776,6 +810,10 @@ function ClothConstrainShader(){
 		'uniform float rigid;',
 		'uniform mat4 transformation;',
 		'uniform mat4 inverse;',
+		'uniform int leftConstrain;',
+		'uniform int rightConstrain;',
+		'uniform int topConstrain;',
+		'uniform int bottomConstrain;',
 		'void main() {',
 		'	vec2 cellSize  = 1.0 / res;',
 		'	vec4 pos = texture2D(vertexPositions, vuv.xy );',
@@ -846,9 +884,25 @@ function ClothConstrainShader(){
 		'	}',
 		
 		'	pos += totalDisplacement;',
-		'	if(  vuv.x  > 1.0 - cellSize.x && (vuv.y < cellSize.y || vuv.y > 1.0- cellSize.y || 1 > 0 )){',
+		'	if(  vuv.x  > 1.0 - cellSize.x  && topConstrain == 1 ){',
 		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
 		'	}',
+
+		'	if(  vuv.x  < cellSize.x  && bottomConstrain == 1 ){',
+		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
+		'	}',
+
+		'	if(  vuv.y  < cellSize.y  && leftConstrain == 1 ){',
+		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
+		'	}',
+
+
+		'	if(  vuv.y  > 1.0 - cellSize.y && rightConstrain == 1 ){',
+		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
+		'	}',
+
+
+
 			'pos = inverse *  pos; ',
 		
 		'	gl_FragColor = vec4( pos.xyz , 1.0 );',
@@ -917,8 +971,8 @@ function ClothCollisionShader(){
 			'	vec3 dist = pos.xyz - target;',
 
 			'	float l = length(dist);',
-			'	if(l < radii[i]*1.1 ){',
-			'		pos.xyz = target + normalize(dist) * radii[i] * 1.1;',
+			'	if(l < radii[i]*1.2 ){',
+			'		pos.xyz = target + normalize(dist) * radii[i] * 1.2;',
 			'	}',
 
 		'	}',

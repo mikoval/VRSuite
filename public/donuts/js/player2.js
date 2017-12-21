@@ -18,7 +18,7 @@ function Player2(z, color){
 	var coll = world.add({ 
 	    type:'sphere', // type of shape : sphere, box, cylinder 
 	    size:[this.radius,this.radius,this.radius], // size of shape
-	    pos:[0,0,0], // start position in degree
+	    pos:[10,0,0], // start position in degree
 	    rot:[0,0,90], // start rotation in degree
 	    move:true, // dynamic or statique
 	    density: 5,
@@ -125,7 +125,7 @@ function Player2(z, color){
 		}
 		if(input.jump){
 		
-			this.coll.applyImpulse(this.coll.position, new THREE.Vector3(0.0, 20, 0.0));
+			this.coll.applyImpulse(this.coll.position, new THREE.Vector3(0.0, 50, 0.0));
 			
 		}
 		
