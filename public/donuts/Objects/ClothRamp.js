@@ -21,8 +21,8 @@ function ClothRamp(settings){
 
 	settings.height = length;
 	settings.width = 20;
-	settings.resolutionX = 16;
-	settings.resolutionY =32;
+	settings.resolutionX = 32;
+	settings.resolutionY =64;
 	settings.iterations = settings.iterations || 5;
 	//console.log(length);
 
@@ -54,7 +54,7 @@ function ClothRamp(settings){
 		var dy = 3 * Math.sin( (3.14/2  -3.14 * i/(res-1)) - 3.14/2 );
 
 
-		//dy *= 0.6;
+		dy *= 1.5;
 		dx *= 4;
 
 
@@ -220,7 +220,7 @@ function ClothRamp(settings){
 			new THREE.MeshPhongMaterial({ color : 0xffffffff * Math.random()})
 		)
 		sphere.radius = radius;
-		sphere.castShadow = true;
+		//sphere.castShadow = true;
 
 		sphere.position.y = -1000;
 		objs.push(sphere);

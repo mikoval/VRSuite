@@ -15,7 +15,7 @@ canJump = true;
 renderer = new THREE.WebGLRenderer( { antialias: false } );
 renderer.setPixelRatio( window.devicePixelRatio );
 renderer.setSize( WIDTH, HEIGHT );
-renderer.shadowMap.enabled = true;
+//renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.BasicShadowMap;
 renderer.shadowMap.renderSingleSided = false; // must be set to false to honor double-sided materials
 
