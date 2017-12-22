@@ -21,7 +21,7 @@ function ClothStand(settings){
 
 	this.LeftLeg = clothHolder;
 
-	this.leftCollider = world.add({ 
+	/*this.leftCollider = world.add({ 
 		    type:'box', // type of shape : sphere, box, cylinder 
 		    size:[0.3,height,0.3], // size of shape
 		    pos:[0, 0, (-width/2) * 1.2], // start position in degree
@@ -34,6 +34,7 @@ function ClothStand(settings){
 		    collidesWith: 0xffffffff, // The bits of the collision groups with which the shape collides.
 		});
 
+	*/
 
 	///
 
@@ -47,7 +48,7 @@ function ClothStand(settings){
 	clothHolder.castShadow = true;
 
 	this.RightLeg = clothHolder;
-	this.rightCollider = world.add({ 
+	/*this.rightCollider = world.add({ 
 		    type:'box', // type of shape : sphere, box, cylinder 
 		    size:[0.3,height,0.3], // size of shape
 		    pos:[0, 0, (width/2) * 1.2], // start position in degree
@@ -60,6 +61,7 @@ function ClothStand(settings){
 		    collidesWith: 0xffffffff, // The bits of the collision groups with which the shape collides.
 		});
 
+	*/
 
 
 	////
@@ -129,13 +131,13 @@ function ClothStand(settings){
 	this.update = function(){
 		//console.time('someFunction');
 		
-		this.rightCollider.setPosition( this.RightLeg.position.clone().applyMatrix4 ( this.obj.matrixWorld));
-		this.leftCollider.setPosition( this.LeftLeg.position.clone().applyMatrix4 ( this.obj.matrixWorld));
-		this.rightCollider.setQuaternion( this.RightLeg.quaternion.clone() );
-		this.leftCollider.setQuaternion( this.LeftLeg.quaternion.clone() );
+		//this.rightCollider.setPosition( this.RightLeg.position.clone().applyMatrix4 ( this.obj.matrixWorld));
+		//this.leftCollider.setPosition( this.LeftLeg.position.clone().applyMatrix4 ( this.obj.matrixWorld));
+		//this.rightCollider.setQuaternion( this.RightLeg.quaternion.clone() );
+		//this.leftCollider.setQuaternion( this.LeftLeg.quaternion.clone() );
 
-		this.rightCollider.updatePosition();
-		this.leftCollider.updatePosition();
+		//this.rightCollider.updatePosition();
+		//this.leftCollider.updatePosition();
 
 		//console.log(this.rightCollider);
 		

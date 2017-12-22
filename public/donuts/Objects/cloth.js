@@ -65,7 +65,7 @@ function Cloth(settings){
 		//mesh.material.uniforms.diffuse.value = new THREE.Vector3(0.2, 0.6 , 0.8)
 
 		mesh.rotation.set(0,0,3.14/2) ;
-		mesh.castShadow = true;
+		//mesh.castShadow = true;
 		//mesh.receivesShadow = true;
 		this.mesh = mesh;
 		

@@ -1,8 +1,8 @@
 function ClothRamp(settings){
 	
 	settings = settings || {};
-	settings.Point1 = settings.Point1 || new THREE.Vector3(0.0, 3.0, 0.0);
-	settings.Point2 = settings.Point2 || new THREE.Vector3(0.0, 13.0, 30.0);
+	settings.Point1 = settings.Point1 || new THREE.Vector3(0.0, 5.0, 0.0);
+	settings.Point2 = settings.Point2 || new THREE.Vector3(0.0, 15.0, 30.0);
 
 	this.settings = settings;
 
@@ -20,7 +20,7 @@ function ClothRamp(settings){
 	var length = settings.Point1.distanceTo( settings.Point2 );
 
 	settings.height = length;
-	settings.width = 10;
+	settings.width = 20;
 	settings.resolutionX = 16;
 	settings.resolutionY =32;
 	settings.iterations = settings.iterations || 5;
@@ -55,7 +55,7 @@ function ClothRamp(settings){
 
 
 		//dy *= 0.6;
-		dx *= 2.0;
+		dx *= 4;
 
 
 		piece.position.add(right.clone().multiplyScalar(dx));
@@ -69,23 +69,19 @@ function ClothRamp(settings){
 
 		console.log(piece);
 
-		world.add({ 
-		    type:'box', // type of shape : sphere, box, cylinder 
-		    size:[pieceWidth,0.2,length], // size of shape
-		    pos:[piece.position.x, piece.position.y, piece.position.z], // start position in degree
-		    rot:[piece.rotation.x * 180/3.14,piece.rotation.y* 180/3.14,piece.rotation.z* 180/3.14], // start rotation in degree
-		    move:false, // dynamic or statique
-		    density: 100,
-		    friction: 0.3,
-		    restitution: 1.0,
-		    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
-		    collidesWith: 0xffffffff, // The bits of the collision groups with which the shape collides.
-		});
 
 
+		var boxShape = new CANNON.Box(new CANNON.Vec3(pieceWidth/2,0.2/2,length/2));
+		b1 = new CANNON.Body({ mass: 0 , material: smoothMaterialCannon});
+		b1.addShape(boxShape);
+		b1.position.set(piece.position.x, piece.position.y, piece.position.z);
+		b1.velocity.set(0,0,0);
+		b1.linearDamping = 0;
+		world.addBody(b1);
+		b1.quaternion.setFromEuler ( piece.rotation.x ,piece.rotation.y,piece.rotation.z, 'XYZ');
 
 
-		scene.add(piece);
+		//scene.add(piece);
 
 		
 
@@ -220,7 +216,7 @@ function ClothRamp(settings){
 		var z = startPos.z;
 
 		var sphere = new THREE.Mesh(
-			new THREE.SphereGeometry(radius, 64, 64),
+			new THREE.SphereGeometry(radius, 16, 16),
 			new THREE.MeshPhongMaterial({ color : 0xffffffff * Math.random()})
 		)
 		sphere.radius = radius;
@@ -231,21 +227,15 @@ function ClothRamp(settings){
 		scene.add(sphere);
 
 
-		var body = world.add({ 
-		    type:'sphere', // type of shape : sphere, box, cylinder 
-		    size:[radius,radius, radius], // size of shape
-		    pos:[x,y,z], // start position in degree
-		    //pos:[0,0,0], // start position in degree
-		    rot:[0,0,0], // start rotation in degree
-		    move:true, // dynamic or statique
-		    density: 1,
-		    friction: 0.2,
-		    restitution: 0.2,
-		    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
-		    collidesWith: 0xffffffff, // The bits of the collision groups with which the shape collides.
-		});
-
-		objs2.push(body);
+		var sphereShape = new CANNON.Sphere(radius);
+		b1 = new CANNON.Body({ mass: 1 , material: ballMaterialCannon});
+		b1.addShape(sphereShape);
+		b1.position.set(x, y, z);
+		b1.velocity.set(0,0,0);
+		b1.linearDamping = 0;
+		world.addBody(b1);
+		console.log("adding piece");
+		objs2.push(b1);
 		//console.timeEnd('someFunction');
 	}
 

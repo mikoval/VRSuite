@@ -39,6 +39,7 @@ time = 0;
 liftPositionY = 0;
 liftPositionZ = 0;
 liftRotation = 0;
+liftGuardPosition = 0;
 liftstate = 'raise'
 function initScene(){
 	
@@ -131,156 +132,32 @@ function initScene(){
 
 
 function animationLoop(){
+		console.time("test");
+		world.step(timeStep);
+		//console.log(b1.position);
+		player.update();
+		clothRamp.update();
+		setCamera();
 
-	//console.time('someFunction');
+		updateLift();
+		for(var i =0 ; i < objs2.length; i++){
+			if(objs[i] != undefined){
+				//objs2[i].linearVelocity.multiplyScalar(0.999);
 
-	world.step();
-
-	
-
-	time++;
-	// and copy position and rotation to three mesh
-
-	//console.log(lift);
-	//lift.allowSleep = false;
-
-	//lift.position.copy( lift.position);
-
-
-
-	if(liftstate == "raise"){
-		liftPositionY += 0.0
-	}
-	if(liftstate == "lower"){
-		liftPositionY -= 0.0
-
-	}
-
-	if(liftstate == "rotateForward"){
-		liftRotation += 0.03
-		liftPositionZ -= 0;
-	}
-	if(liftstate == "rotateBackward"){
-		liftRotation -= 0.03
-		liftPositionZ += 0;
-	}
-	
-	if(liftPositionY > 3.14/2){
-		liftPositionY = 3.14/2;
-		liftstate = "rotateForward";
-	}
-	if(liftRotation > 1){
-		liftstate = "rotateBackward";
-		liftRotation = 1;
-	}
-
-	if(liftRotation < 0){
-		liftstate = "lower";
-		liftRotation = 0;
-	}
-	
-	if(liftPositionY < -3.14/2){
-		liftPositionY = -3.14/2;
-		liftstate = "raise";
-	}
-
-	//console.log(35 + liftPositionZ)
-	
-	lift.position.copy( new THREE.Vector3(liftStart.x, 5 * Math.sin(liftPositionY) + 4, liftStart.z + liftPositionZ) );
-
-	//lift.rotation.x = -  3.14/2 * liftRotation;
-
-
-	//liftGuardBackObj.position.copy( new THREE.Vector3(liftGuardBackStart.x, 15 * Math.sin(liftPositionY) + 4, liftGuardBackStart.z + liftPositionZ) );
-
-	//liftGuardBackObj.rotation.x = -  3.14/2 * liftRotation;
-
-
-
-	
-
-	var position = new THREE.Vector3();
-	var quaternion = new THREE.Quaternion();
-	var scale = new THREE.Vector3();
-
-	liftBottomObj.updateMatrixWorld( true );
-	liftBottomObj.matrixWorld.decompose( position, quaternion, scale );
-
-	liftBottom.setPosition( new OIMO.Vec3( position.x, position.y, position.z ));
-
-	liftBottom.setQuaternion(new OIMO.Quat(quaternion._x, quaternion._y, quaternion._z, quaternion._w ))
-
-	var position = new THREE.Vector3();
-	var quaternion = new THREE.Quaternion();
-	var scale = new THREE.Vector3();
-
-	liftGuardBackObj.updateMatrixWorld( true );
-	liftGuardBackObj.matrixWorld.decompose( position, quaternion, scale );
-
-	liftGuardBack.setPosition( new OIMO.Vec3( position.x, position.y, position.z ));
-
-	liftGuardBack.setQuaternion(new OIMO.Quat(quaternion._x, quaternion._y, quaternion._z, quaternion._w ))
-
-	var position = new THREE.Vector3();
-	var quaternion = new THREE.Quaternion();
-	var scale = new THREE.Vector3();
-
-	liftGuardRightObj.updateMatrixWorld( true );
-	liftGuardRightObj.matrixWorld.decompose( position, quaternion, scale );
-
-	liftGuardRight.setPosition( new OIMO.Vec3( position.x, position.y, position.z ));
-
-	liftGuardRight.setQuaternion(new OIMO.Quat(quaternion._x, quaternion._y, quaternion._z, quaternion._w ))
-
-	var position = new THREE.Vector3();
-	var quaternion = new THREE.Quaternion();
-	var scale = new THREE.Vector3();
-
-	liftGuardLeftObj.updateMatrixWorld( true );
-	liftGuardLeftObj.matrixWorld.decompose( position, quaternion, scale );
-
-	liftGuardLeft.setPosition( new OIMO.Vec3( position.x, position.y, position.z ));
-
-	liftGuardLeft.setQuaternion(new OIMO.Quat(quaternion._x, quaternion._y, quaternion._z, quaternion._w ))
-
-
-
-
-
-
-
-
-	//liftBottomObj.position.copy( liftBottom.getPosition() );
-	//liftBottomObj.quaternion.copy(liftBottom.getQuaternion() );
-
-
-
-
-	//this is the update part
-	//update the player and set the camera based on changes
-	//the effect line is for vr.
-
-	player.update();
-	//clothRamp.update();
-	setCamera();
-
-	//this for loop I can explain. just ask me
-	for(var i =0 ; i < objs2.length; i++){
-		if(objs[i] != undefined){
-			objs2[i].linearVelocity.multiplyScalar(0.999);
-
+			}
 		}
-	}
-	for(var i =0 ; i < objs2.length; i++){
-		if(objs[i] != undefined){
-	 			objs[i].position.copy( objs2[i].getPosition() );
-				objs[i].quaternion.copy( objs2[i].getQuaternion() );
+		for(var i =0 ; i < objs2.length; i++){
+			if(objs[i] != undefined){
+		 			objs[i].position.copy( objs2[i].position );
+					objs[i].quaternion.copy( objs2[i].quaternion );
 
 
-	 	}
-	}
-	
-	if(effect){
+		 	}
+		}
+
+
+
+		if(effect){
           //console.log(controls);
         
       	if(controls != undefined){
@@ -319,8 +196,11 @@ function animationLoop(){
 	      }
 	    }
 
+
+
 		setTimeout(animationLoop, 30);
 			//console.timeEnd('someFunction');
+			//console.timeEnd("test");
 	}
 
 
@@ -427,31 +307,59 @@ function adjustTexture(texture){
 function createScene(){
 	//this is where the objects are created
 	
-	
-	 world = new OIMO.World({ 
-	    timestep: 1/30, 
-	    iterations: 8, 
-	    broadphase: 2, // 1 brute force, 2 sweep and prune, 3 volume tree
-	    worldscale: 1, // scale full world 
-	    random: true,  // randomize sample
-	    info: false,   // calculate statistic or not
-	    gravity: [0,-30,0] 
-	});
-	 
 
-	
-	plane = world.add({ 
-	    type:'box', // type of shape : sphere, box, cylinder 
-	    size:[100, .1,100], // size of shape
-	    pos:[0,-10,0], // start position in degree
-	    rot:[0,0,0], // start rotation in degree
-	    move:false, // dynamic or statique
-	    density: 1,
-	    friction: 0.2,
-	    restitution: 1.0,
-	    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
-	    collidesWith: 0xffffffff // The bits of the collision groups with which the shape collides.
-	}); 
+	world = new CANNON.World();
+	world.gravity.set(0,-9.82 * 3, 0);
+	world.broadphase = new CANNON.NaiveBroadphase();
+	// create materials
+
+	playerMaterialCannon = new CANNON.Material("playerMaterial")
+	groundMaterialCannon = new CANNON.Material("groundMaterial")
+	smoothMaterialCannon = new CANNON.Material("smoothMaterial")
+	ballMaterialCannon = new CANNON.Material("ballMaterial")
+	var ContactMaterial = new CANNON.ContactMaterial(
+                    playerMaterialCannon,      // Material #1
+                    groundMaterialCannon,         // Material #2
+                    {friction: 0.8,
+            		restitution: 0.2}       // friction coefficient
+                    );     // restitution
+	world.addContactMaterial(ContactMaterial); 
+	var ContactMaterial = new CANNON.ContactMaterial(
+                    playerMaterialCannon,      // Material #1
+                    smoothMaterialCannon,         // Material #2
+                    {friction: 1.0,
+            		restitution: 0.3} );     // restitution
+
+	world.addContactMaterial(ContactMaterial); 
+	var ContactMaterial = new CANNON.ContactMaterial(
+                    ballMaterialCannon,      // Material #1
+                    smoothMaterialCannon,         // Material #2
+                    {friction: 0.3,
+            		restitution: 0.3} );     // restitution
+
+	world.addContactMaterial(ContactMaterial); 
+	var ContactMaterial = new CANNON.ContactMaterial(
+                    ballMaterialCannon,      // Material #1
+                    ballMaterialCannon,         // Material #2
+                    {friction: 0.3,
+            		restitution: 0.5} );     // restitution
+
+	world.addContactMaterial(ContactMaterial); 
+
+	var groundShape = new CANNON.Plane();
+	var groundBody = new CANNON.Body({ mass: 0, shape: groundShape, material: groundMaterialCannon });
+
+	groundBody.position.set(0,-10,0 )
+	groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), -3.14/2 );
+
+	world.add(groundBody);
+
+
+	timeStep = 1.0 / 30.0; // seconds
+
+
+	player = new Player2();
+
 	ground = new THREE.Mesh(
 		new THREE.BoxGeometry(100.0,.1, 100,  1, 1),
 		new THREE.MeshPhongMaterial()
@@ -499,59 +407,13 @@ function createScene(){
 	ground.position.y = -10;
 	scene.add(ground);
 
-	// create balls 
-
-	for(var i = 0; i < 10; i++){
-		continue;
-		var radius = Math.random() * 3;
-
-		var x = (Math.random() - 0.5 ) * 20;
-		var y = (Math.random() - 0.5 ) * 20;
-		var z = (Math.random()  ) * 20;
-
-		var sphere = new THREE.Mesh(
-			new THREE.SphereGeometry(radius, 64, 64),
-			new THREE.MeshPhongMaterial({ color : 0xffffffff * Math.random()})
-		)
-		sphere.radius = radius;
-		sphere.castShadow = true;
-		objs.push(sphere);
-		scene.add(sphere);
-
-		var body = world.add({ 
-		    type:'sphere', // type of shape : sphere, box, cylinder 
-		    size:[radius,radius, radius], // size of shape
-		    pos:[x,y,z], // start position in degree
-		    rot:[0,0,90], // start rotation in degree
-		    move:true, // dynamic or statique
-		    density: 1,
-		    friction: 0.2,
-		    restitution: 0.2,
-		    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
-		    collidesWith: 0xffffffff, // The bits of the collision groups with which the shape collides.
-		});
-
-		objs2.push(body);
-
-
-	}
-	
-	// create player 
-
-	player = new Player2();
-
-
-
-	// create cloth holder
-
-	
+	///////
 	var settings = {
-		width: 20,
+		width: 18,
 		height: 10,
 		resolutionX: 20,
 		resolutionY: 20,
 	}
-	/*
 	clothHolder = new ClothStand(settings);
 	clothHolder.setMap('/donuts/textures/persianRug/RugPersian004_COL_1K.jpg');
 	clothHolder.setNormal('/donuts/textures/persianRug/RugPersian004_NRM_1K.jpg');
@@ -560,9 +422,11 @@ function createScene(){
 
 	clothHolder.cloth.settings.balls = objs;
 	//clothHolder.cloth.settings.balls.push(player.obj);
-	clothHolder.obj.position.y = 0;
+	clothHolder.obj.position.y = 2;
 	clothHolder.obj.position.z = -2;
-	*/
+	
+
+	////////////
 
 	var piece = new THREE.Mesh(
 			new THREE.BoxGeometry(20, 10, 1),
@@ -570,25 +434,21 @@ function createScene(){
 			)
 
 	piece.position.z = -15;
-	piece.position.y = -5
+	piece.position.y = 0
 
-	world.add({ 
-	    type:'box', // type of shape : sphere, box, cylinder 
-	    size:[20, 10, 1], // size of shape
-	    pos:[piece.position.x, piece.position.y, piece.position.z], // start position in degree
-	    rot:[0,0,0], // start rotation in degree
-	    move:false, // dynamic or statique
-	    density: 100,
-	    friction: 0.3,
-	    restitution: 1.0,
-	    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
-	    collidesWith: 0xffffffff, // The bits of the collision groups with which the shape collides.
-	});
 
+
+	var boxShape = new CANNON.Box(new CANNON.Vec3(20/2,10/2,1/2));
+	b1 = new CANNON.Body({ mass: 0 , material: smoothMaterialCannon});
+	b1.addShape(boxShape);
+	b1.position.set(piece.position.x, piece.position.y, piece.position.z);
+	b1.velocity.set(0,0,0);
+	b1.linearDamping = 0;
+	world.addBody(b1);
 	scene.add(piece);
-
-
-		var piece = new THREE.Mesh(
+ 
+   ///////
+   	var piece = new THREE.Mesh(
 			new THREE.BoxGeometry(20, 1, 48),
 			new THREE.MeshPhongMaterial()
 			)
@@ -600,54 +460,47 @@ function createScene(){
 	piece.position.z = 5
 
 
-	var x = world.add({ 
-	    type:'box', // type of shape : sphere, box, cylinder 
-	    size:[20, 1, 45], // size of shape
-	    pos:[piece.position.x, piece.position.y, piece.position.z], // start position in degree
-	    rot:[4,0,0], // start rotation in degree
-	    move:false, // dynamic or statique
-	    density: 100,
-	    friction: 0.3,
-	    restitution: 1.0,
-	    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
-	    collidesWith: 0xffffffff, // The bits of the collision groups with which the shape collides.
-	});
-	piece.quaternion.copy( x.getQuaternion() );
+	var boxShape = new CANNON.Box(new CANNON.Vec3(20/2, 1/2, 48/2));
+	b1 = new CANNON.Body({ mass: 0 , material: smoothMaterialCannon});
+	b1.addShape(boxShape);
+	b1.position.set(piece.position.x, piece.position.y, piece.position.z);
+	b1.velocity.set(0,0,0);
+	b1.linearDamping = 0;
+	world.addBody(b1);
+
+	b1.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), 8 * 3.14/180 );
+	piece.rotation.x = 8 * 3.14/180 ;
 	scene.add(piece);
 
+	///////////
 
 	var piece = new THREE.Mesh(
-			new THREE.BoxGeometry(1, 5, 45),
+			new THREE.BoxGeometry(1, 5, 48),
 			new THREE.MeshPhongMaterial()
 			)
-
-
-
-	//piece.position.z = -15;
 	piece.position.y = -3
 	piece.position.z = 5
 	piece.position.x = -10
 
 
-	var x = world.add({ 
-	    type:'box', // type of shape : sphere, box, cylinder 
-	    size:[1, 5, 45], // size of shape
-	    pos:[piece.position.x, piece.position.y, piece.position.z], // start position in degree
-	    rot:[6,0,0], // start rotation in degree
-	    move:false, // dynamic or statique
-	    density: 100,
-	    friction: 0.3,
-	    restitution: 1.0,
-	    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
-	    collidesWith: 0xffffffff, // The bits of the collision groups with which the shape collides.
-	});
-	piece.quaternion.copy( x.getQuaternion() );
 
+	var boxShape = new CANNON.Box(new CANNON.Vec3(1/2, 5/2, 48/2));
+	b1 = new CANNON.Body({ mass: 0 , material: smoothMaterialCannon});
+	b1.addShape(boxShape);
+	b1.position.set(piece.position.x, piece.position.y, piece.position.z);
+	b1.velocity.set(0,0,0);
+	b1.linearDamping = 0;
+	world.addBody(b1);
+
+
+		b1.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), 8 * 3.14/180 );
+	piece.rotation.x = 8 * 3.14/180 ;
 	scene.add(piece);
 
-
+	//piece.position.z = -15;
+	
 	var piece = new THREE.Mesh(
-			new THREE.BoxGeometry(1, 5, 45),
+			new THREE.BoxGeometry(1, 5, 48),
 			new THREE.MeshPhongMaterial()
 			)
 
@@ -659,28 +512,35 @@ function createScene(){
 	piece.position.x = 10
 
 
-	var x = world.add({ 
-	    type:'box', // type of shape : sphere, box, cylinder 
-	    size:[1, 5, 45], // size of shape
-	    pos:[piece.position.x, piece.position.y, piece.position.z], // start position in degree
-	    rot:[6,0,0], // start rotation in degree
-	    move:false, // dynamic or statique
-	    density: 100,
-	    friction: 0.3,
-	    restitution: 1.0,
-	    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
-	    collidesWith: 0xffffffff, // The bits of the collision groups with which the shape collides.
-	});
-	piece.quaternion.copy( x.getQuaternion() );
+	var boxShape = new CANNON.Box(new CANNON.Vec3(1/2, 5/2, 48/2));
+	b1 = new CANNON.Body({ mass: 0 , material: smoothMaterialCannon});
+	b1.addShape(boxShape);
+	b1.position.set(piece.position.x, piece.position.y, piece.position.z);
+	b1.velocity.set(0,0,0);
+	b1.linearDamping = 0;
+	world.addBody(b1);
 
+
+		b1.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), 8 * 3.14/180 );
+	piece.rotation.x = 8 * 3.14/180 ;
 	scene.add(piece);
 
 
+	
 
+	//ramp
+	 clothRamp = new ClothRamp();
+
+	clothRamp.setMap('/donuts/textures/towel/FabricTowel001_COL_1K.jpg');
+	clothRamp.setNormal('/donuts/textures/towel/FabricTowel001_NRM_1K.jpg');
+	clothRamp.cloth.settings.balls = objs;
+
+	// lift code 
+	/////////////
 	// lift
 
 	liftBottomObj = new THREE.Mesh(
-			new THREE.BoxGeometry(20, 1, 10),
+			new THREE.BoxGeometry(20, 2, 10),
 			new THREE.MeshPhongMaterial({color:0xFF4488 })
 			)
 
@@ -692,18 +552,17 @@ function createScene(){
 	liftBottomObj.position.x = 0
 
 
-	liftBottom = world.add({ 
-	    type:'box', // type of shape : sphere, box, cylinder 
-	    size:[20, 1, 10], // size of shape
-	    pos:[liftBottomObj.position.x, liftBottomObj.position.y, liftBottomObj.position.z], // start position in degree
-	    rot:[0,0,0], // start rotation in degree
-	    move:true, // dynamic or statique
-	    density: 10000000000,
-	    friction: 1.0,
-	    restitution: 1.0,
-	    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
-	    collidesWith: 0xffffffff, // The bits of the collision groups with which the shape collides.
-	});
+	
+	var boxShape = new CANNON.Box(new CANNON.Vec3(20/2, 1/2, 10/2));
+	liftBottom = new CANNON.Body({ mass: 10000 , material: groundMaterialCannon});
+	liftBottom.addShape(boxShape);
+	liftBottom.position.set(liftBottomObj.position.x, liftBottomObj.position.y, liftBottomObj.position.z);
+	liftBottom.velocity.set(0,0,0);
+	liftBottom.linearDamping = 0;
+	world.addBody(liftBottom);
+
+
+
 	//liftBottom.quaternion.copy( lift.getQuaternion() );
 
 	//scene.add(liftBottom);
@@ -719,22 +578,18 @@ function createScene(){
 	//piece.position.z = -15;
 	liftGuardBackStart = {x: 0, y: 1, z:0}
 	liftGuardBackObj.position.y = 1
-	liftGuardBackObj.position.z = 6
+	liftGuardBackObj.position.z = 5
 	liftGuardBackObj.position.x = 0
 
 
-	liftGuardBack = world.add({ 
-	    type:'box', // type of shape : sphere, box, cylinder 
-	    size:[20, 3, 1], // size of shape
-	    pos:[liftGuardBackObj.position.x, liftGuardBackObj.position.y, liftGuardBackObj.position.z], // start position in degree
-	    rot:[0,0,0], // start rotation in degree
-	    move:true, // dynamic or statique
-	    density: 1000,
-	    friction: 0.0,
-	    restitution: 0.0,
-	    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
-	    collidesWith: 0xffffffff, // The bits of the collision groups with which the shape collides.
-	});
+	var boxShape = new CANNON.Box(new CANNON.Vec3(20/2, 3/2, 1/2));
+	liftGuardBack = new CANNON.Body({ mass: 0 , material: smoothMaterialCannon});
+	liftGuardBack.addShape(boxShape);
+	liftGuardBack.position.set(liftGuardBackObj.position.x, liftGuardBackObj.position.y, liftGuardBackObj.position.z);
+	liftGuardBack.velocity.set(0,0,0);
+	liftGuardBack.linearDamping = 0;
+	world.addBody(liftGuardBack);
+
 	//liftBottom.quaternion.copy( lift.getQuaternion() );
 
 	//scene.add(liftGuardBackObj);
@@ -750,21 +605,20 @@ function createScene(){
 	//piece.position.z = -15;
 	liftGuardRightObj.position.y = 1
 	liftGuardRightObj.position.z = 0
-	liftGuardRightObj.position.x = 11
+	liftGuardRightObj.position.x = 10
 
 
-	liftGuardRight = world.add({ 
-	    type:'box', // type of shape : sphere, box, cylinder 
-	    size:[1, 3, 10], // size of shape
-	    pos:[liftGuardRightObj.position.x, liftGuardRightObj.position.y, liftGuardRightObj.position.z], // start position in degree
-	    rot:[0,0,0], // start rotation in degree
-	    move:true, // dynamic or statique
-	    density: 1000,
-	    friction: 0.0,
-	    restitution: 0.0,
-	    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
-	    collidesWith: 0xffffffff, // The bits of the collision groups with which the shape collides.
-	});
+
+	var boxShape = new CANNON.Box(new CANNON.Vec3(1/2, 3/2, 10/2));
+	liftGuardRight = new CANNON.Body({ mass: 0 , material: smoothMaterialCannon});
+	liftGuardRight.addShape(boxShape);
+	liftGuardRight.position.set(liftGuardRightObj.position.x, liftGuardRightObj.position.y, liftGuardRightObj.position.z);
+	liftGuardRight.velocity.set(0,0,0);
+	liftGuardRight.linearDamping = 0;
+	world.addBody(liftGuardRight);
+
+
+
 	//liftBottom.quaternion.copy( lift.getQuaternion() );
 
 	//scene.add(liftGuardRightObj);
@@ -783,23 +637,23 @@ function createScene(){
 	liftGuardLeftObj.position.x = -11
 
 
-	liftGuardLeft = world.add({ 
-	    type:'box', // type of shape : sphere, box, cylinder 
-	    size:[1, 3, 10], // size of shape
-	    pos:[liftGuardLeftObj.position.x, liftGuardLeftObj.position.y, liftGuardLeftObj.position.z], // start position in degree
-	    rot:[0,0,0], // start rotation in degree
-	    move:true, // dynamic or statique
-	    density: 1000,
-	    friction: 0.0,
-	    restitution: 0.0,
-	    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
-	    collidesWith: 0xffffffff, // The bits of the collision groups with which the shape collides.
-	});
+
+	var boxShape = new CANNON.Box(new CANNON.Vec3(1/2, 3/2, 10/2));
+	liftGuardLeft = new CANNON.Body({ mass: 0 , material: smoothMaterialCannon});
+	liftGuardLeft.addShape(boxShape);
+	liftGuardLeft.position.set(liftGuardLeftObj.position.x, liftGuardLeftObj.position.y, liftGuardLeftObj.position.z);
+	liftGuardLeft.velocity.set(0,0,0);
+	liftGuardLeft.linearDamping = 0;
+	world.addBody(liftGuardLeft);
+
+
+
 	//liftBottom.quaternion.copy( lift.getQuaternion() );
 
 	//scene.add(liftGuardLeftObj);
 
 
+	console.log
 	lift = new THREE.Object3D();
 	lift.add(liftBottomObj);
 	lift.add(liftGuardRightObj);
@@ -811,28 +665,172 @@ function createScene(){
 
 	scene.add(lift);
 
+	// lift blocker
+
+	liftBlockerObj = new THREE.Mesh(
+			new THREE.BoxGeometry(20, 10, 1),
+			new THREE.MeshPhongMaterial({color:0x4080AA })
+			)
 
 
 
+	//piece.position.z = -15;
+	liftBlockerObj.position.y = -5
+	liftBlockerObj.position.z = 29
+	liftBlockerObj.position.x = 0
 
 
-	// create cloth ramp
 
-/*
-	 clothRamp = new ClothRamp();
+	var boxShape = new CANNON.Box(new CANNON.Vec3(20/2, 10/2, 1/2));
+	liftBlocker = new CANNON.Body({ mass: 0 , material: smoothMaterialCannon});
+	liftBlocker.addShape(boxShape);
+	liftBlocker.position.set(liftBlockerObj.position.x, liftBlockerObj.position.y, liftBlockerObj.position.z);
+	liftBlocker.velocity.set(0,0,0);
+	liftBlocker.linearDamping = 0;
+	world.addBody(liftBlocker);
 
-	clothRamp.setMap('/donuts/textures/towel/FabricTowel001_COL_1K.jpg');
-	clothRamp.setNormal('/donuts/textures/towel/FabricTowel001_NRM_1K.jpg');
-	clothRamp.cloth.settings.balls = objs;
+	scene.add(liftBlockerObj)
 
-	*/
 
 	animationLoop();
 
 
 	
 }
+updateLift = function(){
+	if(liftstate == "raise"){
+		liftPositionY += 0.02
+	}
+	if(liftstate == "lower"){
+		liftPositionY -= 0.02
 
+	}
+
+	if(liftstate == "rotateForward"){
+		liftRotation += 0.03
+		liftPositionZ -= 0.1;
+	}
+	if(liftstate == "rotateBackward"){
+		liftRotation -= 0.03
+		liftPositionZ += 0.1;
+	}
+	if(liftstate == "pauseUp"){
+		liftGuardPosition += 0.03
+	}
+	if(liftstate == "pauseDown"){
+
+		liftGuardPosition -= 0.03
+	}
+
+	
+	if(liftPositionY > 3.14/2){
+		liftPositionY = 3.14/2;
+		liftstate = "rotateForward";
+	}
+	if(liftRotation > 1){
+		liftstate = "rotateBackward";
+		liftRotation = 1;
+	}
+
+	if(liftRotation < 0){
+		liftstate = "lower";
+		liftRotation = 0;
+	}
+	
+	if(liftPositionY < -3.14/2){
+		liftPositionY = -3.14/2;
+		liftstate = "pauseUp";
+	}
+	if(liftGuardPosition > 1){
+		liftGuardPosition = 1;
+		liftstate = "pauseDown";
+
+	}
+	if(liftGuardPosition < 0){
+		liftGuardPosition = 0;
+		liftstate = "raise";
+
+	}
+
+	//console.log(35 + liftPositionZ)
+	
+	lift.position.copy( new THREE.Vector3(liftStart.x, 15 * Math.sin(liftPositionY) + 4, liftStart.z + liftPositionZ) );
+
+	lift.rotation.x = -  3.14/2 * liftRotation;
+
+
+	liftBlockerObj.position.copy( new THREE.Vector3(liftBlockerObj.position.x, -5 + liftGuardPosition * 15, liftBlockerObj.position.z ) );
+	liftBlocker.position.set( liftBlockerObj.position.x, -5 + liftGuardPosition * 15, liftBlockerObj.position.z );
+
+	//liftGuardBackObj.position.copy( new THREE.Vector3(liftGuardBackStart.x, 15 * Math.sin(liftPositionY) + 4, liftGuardBackStart.z + liftPositionZ) );
+
+	//liftGuardBackObj.rotation.x = -  3.14/2 * liftRotation;
+
+
+
+
+	
+
+	var position = new THREE.Vector3();
+	var quaternion = new THREE.Quaternion();
+	var scale = new THREE.Vector3();
+
+
+	liftBottomObj.updateMatrixWorld(  );
+	liftBottomObj.matrixWorld.decompose( position, quaternion, scale );
+
+	var vector = new THREE.Vector3();
+	vector.setFromMatrixPosition( liftBottomObj.matrixWorld );
+
+
+	liftBottom.position.set( vector.x, vector.y, vector.z );
+
+
+	liftBottom.quaternion.set(quaternion._x, quaternion._y, quaternion._z, quaternion._w );
+
+	var position = new THREE.Vector3();
+	var quaternion = new THREE.Quaternion();
+	var scale = new THREE.Vector3();
+
+	liftGuardBackObj.updateMatrixWorld( true );
+	liftGuardBackObj.matrixWorld.decompose( position, quaternion, scale );
+
+	liftGuardBack.position.set( position.x, position.y, position.z );
+
+	liftGuardBack.quaternion.set(quaternion._x, quaternion._y, quaternion._z, quaternion._w );
+
+
+	var position = new THREE.Vector3();
+	var quaternion = new THREE.Quaternion();
+	var scale = new THREE.Vector3();
+
+	liftGuardRightObj.updateMatrixWorld( true );
+	liftGuardRightObj.matrixWorld.decompose( position, quaternion, scale );
+
+
+	liftGuardRight.position.set( position.x, position.y, position.z );
+
+	liftGuardRight.quaternion.set(quaternion._x, quaternion._y, quaternion._z, quaternion._w );
+
+
+
+
+	var position = new THREE.Vector3();
+	var quaternion = new THREE.Quaternion();
+	var scale = new THREE.Vector3();
+
+	liftGuardLeftObj.updateMatrixWorld( true );
+	liftGuardLeftObj.matrixWorld.decompose( position, quaternion, scale );
+
+	liftGuardLeft.position.set( position.x, position.y, position.z );
+
+	liftGuardLeft.quaternion.set(quaternion._x, quaternion._y, quaternion._z, quaternion._w );
+
+
+
+
+
+}
 setCamera = function(){
 		
 			

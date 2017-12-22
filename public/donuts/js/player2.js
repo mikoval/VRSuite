@@ -13,20 +13,15 @@ function Player2(z, color){
 	this.time = Date.now();
 
 
-	
-	 
-	var coll = world.add({ 
-	    type:'sphere', // type of shape : sphere, box, cylinder 
-	    size:[this.radius,this.radius,this.radius], // size of shape
-	    pos:[10,0,0], // start position in degree
-	    rot:[0,0,90], // start rotation in degree
-	    move:true, // dynamic or statique
-	    density: 5,
-	    friction: 0.4,
-	    restitution: 0.2,
-	    belongsTo: 1, // The bits of the collision groups to which the shape belongs.
-	    collidesWith: 0xffffffff // The bits of the collision groups with which the shape collides.
-	});
+		
+		var mass = 5, radius = 1;
+		var sphereShape = new CANNON.Sphere(radius); // Step 1
+		var coll = new CANNON.Body({mass: mass, shape: sphereShape, material: playerMaterialCannon}); // Step 2
+		coll.position.set(20,0,0);
+		world.add(coll); // Step 3
+
+
+
 	
 
 
@@ -48,8 +43,9 @@ function Player2(z, color){
 
 	this.update= function(){
 
-		this.coll.linearVelocity.multiplyScalar(0.95);
-		this.coll.angularVelocity.multiplyScalar(0.95);
+		this.coll.velocity.x = this.coll.velocity.x  * .95;
+		this.coll.velocity.z = this.coll.velocity.z  * .95;
+		//this.coll.angularVelocity.multiplyScalar(0.95);
 
 		var dt = (Date.now() - this.time) / 200;
 		this.time = Date.now();
@@ -74,8 +70,8 @@ function Player2(z, color){
 
 
 		var mesh = this.obj;
-		this.obj.position.copy( this.coll.getPosition() );
-		this.obj.quaternion.copy( this.coll.getQuaternion() );
+		this.obj.position.copy( this.coll.position);
+		this.obj.quaternion.copy( this.coll.quaternion);
 
 
 		//mesh.rotation.setFromQuaternion(this.orientation);
@@ -91,7 +87,7 @@ function Player2(z, color){
 		
 			
 
-			this.coll.applyImpulse(this.coll.position, this.direction.clone().multiplyScalar ( this.speed * 10 ));
+			this.coll.applyImpulse( this.direction.clone().multiplyScalar ( this.speed * 5 ), this.coll.position);
 
 			
 
@@ -101,7 +97,7 @@ function Player2(z, color){
 			this.changed = true;
 			//this.velocity = this.velocity.add(this.direction.clone().multiplyScalar ( -this.speed ))
 
-			this.coll.applyImpulse(this.coll.position, this.direction.clone().multiplyScalar ( -this.speed * 10 ));
+			this.coll.applyImpulse(this.direction.clone().multiplyScalar ( -this.speed * 5 ), this.coll.position);
 
 
 		
@@ -125,7 +121,7 @@ function Player2(z, color){
 		}
 		if(input.jump){
 		
-			this.coll.applyImpulse(this.coll.position, new THREE.Vector3(0.0, 50, 0.0));
+			this.coll.applyImpulse( new THREE.Vector3(0.0, 10, 0.0), this.coll.position);
 			
 		}
 		
