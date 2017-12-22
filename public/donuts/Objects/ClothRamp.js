@@ -21,8 +21,8 @@ function ClothRamp(settings){
 
 	settings.height = length;
 	settings.width = 20;
-	settings.resolutionX = 32;
-	settings.resolutionY =64;
+	settings.resolutionX = 64;
+	settings.resolutionY =128;
 	settings.iterations = settings.iterations || 5;
 	//console.log(length);
 

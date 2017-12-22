@@ -971,8 +971,8 @@ function ClothCollisionShader(){
 			'	vec3 dist = pos.xyz - target;',
 
 			'	float l = length(dist);',
-			'	if(l < radii[i]*1.2 ){',
-			'		pos.xyz = target + normalize(dist) * radii[i] * 1.2;',
+			'	if(l < radii[i]*1.3 ){',
+			'		pos.xyz = target + normalize(dist) * radii[i] * 1.3;',
 			'	}',
 
 		'	}',
