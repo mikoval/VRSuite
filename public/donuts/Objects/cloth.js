@@ -202,6 +202,9 @@ function Cloth(settings){
 		var lkpWidth = this.settings.resolutionX + 1;
 		var lkpHeight = this.settings.resolutionY + 1;
 		var parameters = {
+			minFilter: THREE.NearestFilter,
+			magFilter: THREE.NearestFilter,
+			format: THREE.RGBAFormat,
 		
 			type: THREE.FloatType
 		};
