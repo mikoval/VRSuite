@@ -45,6 +45,7 @@ function Player2(z, color){
 
 		this.coll.velocity.x = this.coll.velocity.x  * .95;
 		this.coll.velocity.z = this.coll.velocity.z  * .95;
+		this.coll.angularVelocity = this.coll.angularVelocity.scale(0.8)
 		//this.coll.angularVelocity.multiplyScalar(0.95);
 
 		var dt = (Date.now() - this.time) / 200;

@@ -10,7 +10,7 @@ function Water (x,y,z, width, height){
 
 	var BOUNDS = 10;
 	var WIDTH = 64;
-	var materialColor = 0x0040C0;
+	var materialColor = 0x0040A0;
 	var geometry = new THREE.PlaneBufferGeometry( BOUNDS, BOUNDS, WIDTH - 1, WIDTH -1 );
 	// material: make a ShaderMaterial clone of MeshPhongMaterial, with customized vertex shader
 	var material = new THREE.ShaderMaterial( {
@@ -41,7 +41,7 @@ function Water (x,y,z, width, height){
 	waterUniforms = material.uniforms;
 	waterMesh = new THREE.Mesh( geometry, material );
 	waterMesh.rotation.x = - Math.PI / 2;
-	waterMesh.position.y  = -4.5;
+	waterMesh.position.y  = this.y;
 	waterMesh.matrixAutoUpdate = false;
 	waterMesh.updateMatrix();
 
@@ -141,7 +141,10 @@ function Water (x,y,z, width, height){
 		var uniforms = heightmapVariable.material.uniforms;
 		
 		uniforms.time= { value: time };
+
 		var campos = camera.position;
+
+		console.log(campos)
 
 		waterMesh.material.uniforms.camPos = {value: new THREE.Vector3(campos.x, campos.y, campos.z)};
 		//waterMesh.material.uniforms.reflectTexture = {value: reflector.material.uniforms.tDiffuse.value};

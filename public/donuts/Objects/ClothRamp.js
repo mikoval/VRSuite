@@ -1,7 +1,7 @@
 function ClothRamp(settings){
 	
 	settings = settings || {};
-	settings.Point1 = settings.Point1 || new THREE.Vector3(0.0, 5.0, 0.0);
+	settings.Point1 = settings.Point1 || new THREE.Vector3(0.0, 6.0, 0.0);
 	settings.Point2 = settings.Point2 || new THREE.Vector3(0.0, 15.0, 30.0);
 
 	this.settings = settings;
@@ -54,7 +54,7 @@ function ClothRamp(settings){
 		var dy = 3 * Math.sin( (3.14/2  -3.14 * i/(res-1)) - 3.14/2 );
 
 
-		dy *= 1.5;
+		dy *= 1.3;
 		dx *= 4;
 
 
@@ -202,7 +202,7 @@ function ClothRamp(settings){
 		this.cloth.updateMatrices();
 		this.cloth.update();
 		this.counter++;
-		if(this.counter % 60 != 0 || objs.length > 10){
+		if(this.counter % 40 != 0 || objs.length > 10){
 			return;
 		}
 		//console.time('someFunction');
@@ -211,9 +211,9 @@ function ClothRamp(settings){
 
 		var startPos = new THREE.Vector3().addVectors(this.settings.Point1.clone().multiplyScalar(0.1),this.settings.Point2.clone().multiplyScalar(0.9) );
 		startPos.y += 2;
-		var x = startPos.x;
-		var y = startPos.y;
-		var z = startPos.z;
+		var x = startPos.x + (Math.random() - 0.5) * 5;
+		var y = startPos.y ;
+		var z = startPos.z ;
 
 		var sphere = new THREE.Mesh(
 			new THREE.SphereGeometry(radius, 16, 16),
@@ -233,6 +233,8 @@ function ClothRamp(settings){
 		b1.position.set(x, y, z);
 		b1.velocity.set(0,0,0);
 		b1.linearDamping = 0;
+		b1.identifier = 'ball'
+		
 		world.addBody(b1);
 		console.log("adding piece");
 		objs2.push(b1);

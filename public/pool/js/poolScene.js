@@ -1,7 +1,8 @@
 
 var balls = [];
+
 function initScene(){
-	
+
 
 	effect = undefined;
 	WIDTH = $(document).width();
@@ -16,7 +17,7 @@ function initScene(){
 
 
 
-
+	timeStep = 1/30;
 
 	renderer = new THREE.WebGLRenderer( { antialias: true } );
 	renderer.setPixelRatio( window.devicePixelRatio );
@@ -48,8 +49,7 @@ function initScene(){
 	objs = [];
 	objs2 = [];
 	
-	scene = new Physijs.Scene({reportsize: 50, fixedTimeStep: 1 / 60});
-	scene.setGravity(new THREE.Vector3( 0, -10, 0 ));
+	scene = new THREE.Scene({});
 
 
 	
@@ -76,8 +76,7 @@ function initScene(){
 	model = undefined;
 	
 
-	Physijs.scripts.worker = '/general/physijs_worker.js';
-	Physijs.scripts.ammo = '/general/js/ammo.js';
+
 
 	
 	effect = undefined;
@@ -91,16 +90,20 @@ function initScene(){
 
 
 function animationLoop(){
-	//console.time('someFunction');
 
 
-	player.update();
+	
+	
 	water.update();
-	world.update();
+	terrain.update();
+	world.step(timeStep);
+	player.update();
+
 	for(var i = 0; i < balls.length; i++){
 		balls[i].update();
 	}
-	scene.simulate();
+
+	//scene.simulate();
 
 	setCamera();
 
@@ -142,22 +145,23 @@ function animationLoop(){
 		//console.timeEnd('someFunction');
 
 		setTimeout(animationLoop, 30);
+		
 	}
 
 $(document).ready(function(){
-	ground_material = Physijs.createMaterial(
-		new THREE.MeshPhongMaterial({ displacementScale: 0.0}),
-		1.0, // high friction
-		0.0 // low restitution
-
-	);
-
+	ground_material = new THREE.MeshPhongMaterial({ displacementScale: 0.0}),
+	
 	 
 	
 	initScene();
 	createScene()
-	scene.simulate();
-	animationLoop();
+
+
+	
+
+
+		requestAnimationFrame( animationLoop );
+
 })
 
 
@@ -173,8 +177,56 @@ var loader = new THREE.TextureLoader();
 
 function createScene(){
 	// Ground
-	
-	world = new PoolWorld();
+	world = new CANNON.World();
+	world.gravity.set(0,-9.82 , 0);
+	world.broadphase = new CANNON.NaiveBroadphase();
+	world.solver.iterations = 1;
+
+	playerMaterialCannon = new CANNON.Material("playerMaterial")
+	groundMaterialCannon = new CANNON.Material("groundMaterial")
+	poolMaterialCannon = new CANNON.Material("smoothMaterial")
+	ballMaterialCannon = new CANNON.Material("ballMaterial")
+	var ContactMaterial = new CANNON.ContactMaterial(
+                    playerMaterialCannon,      // Material #1
+                    groundMaterialCannon,         // Material #2
+                    {friction: 0.8,
+            		restitution: 0.2}       // friction coefficient
+                    );     // restitution
+	world.addContactMaterial(ContactMaterial); 
+	var ContactMaterial = new CANNON.ContactMaterial(
+                    playerMaterialCannon,      // Material #1
+                    poolMaterialCannon,         // Material #2
+                    {friction: 1.0,
+            		restitution: 0.3} );     // restitution
+
+	world.addContactMaterial(ContactMaterial); 
+	var ContactMaterial = new CANNON.ContactMaterial(
+                    ballMaterialCannon,      // Material #1
+                    poolMaterialCannon,         // Material #2
+                    {
+                    friction: 0.3,
+            		restitution: 0.5,
+
+            		} );     // restitution
+
+	world.addContactMaterial(ContactMaterial); 
+	var ContactMaterial = new CANNON.ContactMaterial(
+                    ballMaterialCannon,      // Material #1
+                    ballMaterialCannon,         // Material #2
+                    {friction: 0.3,
+            		restitution: 1.0} );     // restitution
+	var ContactMaterial = new CANNON.ContactMaterial(
+                    ballMaterialCannon,      // Material #1
+                    playerMaterialCannon,         // Material #2
+                    {friction: 0.3,
+            		restitution: 1.0} );     // restitution
+
+	world.addContactMaterial(ContactMaterial); 
+
+
+
+
+	terrain = new PoolWorld();
 
 	
 	
@@ -197,7 +249,7 @@ setCamera = function(){
 		
 			
 
-		var position = new THREE.Vector3(0, 0.64, 0.2);
+		var position = new THREE.Vector3(0, 1.6, 1.3);
 		var axis = new THREE.Vector3( 0, 1, 0 );
 		var angle = player.rotation;
 		position.applyAxisAngle( axis, -angle );
@@ -207,10 +259,10 @@ setCamera = function(){
 		camera.position.y = position.y;
 		camera.position.z = position.z;
 
-			
+		
 		
 		var look = player.position.clone();
-		look.y += 0.63;
+		look.y += 1.4;
 		camera.lookAt(look); 
 	}
 

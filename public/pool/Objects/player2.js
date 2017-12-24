@@ -4,58 +4,59 @@ function Player2(z, color){
 	this.position = new THREE.Vector3(0, -5, 5);
 	this.velocity = new THREE.Vector3(0, 0, 0);
 	this.rotation = 0;
-	this.speed = 0.5;
+	this.speed = 2;
 	this.changed = true;
 	this.orientation =  new THREE.Quaternion();
 	this.pathColor = 1;
-	this.radius = 0.5;
+	this.radius = 1.0;
 
 	this.time = Date.now();
 
-	var geometry = new THREE.SphereGeometry(this.radius, 4,4);
+
+		
+		var mass = 10, radius = this.radius;
+		var sphereShape = new CANNON.Sphere(radius); // Step 1
+		var coll = new CANNON.Body({mass: mass, shape: sphereShape, material: playerMaterialCannon}); // Step 2
+		//coll.position.set(20,0,0);
+		world.add(coll); // Step 3
+
+
+
 	
-	 
-
-	collMat = Physijs.createMaterial(
-		new THREE.MeshPhongMaterial({ color:0x33AAFF }),
-		1.0, // high friction
-		0 // low restitution
-	);
 
 
 
 
-	coll = new Physijs.SphereMesh(geometry, collMat, 30)
-	coll.position.z  = 7;
-	coll.visible = false;
-	scene.add(coll);
-
-
-	var material = playerMaterial;
-	var mesh = new THREE.Mesh(new THREE.SphereGeometry(this.radius, 32,32), material);
+	var mesh = new THREE.Mesh(new THREE.SphereGeometry(this.radius, 64,64), playerMaterial);
 
 	mesh.position.y = this.position.x;
 	mesh.position.y = this.position.y;
 	mesh.position.z = this.position.z;
-	//mesh.castShadow = true;
-	//mesh.receiveShadow = true;
-	coll.setDamping(0.1,0.7);
+	mesh.castShadow = true;
+	mesh.receiveShadow = true;
+	
 
-
+	console.log(coll);
 	this.coll = coll;
 	this.obj = mesh;
 	scene.add( this.obj );
 
 	this.update= function(){
+
+
+
+		this.coll.velocity.x = this.coll.velocity.x  * .95;
+		this.coll.velocity.z = this.coll.velocity.z  * .95;
+		this.coll.angularVelocity = this.coll.angularVelocity.scale(0.8)
+		//this.coll.angularVelocity.multiplyScalar(0.95);
+
 		var dt = (Date.now() - this.time) / 200;
 		this.time = Date.now();
 		if(dt > 2.0)
 			dt = 2.0;
 
 		var x = Math.random();
-		if(x<.03){
-			this.pathColor = Math.floor(Math.random()*3 ) + 1.0;
-		}
+		
 		this.inputs(dt);
 		this.velocity.y -= 3 * dt;
 		this.velocity.multiplyScalar(0.95)
@@ -70,14 +71,8 @@ function Player2(z, color){
 
 
 		var mesh = this.obj;
-		mesh.position.x = this.position.x;
-		mesh.position.y = this.position.y;
-		mesh.position.z = this.position.z;
-
-		mesh.quaternion._x = this.coll.quaternion._x;
-		mesh.quaternion._y = this.coll.quaternion._y;
-		mesh.quaternion._z = this.coll.quaternion._z;
-		mesh.quaternion._w = this.coll.quaternion._w;
+		this.obj.position.copy( this.coll.position);
+		this.obj.quaternion.copy( this.coll.quaternion);
 
 
 		//mesh.rotation.setFromQuaternion(this.orientation);
@@ -93,7 +88,7 @@ function Player2(z, color){
 		
 			
 
-			this.coll.applyCentralImpulse(this.direction.clone().multiplyScalar ( this.speed * 10 ));
+			this.coll.applyImpulse( this.direction.clone().multiplyScalar ( this.speed * 5 ), this.coll.position);
 
 			
 
@@ -103,7 +98,7 @@ function Player2(z, color){
 			this.changed = true;
 			//this.velocity = this.velocity.add(this.direction.clone().multiplyScalar ( -this.speed ))
 
-			this.coll.applyCentralImpulse(this.direction.clone().multiplyScalar ( -this.speed  * 10) );
+			this.coll.applyImpulse(this.direction.clone().multiplyScalar ( -this.speed * 5 ), this.coll.position);
 
 
 		
@@ -126,14 +121,15 @@ function Player2(z, color){
 			this.direction.applyAxisAngle( axis, angle );
 		}
 		if(input.jump){
-			if(this.position.y < 3.1 && this.velocity.y < 1.0) {
-				this.coll.applyCentralImpulse(new THREE.Vector3(0,1,0).multiplyScalar ( 30 ));
-			}
+		
+			this.coll.applyImpulse( new THREE.Vector3(0.0, 10, 0.0), this.coll.position);
+			
 		}
 		
 	}
 	
 }
+
 var loader = new THREE.TextureLoader();
 loader.load('/pool/textures/rocks/PaintingModernArtAbstract004_COL_VAR1_2K.jpg', function ( texture){
 	  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;

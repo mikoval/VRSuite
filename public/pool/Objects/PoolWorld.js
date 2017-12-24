@@ -4,14 +4,9 @@ causticsMaterial = undefined;
 caustics = new Array(32);
 
 function PoolWorld(){
-	tileMaterial = Physijs.createMaterial(
-			new THREE.MeshPhongMaterial({displacementScale: 0.0}),
-			1.0, // high friction
-			1.0, // low restitution
-		);
-
-	causticsMaterial = Physijs.createMaterial(
-			new THREE.ShaderMaterial({
+	tileMaterial = new THREE.MeshPhongMaterial({displacementScale: 0.0})
+		
+	causticsMaterial = new THREE.ShaderMaterial({
 				uniforms:
 					{
 						map: { value: null },
@@ -20,9 +15,8 @@ function PoolWorld(){
 				vertexShader: document.getElementById( 'causticsVertexShader' ).textContent,
 				fragmentShader: document.getElementById( 'causticsFragmentShader' ).textContent
 			}),
-			1.0, // high friction
-			1.0, // low restitution
-		);
+	
+	
 	causticsMaterial.transparent = true;
 
 	this.init = function(){
@@ -35,6 +29,8 @@ function PoolWorld(){
 		this.caustics.material.needsUpdate = true;
 		
 		this.causticsInd = (this.causticsInd + 1)%32;
+
+
 	}
 
 	this.generateGeometry = function(){
@@ -43,122 +39,220 @@ function PoolWorld(){
 
 		//add walls
 
-		var wallMat = new THREE.MeshPhongMaterial({color: 0xCCCCCC});
+		//var tileMaterial = new THREE.MeshPhongMaterial({color: 0xCCCCCC});
 		
+
 		var geometry = new THREE.BoxGeometry(20, 10, 1, 1, 1, 1)
-		coll = new Physijs.BoxMesh(geometry, wallMat, 0)
+		coll = new THREE.Mesh(geometry, tileMaterial, 0)
 		coll.position.z = -10;
 		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
+
+		var mass = 0;
+		var boxShape = new CANNON.Box(new CANNON.Vec3(20/2,10/2,1/2)); // Step 1
+		var collider = new CANNON.Body({mass: mass, shape: boxShape, material: poolMaterialCannon}); // Step 2
+		collider.position.set(0,0,-10);
+		world.add(collider); // Step 3
+		
 		
 
 		var geometry = new THREE.BoxGeometry(20, 10, 1, 1, 1, 1)
-		coll = new Physijs.BoxMesh(geometry, wallMat, 0)
+		coll = new THREE.Mesh(geometry, tileMaterial, 0)
 		coll.position.z = 10
 		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
+		var mass = 0;
+		var boxShape = new CANNON.Box(new CANNON.Vec3(20/2,10/2,1/2)); // Step 1
+		var collider = new CANNON.Body({mass: mass, shape: boxShape, material: poolMaterialCannon}); // Step 2
+		collider.position.set(0,0,10);
+		world.add(collider); // Step 3
+
+
+
 
 		var geometry = new THREE.BoxGeometry(1, 10, 20, 1, 1, 1)
-		coll = new Physijs.BoxMesh(geometry, wallMat, 0)
+		coll = new THREE.Mesh(geometry, tileMaterial, 0)
 		coll.position.x = -10
 		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
+		var mass = 0;
+		var boxShape = new CANNON.Box(new CANNON.Vec3(1/2,10/2,20/2)); // Step 1
+		var collider = new CANNON.Body({mass: mass, shape: boxShape, material: poolMaterialCannon}); // Step 2
+		collider.position.set(-10,0,0);
+		world.add(collider); // Step 3
+
+
+
 		var geometry = new THREE.BoxGeometry(1, 10, 20, 1, 1, 1)
-		coll = new Physijs.BoxMesh(geometry, wallMat, 0)
+		coll = new THREE.Mesh(geometry, tileMaterial, 0)
 		coll.position.x = 10
 		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
+		
+		var mass = 0;
+		var boxShape = new CANNON.Box(new CANNON.Vec3(1/2,10/2,20/2)); // Step 1
+		var collider = new CANNON.Body({mass: mass, shape: boxShape, material: poolMaterialCannon}); // Step 2
+		collider.position.set(10,0,0);
+		world.add(collider); // Step 3
 
+
+		
 
 		//add floor for pool
 		var geometry = new THREE.BoxGeometry(5, 1, 20, 1, 1, 1)
-		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
-		coll.position.y = -5
+		coll = new THREE.Mesh(geometry, tileMaterial, 0)
 		coll.position.x = -7.5
+		coll.position.y = -5
 		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
+		var mass = 0;
+		var boxShape = new CANNON.Box(new CANNON.Vec3(5/2,1/2,20/2)); // Step 1
+		var collider = new CANNON.Body({mass: mass, shape: boxShape, material: poolMaterialCannon}); // Step 2
+		collider.position.set(-7.5,-5,0);
+		world.add(collider); // Step 3
+
+
+
 		var geometry = new THREE.BoxGeometry(5, 1, 20, 1, 1, 1)
-		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
+		coll = new THREE.Mesh(geometry, tileMaterial, 0)
 		coll.position.y = -5
 		coll.position.x = 7.5
 		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
+		var mass = 0;
+		var boxShape = new CANNON.Box(new CANNON.Vec3(5/2,1/2,20/2)); // Step 1
+		var collider = new CANNON.Body({mass: mass, shape: boxShape, material: poolMaterialCannon}); // Step 2
+		collider.position.set(7.5,-5,0);
+		world.add(collider); // Step 3
+
+
+
 		var geometry = new THREE.BoxGeometry(10, 1, 5, 1, 1, 1)
-		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
+		coll = new THREE.Mesh(geometry, tileMaterial, 0)
 		coll.position.y = -5
 		coll.position.z = -7.5
 		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
+		var mass = 0;
+		var boxShape = new CANNON.Box(new CANNON.Vec3(10/2,1/2,5/2)); // Step 1
+		var collider = new CANNON.Body({mass: mass, shape: boxShape, material: poolMaterialCannon}); // Step 2
+		collider.position.set(0,-5,-7.5);
+		world.add(collider); // Step 3
+
+
+
 		var geometry = new THREE.BoxGeometry(10, 1, 5, 1, 1, 1)
-		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
+		coll = new THREE.Mesh(geometry, tileMaterial, 0)
 		coll.position.y = -5
 		coll.position.z = 7.5
 		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
+		var mass = 0;
+		var boxShape = new CANNON.Box(new CANNON.Vec3(10/2,1/2,5/2)); // Step 1
+		var collider = new CANNON.Body({mass: mass, shape: boxShape, material: poolMaterialCannon}); // Step 2
+		collider.position.set(0,-5,7.5);
+		world.add(collider); // Step 3
 
+		
 
 		//add pool
 
 		var geometry = new THREE.BoxGeometry(10, 5, 0.1, 1, 1, 1)
-		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
+		coll = new THREE.Mesh(geometry, tileMaterial, 0)
 		coll.position.z = -5;
 		coll.position.y = -6.5;
 		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
+		var mass = 0;
+		var boxShape = new CANNON.Box(new CANNON.Vec3(10/2,5/2,.1/2)); // Step 1
+		var collider = new CANNON.Body({mass: mass, shape: boxShape, material: poolMaterialCannon}); // Step 2
+		collider.position.set(0,-6.5,-5);
+		world.add(collider); // Step 3
+
 		
 
 		var geometry = new THREE.BoxGeometry(10, 5, 0.1, 1, 1, 1)
-		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
+		coll = new THREE.Mesh(geometry, tileMaterial, 0)
 		coll.position.z = 5
 		coll.position.y = -6.5
 		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
+		var mass = 0;
+		var boxShape = new CANNON.Box(new CANNON.Vec3(10/2,5/2,.1/2)); // Step 1
+		var collider = new CANNON.Body({mass: mass, shape: boxShape, material: poolMaterialCannon}); // Step 2
+		collider.position.set(0,-6.5,5);
+		world.add(collider); // Step 3
+
+
+
 
 		var geometry = new THREE.BoxGeometry(0.1, 5, 10, 1, 1, 1)
-		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
+		coll = new THREE.Mesh(geometry, tileMaterial, 0)
 		coll.position.x = -5
 		coll.position.y = -6.5
 		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
+		var mass = 0;
+		var boxShape = new CANNON.Box(new CANNON.Vec3(.1/2,5/2,10/2)); // Step 1
+		var collider = new CANNON.Body({mass: mass, shape: boxShape, material: poolMaterialCannon}); // Step 2
+		collider.position.set(-5,-6.5,0);
+		world.add(collider); // Step 3
+
+
+
 		var geometry = new THREE.BoxGeometry(0.1, 5, 10, 1, 1, 1)
-		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
+		coll = new THREE.Mesh(geometry, tileMaterial, 0)
 		coll.position.x = 5
 		coll.position.y = -6.5
 		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
+		var mass = 0;
+		var boxShape = new CANNON.Box(new CANNON.Vec3(.1/2,5/2,10/2)); // Step 1
+		var collider = new CANNON.Body({mass: mass, shape: boxShape, material: poolMaterialCannon}); // Step 2
+		collider.position.set(5,-6.5,0);
+		world.add(collider); // Step 3
+
+
 
 		var geometry = new THREE.BoxGeometry(10, 0.1, 10, 1, 1, 1)
-		coll = new Physijs.BoxMesh(geometry, tileMaterial, 0)
+		coll = new THREE.Mesh(geometry, tileMaterial, 0)
 		coll.position.y = -6.5
 		coll.castShadow = false;
 		coll.receiveShadow = true;
 		scene.add(coll);
 
+		var mass = 0;
+		var boxShape = new CANNON.Box(new CANNON.Vec3(10/2,.1/2,10/2)); // Step 1
+		var collider = new CANNON.Body({mass: mass, shape: boxShape, material: poolMaterialCannon}); // Step 2
+		collider.position.set(0,-6.5,0);
+		world.add(collider); // Step 3
+		
+		
 		var causticsPlane = new THREE.PlaneGeometry(10, 0.1, 10, 1, 1, 1)
-		coll = new Physijs.PlaneMesh(geometry, causticsMaterial);
+		coll = new THREE.Mesh(geometry, causticsMaterial);
 		coll.position.y = -6.49
 		coll.castShadow = false;
 		coll.receiveShadow = true;

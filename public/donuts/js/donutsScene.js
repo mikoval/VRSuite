@@ -155,7 +155,11 @@ function animationLoop(){
 		 	}
 		}
 
-
+		if( clothHolder){
+	      	console.log("here")
+	      	clothHolder.update();
+	      	//cloth.render();
+	      }
 
 		if(effect){
           //console.log(controls);
@@ -190,10 +194,7 @@ function animationLoop(){
 	    else{
 	      renderer.render(scene, camera);
 
-	      if( clothHolder){
-	      	clothHolder.update();
-	      	//cloth.render();
-	      }
+	      
 	    }
 
 
@@ -311,6 +312,7 @@ function createScene(){
 	world = new CANNON.World();
 	world.gravity.set(0,-9.82 * 3, 0);
 	world.broadphase = new CANNON.NaiveBroadphase();
+
 	// create materials
 
 	playerMaterialCannon = new CANNON.Material("playerMaterial")
@@ -334,8 +336,11 @@ function createScene(){
 	var ContactMaterial = new CANNON.ContactMaterial(
                     ballMaterialCannon,      // Material #1
                     smoothMaterialCannon,         // Material #2
-                    {friction: 0.3,
-            		restitution: 0.3} );     // restitution
+                    {
+                    friction: 0.3,
+            		restitution: 0.3,
+
+            		} );     // restitution
 
 	world.addContactMaterial(ContactMaterial); 
 	var ContactMaterial = new CANNON.ContactMaterial(
@@ -553,12 +558,18 @@ function createScene(){
 
 
 	
-	var boxShape = new CANNON.Box(new CANNON.Vec3(20/2, 1/2, 10/2));
-	liftBottom = new CANNON.Body({ mass: 10000 , material: groundMaterialCannon});
+	var boxShape = new CANNON.Box(new CANNON.Vec3(20/2, 2/2, 10/2));
+	liftBottom = new CANNON.Body({ mass: 0 , material: groundMaterialCannon});
 	liftBottom.addShape(boxShape);
 	liftBottom.position.set(liftBottomObj.position.x, liftBottomObj.position.y, liftBottomObj.position.z);
 	liftBottom.velocity.set(0,0,0);
 	liftBottom.linearDamping = 0;
+	liftBottom.identifier = 'liftBottom';
+	liftBottom.addEventListener("collide", function(e){ 
+			//e.body.applyImpulse( new THREE.Vector3(0.0, 10, 0.0), e.body.position);
+
+		} );
+
 	world.addBody(liftBottom);
 
 
@@ -692,6 +703,31 @@ function createScene(){
 	scene.add(liftBlockerObj)
 
 
+	//stand
+
+	standObj = new THREE.Mesh(
+			new THREE.BoxGeometry(10, 1, 10),
+			new THREE.MeshPhongMaterial({color:0x0A4488 })
+			)
+
+
+
+	//piece.position.z = -15;
+	standObj.position.y = 5
+	standObj.position.z = -20
+	standObj.position.x = 30
+
+
+
+	var boxShape = new CANNON.Box(new CANNON.Vec3(10/2, 1/2, 10/2));
+	stand = new CANNON.Body({ mass: 0 , material: smoothMaterialCannon});
+	stand.addShape(boxShape);
+	stand.position.set(standObj.position.x, standObj.position.y, standObj.position.z);
+	stand.velocity.set(0,0,0);
+	stand.linearDamping = 0;
+	world.addBody(stand);
+	scene.add(standObj)
+
 	animationLoop();
 
 
@@ -699,10 +735,10 @@ function createScene(){
 }
 updateLift = function(){
 	if(liftstate == "raise"){
-		liftPositionY += 0.02
+		liftPositionY += 0.01
 	}
 	if(liftstate == "lower"){
-		liftPositionY -= 0.02
+		liftPositionY -= 0.01
 
 	}
 
@@ -715,11 +751,11 @@ updateLift = function(){
 		liftPositionZ += 0.1;
 	}
 	if(liftstate == "pauseUp"){
-		liftGuardPosition += 0.03
+		liftGuardPosition += 0.01
 	}
 	if(liftstate == "pauseDown"){
 
-		liftGuardPosition -= 0.03
+		liftGuardPosition -= 0.01
 	}
 
 	
@@ -755,7 +791,7 @@ updateLift = function(){
 	//console.log(35 + liftPositionZ)
 	
 	lift.position.copy( new THREE.Vector3(liftStart.x, 15 * Math.sin(liftPositionY) + 4, liftStart.z + liftPositionZ) );
-
+	console.log(liftStart.z + liftPositionZ)
 	lift.rotation.x = -  3.14/2 * liftRotation;
 
 
@@ -771,28 +807,30 @@ updateLift = function(){
 
 	
 
+	
 	var position = new THREE.Vector3();
 	var quaternion = new THREE.Quaternion();
 	var scale = new THREE.Vector3();
 
-
-	liftBottomObj.updateMatrixWorld(  );
+	liftBottomObj.matrixWorldNeedsUpdate = true
 	liftBottomObj.matrixWorld.decompose( position, quaternion, scale );
 
-	var vector = new THREE.Vector3();
-	vector.setFromMatrixPosition( liftBottomObj.matrixWorld );
+	console.log(position.clone().sub(lift.position));
+
+	liftBottom.position.set( position.x, position.y, position.z);
 
 
-	liftBottom.position.set( vector.x, vector.y, vector.z );
 
 
 	liftBottom.quaternion.set(quaternion._x, quaternion._y, quaternion._z, quaternion._w );
 
+
+
 	var position = new THREE.Vector3();
 	var quaternion = new THREE.Quaternion();
 	var scale = new THREE.Vector3();
 
-	liftGuardBackObj.updateMatrixWorld( true );
+	liftGuardBackObj.matrixWorldNeedsUpdate = true
 	liftGuardBackObj.matrixWorld.decompose( position, quaternion, scale );
 
 	liftGuardBack.position.set( position.x, position.y, position.z );
@@ -804,7 +842,7 @@ updateLift = function(){
 	var quaternion = new THREE.Quaternion();
 	var scale = new THREE.Vector3();
 
-	liftGuardRightObj.updateMatrixWorld( true );
+	liftGuardRightObj.matrixWorldNeedsUpdate = true
 	liftGuardRightObj.matrixWorld.decompose( position, quaternion, scale );
 
 
@@ -819,7 +857,7 @@ updateLift = function(){
 	var quaternion = new THREE.Quaternion();
 	var scale = new THREE.Vector3();
 
-	liftGuardLeftObj.updateMatrixWorld( true );
+	liftGuardLeftObj.matrixWorldNeedsUpdate = true
 	liftGuardLeftObj.matrixWorld.decompose( position, quaternion, scale );
 
 	liftGuardLeft.position.set( position.x, position.y, position.z );
@@ -827,6 +865,7 @@ updateLift = function(){
 	liftGuardLeft.quaternion.set(quaternion._x, quaternion._y, quaternion._z, quaternion._w );
 
 
+				
 
 
 
