@@ -416,8 +416,8 @@ function createScene(){
 	var settings = {
 		width: 18,
 		height: 10,
-		resolutionX: 20,
-		resolutionY: 20,
+		resolutionX: 15,
+		resolutionY: 15,
 	}
 	clothHolder = new ClothStand(settings);
 	clothHolder.setMap('/donuts/textures/persianRug/RugPersian004_COL_1K.jpg');
