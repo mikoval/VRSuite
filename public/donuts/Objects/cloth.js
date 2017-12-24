@@ -202,10 +202,7 @@ function Cloth(settings){
 		var lkpWidth = this.settings.resolutionX + 1;
 		var lkpHeight = this.settings.resolutionY + 1;
 		var parameters = {
-			minFilter: THREE.NearestFilter,
-			magFilter: THREE.NearestFilter,
-			format: THREE.RGBFormat,
-			stencilBuffer: false,
+		
 			type: THREE.FloatType
 		};
 		var vertexPositions1 = new THREE.WebGLRenderTarget( lkpWidth, lkpHeight, parameters );
