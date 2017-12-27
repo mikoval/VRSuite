@@ -15,7 +15,7 @@ function Cloth(settings){
 	
 	settings.height = settings.height || 10;
 
-	settings.iterations = settings.iterations || 5;
+	settings.iterations = 30;
 
 	if(settings.modifyHeight){
 		settings.height = settings.height * 0.8
@@ -820,7 +820,7 @@ function ClothConstrainShader(){
 		'	pos = transformation *  pos; ',
 		
 
-
+		'vec2 newUV = vec2(0.0, 0.0);',
 		'	if(type == 0.0){',
 			'	float px = floor(vuv.x * res.x );',
 			'	float spacingx = px- (2.0 * floor(px/2.0));',
@@ -830,10 +830,10 @@ function ClothConstrainShader(){
 			'	total = total- (2.0 * floor(total/2.0));',
 
 			'	if(total == 0.0){',
-			'		vec2 newUV = vuv + (direction * cellSize);',
+			'		 newUV = vuv + (direction * cellSize);',
 			'	}',
 			'	else{',
-			'		vec2 newUV = vuv - (direction * cellSize);',
+			'		 newUV = vuv - (direction * cellSize);',
 			'	}',
 		'	}',
 		'	if(type == 1.0){',
@@ -842,12 +842,12 @@ function ClothConstrainShader(){
 			
 			'	float total = spacingx;',
 		
-		
+			
 			'	if(total == 0.0){',
-			'		vec2 newUV = vuv + (direction * cellSize);',
+			'		 newUV = vuv + (direction * cellSize);',
 			'	}',
 			'	else{',
-			'		vec2 newUV = vuv - (direction * cellSize);',
+			'		 newUV = vuv - (direction * cellSize);',
 			'	}',
 		'	}',
 		
@@ -857,10 +857,8 @@ function ClothConstrainShader(){
 		
 		
 		'	vec4 totalDisplacement = vec4(0.0);',
-		'	for(float i = -1.0; i < 2.0; i++){',
-		'		for(float j = -1.0; j < 2.0; j++){',
-		'			vec2 newUV = vuv + vec2(i * cellSize.x, j * cellSize.y);',
-		'			if(newUV.x > 0.0 && newUV.x < 1.0 && newUV.y > 0.0 && newUV.y < 1.0 && !(i == 0.0 && j == 0.0)){ ',
+
+		'			if(newUV.x > 0.0 && newUV.x < 1.0 && newUV.y > 0.0 && newUV.y < 1.0 ){ ',
 		'				vec4 posOld = texture2D(vertexPositionsStart, vuv);' ,
 		'				vec4 posOld2 = texture2D(vertexPositionsStart, newUV);' ,
 
@@ -880,24 +878,10 @@ function ClothConstrainShader(){
 		'				totalDisplacement.y += offsetY;',
 		'				totalDisplacement.z += offsetZ;',
 		'			}',
-		'		}',
-		'	}',
+	
 		
 		'	pos += totalDisplacement;',
 		'	if(  vuv.x  > 1.0 - cellSize.x  && topConstrain == 1 ){',
-		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
-		'	}',
-
-/*
-		
-		'	if(  vuv.y  < cellSize.y  && leftConstrain == 1 ){',
-		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
-		'	}',
-
-		
-
-
-		'	if(  vuv.y  > 1.0 - cellSize.y && rightConstrain == 1 ){',
 		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
 		'	}',
 
@@ -905,10 +889,19 @@ function ClothConstrainShader(){
 		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
 		'	}',
 
-*/
+		'	if(  vuv.y  < cellSize.y  && leftConstrain == 1 ){',
+		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
+		'	}',
+
+
+		'	if(  vuv.y  > 1.0 - cellSize.y && rightConstrain == 1 ){',
+		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
+		'	}',
+
+
 
 			'pos = inverse *  pos; ',
-		
+			
 		'	gl_FragColor = vec4( pos.xyz , 1.0 );',
 	
 

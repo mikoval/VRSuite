@@ -4,7 +4,7 @@ function ClothStand(settings){
 	settings.width = settings.width || 10;
 	settings.height = settings.height || 10;
 
-	settings.iterations = settings.iterations || 5;
+	settings.iterations = settings.iterations || 10;
 
 	var width = settings.width;
 	var height = settings.height;
