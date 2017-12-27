@@ -865,7 +865,6 @@ function ClothConstrainShader(){
 		'				vec4 posOld2 = texture2D(vertexPositionsStart, newUV);' ,
 
 		'				float targetDistance = length(posOld - posOld2);',
-		'				targetDistance = 1.0;',
 		'				vec4 newPos =  texture2D(vertexPositions, newUV);',
 		'				newPos = transformation *  newPos; ',
 		'				float dx = pos.x - newPos.x;',
@@ -889,20 +888,24 @@ function ClothConstrainShader(){
 		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
 		'	}',
 
-		'	if(  vuv.x  < cellSize.x  && bottomConstrain == 1 ){',
-		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
-		'	}',
-
+/*
+		
 		'	if(  vuv.y  < cellSize.y  && leftConstrain == 1 ){',
 		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
 		'	}',
+
+		
 
 
 		'	if(  vuv.y  > 1.0 - cellSize.y && rightConstrain == 1 ){',
 		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
 		'	}',
 
+		'	if(  vuv.x  < cellSize.x  && bottomConstrain == 1 ){',
+		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
+		'	}',
 
+*/
 
 			'pos = inverse *  pos; ',
 		
