@@ -818,7 +818,7 @@ function ClothConstrainShader(){
 		'void main() {',
 		'	vec2 cellSize  = 1.0 / res;',
 		'	vec4 pos = texture2D(vertexPositions, vuv.xy );',
-		'	pos = transformation *  pos; ',
+		//'	pos = transformation *  pos; ',
 		
 
 		'vec2 newUV;',
@@ -902,7 +902,7 @@ function ClothConstrainShader(){
 
 
 
-			'pos = inverse *  pos; ',
+		//	'pos = inverse *  pos; ',
 		
 		'	gl_FragColor = vec4( pos.xyz , 1.0 );',
 	
