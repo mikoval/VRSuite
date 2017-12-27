@@ -156,7 +156,6 @@ function animationLoop(){
 		}
 
 		if( clothHolder){
-	      	console.log("here")
 	      	clothHolder.update();
 	      	//cloth.render();
 	      }
@@ -189,10 +188,10 @@ function animationLoop(){
 	        
 	      }
 	    
-	    //  effect.render(scene, camera);
+	      effect.render(scene, camera);
 	    }
 	    else{
-	    // renderer.render(scene, camera);
+	      renderer.render(scene, camera);
 
 	      
 	    }
@@ -664,7 +663,6 @@ function createScene(){
 	//scene.add(liftGuardLeftObj);
 
 
-	console.log
 	lift = new THREE.Object3D();
 	lift.add(liftBottomObj);
 	lift.add(liftGuardRightObj);
@@ -791,7 +789,6 @@ updateLift = function(){
 	//console.log(35 + liftPositionZ)
 	
 	lift.position.copy( new THREE.Vector3(liftStart.x, 15 * Math.sin(liftPositionY) + 4, liftStart.z + liftPositionZ) );
-	console.log(liftStart.z + liftPositionZ)
 	lift.rotation.x = -  3.14/2 * liftRotation;
 
 
@@ -815,7 +812,6 @@ updateLift = function(){
 	liftBottomObj.matrixWorldNeedsUpdate = true
 	liftBottomObj.matrixWorld.decompose( position, quaternion, scale );
 
-	console.log(position.clone().sub(lift.position));
 
 	liftBottom.position.set( position.x, position.y, position.z);
 
@@ -874,7 +870,7 @@ setCamera = function(){
 		
 			
 
-		var position = new THREE.Vector3(0, 3, 10);
+		var position = new THREE.Vector3(5, 3, -10);
 		var axis = new THREE.Vector3( 0, 1, 0 );
 		var angle = player.rotation;
 		position.applyAxisAngle( axis, -angle );

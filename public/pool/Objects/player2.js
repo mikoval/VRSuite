@@ -1,7 +1,7 @@
 var playerMaterial = new THREE.MeshPhongMaterial({ displacementScale: 0});
 function Player2(z, color){
 	this.direction = new THREE.Vector3( 0, 0, -1 );
-	this.position = new THREE.Vector3(0, -5, 5);
+	this.position = new THREE.Vector3();
 	this.velocity = new THREE.Vector3(0, 0, 0);
 	this.rotation = 0;
 	this.speed = 2;
@@ -17,6 +17,8 @@ function Player2(z, color){
 		var mass = 10, radius = this.radius;
 		var sphereShape = new CANNON.Sphere(radius); // Step 1
 		var coll = new CANNON.Body({mass: mass, shape: sphereShape, material: playerMaterialCannon}); // Step 2
+
+	
 		//coll.position.set(20,0,0);
 		world.add(coll); // Step 3
 

@@ -17,7 +17,8 @@ function Player2(z, color){
 		var mass = 5, radius = 1;
 		var sphereShape = new CANNON.Sphere(radius); // Step 1
 		var coll = new CANNON.Body({mass: mass, shape: sphereShape, material: playerMaterialCannon}); // Step 2
-		coll.position.set(20,0,0);
+		coll.position.set(30,10,-20);
+
 		world.add(coll); // Step 3
 
 

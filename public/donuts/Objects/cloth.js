@@ -346,33 +346,30 @@ function Cloth(settings){
 		this.positions3 = tmp1;
 	}
 	this.constrainVertices = function(){
-		this.constrainMaterial.uniforms.rigid.value = 0.8;
+		this.constrainMaterial.uniforms.rigid.value = 0.4;
 		this.constrainMaterial.uniforms.type.value = 0;
 		this.constrainLeft();
-		/*this.constrainRight();
+		this.constrainRight();
 		this.constrainTop();
 		this.constrainBottom();
 
-		this.constrainMaterial.uniforms.rigid.value = 0.4;
+		this.constrainMaterial.uniforms.rigid.value = 0.2;
 		this.constrainMaterial.uniforms.type.value = 1;
 		this.constrainTopLeft();
 		this.constrainTopRight();
 		this.constrainBottomLeft();
 		this.constrainBottomRight();
-		*/
 	}
 	this.constrainLeft = function(){
 		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1;
 		this.constrainMaterial.uniforms.direction.value= new THREE.Vector2(-1.0, 0.0);
-		renderer.render(this.constrainScene, this.camera2);
-		//renderer.render(this.constrainScene, this.camera2, this.positions3);
-
+		renderer.render(this.constrainScene, this.camera2, this.positions3);
 		//renderer.render(this.constrainScene, this.camera2);
 		var tmp1 = this.positions1;
 		var tmp2 = this.positions2;
 		var tmp3 = this.positions3;
-		//this.positions1 = tmp3;
-		//this.positions3 = tmp1;
+		this.positions1 = tmp3;
+		this.positions3 = tmp1;
 
 	}
 	this.constrainRight = function(){
@@ -824,7 +821,6 @@ function ClothConstrainShader(){
 		
 
 
-			'vec2 newUV = vec2(0.0, 0.0);',
 		'	if(type == 0.0){',
 			'	float px = floor(vuv.x * res.x );',
 			'	float spacingx = px- (2.0 * floor(px/2.0));',
@@ -834,10 +830,10 @@ function ClothConstrainShader(){
 			'	total = total- (2.0 * floor(total/2.0));',
 
 			'	if(total == 0.0){',
-			'		 newUV = vuv + (direction * cellSize);',
+			'		vec2 newUV = vuv + (direction * cellSize);',
 			'	}',
 			'	else{',
-			'		 newUV = vuv - (direction * cellSize);',
+			'		vec2 newUV = vuv - (direction * cellSize);',
 			'	}',
 		'	}',
 		'	if(type == 1.0){',
@@ -845,12 +841,13 @@ function ClothConstrainShader(){
 			'	float spacingx = px- (2.0 * floor(px/2.0));',
 			
 			'	float total = spacingx;',
-	
+		
+		
 			'	if(total == 0.0){',
-			'		 newUV = vuv + (direction * cellSize);',
+			'		vec2 newUV = vuv + (direction * cellSize);',
 			'	}',
 			'	else{',
-			'		 newUV = vuv - (direction * cellSize);',
+			'		vec2 newUV = vuv - (direction * cellSize);',
 			'	}',
 		'	}',
 		
@@ -860,8 +857,10 @@ function ClothConstrainShader(){
 		
 		
 		'	vec4 totalDisplacement = vec4(0.0);',
-
-		'			if(newUV.x > 0.0 && newUV.x < 1.0 && newUV.y > 0.0 && newUV.y < 1.0 ){ ',
+		'	for(float i = -1.0; i < 2.0; i++){',
+		'		for(float j = -1.0; j < 2.0; j++){',
+		'			vec2 newUV = vuv + vec2(i * cellSize.x, j * cellSize.y);',
+		'			if(newUV.x > 0.0 && newUV.x < 1.0 && newUV.y > 0.0 && newUV.y < 1.0 && !(i == 0.0 && j == 0.0)){ ',
 		'				vec4 posOld = texture2D(vertexPositionsStart, vuv);' ,
 		'				vec4 posOld2 = texture2D(vertexPositionsStart, newUV);' ,
 
@@ -881,7 +880,8 @@ function ClothConstrainShader(){
 		'				totalDisplacement.y += offsetY;',
 		'				totalDisplacement.z += offsetZ;',
 		'			}',
-	
+		'		}',
+		'	}',
 		
 		'	pos += totalDisplacement;',
 		'	if(  vuv.x  > 1.0 - cellSize.x  && topConstrain == 1 ){',
@@ -900,12 +900,12 @@ function ClothConstrainShader(){
 		'	if(  vuv.y  > 1.0 - cellSize.y && rightConstrain == 1 ){',
 		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
 		'	}',
- 
+
 
 
 			'pos = inverse *  pos; ',
-			
-		'	gl_FragColor = vec4( newUV.xy, 0.0 , 1.0 );',
+		
+		'	gl_FragColor = vec4( pos.xyz , 1.0 );',
 	
 
 
