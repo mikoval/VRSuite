@@ -139,7 +139,7 @@ function Cloth(settings){
 
 
         // contrain scene
-         copyScene = new THREE.Scene();
+        var copyScene = new THREE.Scene();
 
         var clothCopyShaderObj = new  ClothCopyShader();
         var copyMaterial = new THREE.ShaderMaterial({
@@ -282,19 +282,16 @@ function Cloth(settings){
 
      
 
-		
 
-		this.copyMaterial.uniforms.inputTexture.value = this.startPositions;
 
-		renderer.render(copyScene, this.camera2);
 		
 
 		for(var j = 0; j < 1; j++){
 			this.updateVertices();
 
 			for(var i = 0; i < this.settings.iterations; i++){
-				this.constrainVertices();
-				this.collisions();
+				//this.constrainVertices();
+				//this.collisions();
 			}
 		}
 		
