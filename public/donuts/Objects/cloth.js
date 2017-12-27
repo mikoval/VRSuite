@@ -290,7 +290,7 @@ function Cloth(settings){
 			this.updateVertices();
 
 			for(var i = 0; i < this.settings.iterations; i++){
-				//this.constrainVertices();
+				this.constrainVertices();
 				//this.collisions();
 			}
 		}
