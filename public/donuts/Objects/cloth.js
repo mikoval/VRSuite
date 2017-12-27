@@ -287,11 +287,11 @@ function Cloth(settings){
 		
 
 		for(var j = 0; j < 1; j++){
-			//this.updateVertices();
+			this.updateVertices();
 
 			for(var i = 0; i < this.settings.iterations; i++){
-				//this.constrainVertices();
-				//this.collisions();
+				this.constrainVertices();
+				this.collisions();
 			}
 		}
 		
@@ -865,6 +865,7 @@ function ClothConstrainShader(){
 		'				vec4 posOld2 = texture2D(vertexPositionsStart, newUV);' ,
 
 		'				float targetDistance = length(posOld - posOld2);',
+		'				targetDistance = 1.0;',
 		'				vec4 newPos =  texture2D(vertexPositions, newUV);',
 		'				newPos = transformation *  newPos; ',
 		'				float dx = pos.x - newPos.x;',
