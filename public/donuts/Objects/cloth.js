@@ -895,7 +895,7 @@ function ClothConstrainShader(){
 		'	}',
 
 
-		'	if(  vuv.y  > 1.0 - cellSize.y && rightConstrain == 1 ){',
+		'	if(  vuv.y  > 1.0 - cellSize.y && rightConstrain == 1 || 1 > 0 ){',
 		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
 		'	}',
 
