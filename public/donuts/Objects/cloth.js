@@ -699,7 +699,7 @@ function ClothUpdateShader(){
 		'	pos = transformation * pos;',
 		'	vec4 posOld = texture2D(vertexPositionsOld, vuv.xy );',
 		'	posOld = transformation * posOld;',
-		'	vec4 velocity = vec4(0.0);// (pos - posOld) * 0.95 - vec4(0.0, 0.0, 0.0, 0.0);',
+		'	vec4 velocity = (pos - posOld) * 0.95 - vec4(0.0, 0.0, 0.0, 0.0);',
 
 
 			'	if(pos.w == 0.0){gl_FragColor =  vec4( (inverse *pos).xyz, 1.0 );}',
