@@ -881,7 +881,7 @@ function ClothConstrainShader(){
 		'			}',
 
 		
-		'	pos += totalDisplacement;',
+		//'	pos += totalDisplacement;',
 /*		'	if(  vuv.x  > 1.0 - cellSize.x  && topConstrain == 1 ){',
 		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
 		'	}',
@@ -904,7 +904,7 @@ function ClothConstrainShader(){
 
 		//	'pos = inverse *  pos; ',
 		
-		'	gl_FragColor = vec4( pos.xyz , 1.0 );',
+		'	gl_FragColor = vec4( pos );',
 	
 
 
