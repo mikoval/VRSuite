@@ -291,7 +291,7 @@ function Cloth(settings){
 
 			for(var i = 0; i < this.settings.iterations; i++){
 				//this.constrainVertices();
-				this.collisions();
+				//this.collisions();
 			}
 		}
 		
