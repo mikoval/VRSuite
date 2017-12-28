@@ -287,7 +287,7 @@ function Cloth(settings){
 		
 
 		for(var j = 0; j < 1; j++){
-			this.updateVertices();
+			//this.updateVertices();
 
 			for(var i = 0; i < this.settings.iterations; i++){
 				this.constrainVertices();
@@ -706,7 +706,7 @@ function ClothUpdateShader(){
 					'	else{',
 		'		if( vuv.x  > 1.0 - (cellSize.x )) ',
 		'			{gl_FragColor =  vec4( (inverse *pos).xyz, 1.0 );}',
-		'		else{gl_FragColor =  vec4( (inverse * (pos )).xyz, 1.0 );}',
+		'		else{gl_FragColor =  vec4( (inverse * (pos + velocity)).xyz, 1.0 );}',
 		'	}',
 		'}'
 	].join( '\n' )
