@@ -96,10 +96,10 @@ function initScene(){
 	light.position.z = 30;
 	light.castShadow = true;
    	light.shadow.bias = - 0.0001;
-    light.shadowCameraNear = 1;
-    light.shadowCameraFar = 100;
-    light.shadowMapWidth = 1024;
-    light.shadowMapHeight = 1024;
+    light.shadow.near  = 1;
+    light.shadow.far = 100;
+    light.shadow.mapSize.width = 1024;
+    light.shadow.mapSize.height = 1024;
 
 	scene.add( light );
 

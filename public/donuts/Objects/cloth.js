@@ -155,7 +155,7 @@ function Cloth(settings){
         this.copyMaterial = copyMaterial;
         this.copyScene = copyScene;
 
-        this.copyMaterial.uniforms.inputTexture.value = this.positions1;
+        this.copyMaterial.uniforms.inputTexture.value = this.positions1.texture;
 
         // collision scene
         var collisionScene = new THREE.Scene();
@@ -178,7 +178,7 @@ function Cloth(settings){
 		renderer.render(copyScene, camera2, this.positions2);
 		renderer.render(copyScene, camera2, this.positions3);
 		renderer.render(copyScene, camera2, this.startPositions);
-		this.constrainMaterial.uniforms.vertexPositionsStart.value = this.startPositions;
+		this.constrainMaterial.uniforms.vertexPositionsStart.value = this.startPositions.texture;
 
 
 	}
@@ -257,7 +257,7 @@ function Cloth(settings){
 		vertexPositions1.texture = initialValues;
 
 		
-		this.mesh.material.uniforms.vertexPositions.value = this.positions1;
+		this.mesh.material.uniforms.vertexPositions.value = this.positions1.texture;
 
 
 
@@ -290,19 +290,19 @@ function Cloth(settings){
 			this.updateVertices();
 
 			for(var i = 0; i < this.settings.iterations; i++){
-				//this.constrainVertices();
-				//this.collisions();
+				this.constrainVertices();
+				this.collisions();
 			}
 		}
 		
 		//console.timeEnd('someFunction');
 		//this.updateMaterial.uniforms.vertexPositions.value = this.positions1;
-		this.mesh.material.uniforms.vertexPositions.value = this.positions1;
+		this.mesh.material.uniforms.vertexPositions.value = this.positions1.texture;
 	}
 	this.updateVertices = function(){
 
-		this.updateMaterial.uniforms.vertexPositions.value = this.positions1;
-		this.updateMaterial.uniforms.vertexPositionsOld.value = this.positions2;
+		this.updateMaterial.uniforms.vertexPositions.value = this.positions1.texture;
+		this.updateMaterial.uniforms.vertexPositionsOld.value = this.positions2.texture;
 
 		renderer.render(this.updateScene, this.camera2, this.positions3);
 		
@@ -318,7 +318,7 @@ function Cloth(settings){
 	
 	
 	this.collisions = function(){
-		this.collisionMaterial.uniforms.vertexPositions.value = this.positions1;
+		this.collisionMaterial.uniforms.vertexPositions.value = this.positions1.texture;
 		
 
 
@@ -352,17 +352,16 @@ function Cloth(settings){
 		this.constrainRight();
 		this.constrainTop();
 		this.constrainBottom();
-		
+
 		this.constrainMaterial.uniforms.rigid.value = 0.2;
 		this.constrainMaterial.uniforms.type.value = 1;
 		this.constrainTopLeft();
 		this.constrainTopRight();
 		this.constrainBottomLeft();
 		this.constrainBottomRight();
-		
 	}
 	this.constrainLeft = function(){
-		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1;
+		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1.texture;
 		this.constrainMaterial.uniforms.direction.value= new THREE.Vector2(-1.0, 0.0);
 		renderer.render(this.constrainScene, this.camera2, this.positions3);
 		//renderer.render(this.constrainScene, this.camera2);
@@ -374,7 +373,7 @@ function Cloth(settings){
 
 	}
 	this.constrainRight = function(){
-		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1;
+		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1.texture;
 		this.constrainMaterial.uniforms.direction.value=new THREE.Vector2(1.0, 0.0);
 		renderer.render(this.constrainScene, this.camera2, this.positions3);
 		var tmp1 = this.positions1;
@@ -384,7 +383,7 @@ function Cloth(settings){
 		this.positions3 = tmp1;
 	}
 	this.constrainTop = function(){
-		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1;
+		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1.texture;
 		this.constrainMaterial.uniforms.direction.value=new THREE.Vector2(0.0, 1.0);
 		renderer.render(this.constrainScene, this.camera2, this.positions3);
 		var tmp1 = this.positions1;
@@ -394,7 +393,7 @@ function Cloth(settings){
 		this.positions3 = tmp1;
 	}
 	this.constrainBottom = function(){
-		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1;
+		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1.texture;
 		this.constrainMaterial.uniforms.direction.value=new THREE.Vector2(0.0, -1.0);
 		renderer.render(this.constrainScene, this.camera2, this.positions3);
 		var tmp1 = this.positions1;
@@ -404,7 +403,7 @@ function Cloth(settings){
 		this.positions3 = tmp1;
 	}
 	this.constrainTopLeft = function(){
-		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1;
+		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1.texture;
 		this.constrainMaterial.uniforms.direction.value= new THREE.Vector2(-1.0, 1.0);
 		renderer.render(this.constrainScene, this.camera2, this.positions3);
 		//renderer.render(this.constrainScene, this.camera2);
@@ -416,7 +415,7 @@ function Cloth(settings){
 
 	}
 	this.constrainTopRight = function(){
-		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1;
+		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1.texture;
 		this.constrainMaterial.uniforms.direction.value=new THREE.Vector2(1.0, 1.0);
 		renderer.render(this.constrainScene, this.camera2, this.positions3);
 		var tmp1 = this.positions1;
@@ -426,7 +425,7 @@ function Cloth(settings){
 		this.positions3 = tmp1;
 	}
 	this.constrainBottomLeft = function(){
-		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1;
+		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1.texture;
 		this.constrainMaterial.uniforms.direction.value=new THREE.Vector2(-1.0, -1.0);
 		renderer.render(this.constrainScene, this.camera2, this.positions3);
 		var tmp1 = this.positions1;
@@ -436,7 +435,7 @@ function Cloth(settings){
 		this.positions3 = tmp1;
 	}
 	this.constrainBottomRight = function(){
-		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1;
+		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1.texture;
 		this.constrainMaterial.uniforms.direction.value=new THREE.Vector2(1.0, -1.0);
 		renderer.render(this.constrainScene, this.camera2, this.positions3);
 		var tmp1 = this.positions1;
@@ -699,7 +698,7 @@ function ClothUpdateShader(){
 		'	pos = transformation * pos;',
 		'	vec4 posOld = texture2D(vertexPositionsOld, vuv.xy );',
 		'	posOld = transformation * posOld;',
-		'	vec4 velocity = (pos - posOld) * 0.95 - vec4(0.0, 0.0, 0.0, 0.0);',
+		'	vec4 velocity = (pos - posOld) * 0.95 - vec4(0.0, 0.01, 0.0, 0.0);',
 
 
 			'	if(pos.w == 0.0){gl_FragColor =  vec4( (inverse *pos).xyz, 1.0 );}',
@@ -821,7 +820,7 @@ function ClothConstrainShader(){
 		'	pos = transformation *  pos; ',
 		
 
-		'vec2 newUV;',
+
 		'	if(type == 0.0){',
 			'	float px = floor(vuv.x * res.x );',
 			'	float spacingx = px- (2.0 * floor(px/2.0));',
@@ -831,10 +830,10 @@ function ClothConstrainShader(){
 			'	total = total- (2.0 * floor(total/2.0));',
 
 			'	if(total == 0.0){',
-			'		 newUV = vuv + (direction * cellSize);',
+			'		vec2 newUV = vuv + (direction * cellSize);',
 			'	}',
 			'	else{',
-			'		 newUV = vuv - (direction * cellSize);',
+			'		vec2 newUV = vuv - (direction * cellSize);',
 			'	}',
 		'	}',
 		'	if(type == 1.0){',
@@ -845,10 +844,10 @@ function ClothConstrainShader(){
 		
 		
 			'	if(total == 0.0){',
-			'		 newUV = vuv + (direction * cellSize);',
+			'		vec2 newUV = vuv + (direction * cellSize);',
 			'	}',
 			'	else{',
-			'		 newUV = vuv - (direction * cellSize);',
+			'		vec2 newUV = vuv - (direction * cellSize);',
 			'	}',
 		'	}',
 		
@@ -858,8 +857,10 @@ function ClothConstrainShader(){
 		
 		
 		'	vec4 totalDisplacement = vec4(0.0);',
-
-		'			if(newUV.x > 0.0 && newUV.x < 1.0 && newUV.y > 0.0 && newUV.y < 1.0 ){ ',
+		'	for(float i = -1.0; i < 2.0; i++){',
+		'		for(float j = -1.0; j < 2.0; j++){',
+		'			vec2 newUV = vuv + vec2(i * cellSize.x, j * cellSize.y);',
+		'			if(newUV.x > 0.0 && newUV.x < 1.0 && newUV.y > 0.0 && newUV.y < 1.0 && !(i == 0.0 && j == 0.0)){ ',
 		'				vec4 posOld = texture2D(vertexPositionsStart, vuv);' ,
 		'				vec4 posOld2 = texture2D(vertexPositionsStart, newUV);' ,
 
@@ -879,7 +880,8 @@ function ClothConstrainShader(){
 		'				totalDisplacement.y += offsetY;',
 		'				totalDisplacement.z += offsetZ;',
 		'			}',
-
+		'		}',
+		'	}',
 		
 		'	pos += totalDisplacement;',
 		'	if(  vuv.x  > 1.0 - cellSize.x  && topConstrain == 1 ){',
