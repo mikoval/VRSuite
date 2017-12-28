@@ -471,10 +471,10 @@ function ClothShader(){
 	}
 		] ),
 	this.vertexShader  = [
-		"#extension GL_OES_standard_derivatives : enable",
+		//"#extension GL_OES_standard_derivatives : enable",
 		'#define PHONG',
 		'#define USE_MAP',
-		'#define USE_NORMALMAP',
+		//'#define USE_NORMALMAP',
 		
 		
 
@@ -570,10 +570,10 @@ function ClothShader(){
 
 	].join( '\n' )
 	this.fragmentShader = [
-		"#extension GL_OES_standard_derivatives : enable",
+		//"#extension GL_OES_standard_derivatives : enable",
 		'#define PHONG',
 		'#define USE_MAP',
-		'#define USE_NORMALMAP',
+		//'#define USE_NORMALMAP',
 
 
 
