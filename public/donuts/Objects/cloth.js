@@ -287,7 +287,7 @@ function Cloth(settings){
 		
 
 		for(var j = 0; j < 1; j++){
-			this.updateVertices();
+			//this.updateVertices();
 
 			for(var i = 0; i < this.settings.iterations; i++){
 				this.constrainVertices();
