@@ -276,7 +276,7 @@ function Cloth(settings){
 	this.update = function(){
 	//	console.time('someFunction');
 			
-		if(this.constrainMaterial.uniforms.inverse.value == null	|| true ){
+		if(this.constrainMaterial.uniforms.inverse.value == null	 ){
 			this.updateMatrices();
 		}
 
@@ -290,8 +290,8 @@ function Cloth(settings){
 			this.updateVertices();
 
 			for(var i = 0; i < this.settings.iterations; i++){
-				this.constrainVertices();
-				this.collisions();
+				//this.constrainVertices();
+				//this.collisions();
 			}
 		}
 		
@@ -699,7 +699,7 @@ function ClothUpdateShader(){
 		'	pos = transformation * pos;',
 		'	vec4 posOld = texture2D(vertexPositionsOld, vuv.xy );',
 		'	posOld = transformation * posOld;',
-		'	vec4 velocity = (pos - posOld) * 0.95 - vec4(0.0, 0.01, 0.0, 0.0);',
+		'	vec4 velocity = (pos - posOld) * 0.95 - vec4(0.0, 0.0, 0.0, 0.0);',
 
 
 			'	if(pos.w == 0.0){gl_FragColor =  vec4( (inverse *pos).xyz, 1.0 );}',
