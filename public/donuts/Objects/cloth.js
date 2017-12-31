@@ -16,7 +16,7 @@ function Cloth(settings){
 	settings.height = settings.height || 10;
 
 	settings.iterations = settings.iterations || 5;
-	settings.iterations = 1
+	settings.iterations = 5
 
 	if(settings.modifyHeight){
 		settings.height = settings.height * 0.8
