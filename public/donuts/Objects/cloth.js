@@ -306,7 +306,7 @@ function Cloth(settings){
 
 			for(var i = 0; i < this.settings.iterations; i++){
 				this.constrainVertices();
-				this.collisions();
+				//this.collisions();
 			}
 		}
 		
@@ -395,7 +395,7 @@ function Cloth(settings){
 		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1.texture;
 		this.constrainMaterial.uniforms.direction.value=new THREE.Vector2(1.0, 0.0);
 		renderer.render(this.constrainScene, this.camera2, this.positions3);
-		if(tmp == true){
+		if(tmp == false){
 			this.constrainMaterial.uniforms.debug.value=1;
 			renderer.render(this.constrainScene, this.camera2);
 			this.constrainMaterial.uniforms.debug.value = 0;
@@ -724,7 +724,7 @@ function ClothUpdateShader(){
 		//'	pos = transformation * pos;',
 		'	vec4 posOld = texture2D(vertexPositionsOld, vuv.xy );',
 		//'	posOld = transformation * posOld;',
-		'	vec4 velocity =(pos - posOld) * 0.95  -  vec4(0.0, 0.03, 0.0, 0.0);',
+		'	vec4 velocity =(pos - posOld) * 0.95  -  vec4(0.0, 0.0, 0.0, 0.0);',
 
 
 			'	if(pos.w == 0.0){gl_FragColor =  vec4( (pos).xyz, 1.0 );}',
