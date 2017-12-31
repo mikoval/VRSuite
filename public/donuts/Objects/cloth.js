@@ -849,10 +849,10 @@ function ClothConstrainShader(){
 			'	total = total- (2.0 * floor(total/2.0));',
 
 			'	if(total == 0.0){',
-			'		 newUV = vuv + (direction * cellSize);',
+			'		 newUV = vec2(0.0, 1.0);',
 			'	}',
 			'	else{',
-			'		 newUV = vuv - (direction * cellSize);',
+			'		 newUV  = vec2(1.0, 0.0);',
 			'	}',
 		'	}',
 		'	if(type == 1.0){',
@@ -924,7 +924,7 @@ function ClothConstrainShader(){
 
 		//	'pos = inverse *  pos; ',
 		
-		'	gl_FragColor = vec4( pos.xyz , 1.0 );',
+		'	gl_FragColor = vec4( newUV, 0.0 , 1.0 );',
 	
 
 
