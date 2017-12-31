@@ -182,7 +182,7 @@ function Cloth(settings){
 		renderer.render(copyScene, camera2, this.positions3);
 
 		renderer.render(copyScene, camera2, this.startPositions);
-
+		//renderer.render(copyScene, camera2);
 		 
 		var positions =  new Float32Array(this.settings.resolutionX * this.settings.resolutionY  * 4)
 	    renderer.readRenderTargetPixels(this.startPositions, 0, 0, this.settings.resolutionX, this.settings.resolutionY, positions);
@@ -235,9 +235,6 @@ function Cloth(settings){
 		var arr =  new Float32Array(lkpWidth * lkpHeight *4 );
 		
 
-		var initialValues = new THREE.DataTexture( arr,lkpWidth, lkpHeight, THREE.RGBAFormat, parameters.type);
-		this.initialValues = initialValues;
-		var pixels = initialValues.image.data;
 
 		var p = 0;
 
@@ -253,14 +250,19 @@ function Cloth(settings){
 	
 
 				
-			    pixels[ p + 0 ] = vec.x;
-				pixels[ p + 1 ] = vec.y;
-				pixels[ p + 2 ] = vec.z;
-				pixels[ p + 3 ] = 0;
+			    arr[ p + 0 ] = vec.x;
+				arr[ p + 1 ] = vec.y;
+				arr[ p + 2 ] = vec.z;
+				arr[ p + 3 ] = 0;
 
 				p += 4;
 			}
 		}
+
+		var initialValues = new THREE.DataTexture( arr,lkpWidth, lkpHeight, THREE.RGBAFormat, parameters.type);
+		this.initialValues = initialValues
+
+
 
 		initialValues.needsUpdate = true;
 
