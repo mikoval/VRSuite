@@ -116,8 +116,8 @@ function ClothStand(settings){
 
 
 
-	obj.add(this.cloth.mesh);
-	
+	//obj.add(this.cloth.mesh);
+	scene.add(this.cloth.mesh)
 
 	this.obj = obj;
 	scene.add(obj);

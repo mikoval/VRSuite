@@ -138,7 +138,8 @@ function ClothRamp(settings){
 
 	this.cloth.mesh.rotation.x = -3.14/2
 	this.cloth.mesh.position.y += 1;
-	obj.add(this.cloth.mesh);
+	//scene.add(this.cloth.mesh)
+	//obj.add(this.cloth.mesh);
 	var context = this;
 	this.setMap = function(url){
 		loader.load(url, function ( texture){

@@ -22,14 +22,6 @@ function Cloth(settings){
 	}
 	settings.resolutionX = settings.resolutionX || 10;
 	settings.resolutionY = settings.resolutionY || 10;
-	var tmp = settings.resolutionX 
-	settings.resolutionX  = settings.resolutionY 
-	settings.resolutionY = tmp;
-
-	var tmp = settings.width 
-
-	settings.width  = settings.height 
-	settings.height = tmp;
 
 	
 
@@ -65,7 +57,7 @@ function Cloth(settings){
 		
 		//mesh.material.uniforms.diffuse.value = new THREE.Vector3(0.2, 0.6 , 0.8)
 
-		mesh.rotation.set(0,0,3.14/2) ;
+		//mesh.rotation.set(0,0,3.14/2) ;
 		//mesh.castShadow = true;
 		//mesh.receivesShadow = true;
 		this.mesh = mesh;
@@ -311,8 +303,8 @@ function Cloth(settings){
 			this.updateVertices();
 
 			for(var i = 0; i < this.settings.iterations; i++){
-				//this.constrainVertices();
-				//this.collisions();
+				this.constrainVertices();
+				this.collisions();
 			}
 		}
 		
@@ -720,14 +712,14 @@ function ClothUpdateShader(){
 		//'	pos = transformation * pos;',
 		'	vec4 posOld = texture2D(vertexPositionsOld, vuv.xy );',
 		//'	posOld = transformation * posOld;',
-		'	vec4 velocity = vec4(0.0, 0.0, 0.0, 0.0);',
+		'	vec4 velocity =(pos - posOld) * 0.95  -  vec4(0.0, 0.01, 0.0, 0.0);',
 
 
 			'	if(pos.w == 0.0){gl_FragColor =  vec4( (pos).xyz, 1.0 );}',
 					'	else{',
 				
 		
-		'		gl_FragColor =  vec4( ( (pos  )).xyz, 1.0 );',
+		'		gl_FragColor =  vec4( ( (pos  + velocity )).xyz, 1.0 );',
 		'	}',
 		'}'
 	].join( '\n' )
@@ -909,20 +901,20 @@ function ClothConstrainShader(){
 		'	}',
 		
 		'	pos += totalDisplacement;',
-		'	if(  vuv.x  > 1.0 - cellSize.x  && topConstrain == 1 ){',
+		'	if(  vuv.x  > 1.0 - cellSize.x  && rightConstrain == 1 ){',
 		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
 		'	}',
 
-		'	if(  vuv.x  < cellSize.x  && bottomConstrain == 1 ){',
+		'	if(  vuv.x  < cellSize.x  && leftConstrain == 1 ){',
 		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
 		'	}',
 
-		'	if(  vuv.y  < cellSize.y  && leftConstrain == 1 ){',
+		'	if(  vuv.y  < cellSize.y  && topConstrain == 1 ){',
 		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
 		'	}',
 
 
-		'	if(  vuv.y  > 1.0 - cellSize.y && rightConstrain == 1 ){',
+		'	if(  vuv.y  > 1.0 - cellSize.y && bottomConstrain == 1 ){',
 		'		pos =transformation *  texture2D(vertexPositionsStart, vuv.xy );',
 		'	}',
 
