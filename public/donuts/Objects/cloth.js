@@ -60,6 +60,7 @@ function Cloth(settings){
 		var mesh = new THREE.Mesh(geometry, ClothMaterial);
 
 		mesh.material.lights = true;
+		
 		//mesh.material.color = new THREE.Color( 0xFF0000 );
 		
 		//mesh.material.uniforms.diffuse.value = new THREE.Vector3(0.2, 0.6 , 0.8)
@@ -140,13 +141,14 @@ function Cloth(settings){
 
         // contrain scene
         var copyScene = new THREE.Scene();
-
+        this.copyScene = copyScene;
         var clothCopyShaderObj = new  ClothCopyShader();
         var copyMaterial = new THREE.ShaderMaterial({
         	uniforms: clothCopyShaderObj.uniforms,
         	vertexShader:clothCopyShaderObj.vertexShader,
         	fragmentShader:clothCopyShaderObj.fragmentShader,
         });
+        this.copyMaterial = copyMaterial;
         var copyObject = new THREE.Mesh( plane, copyMaterial );
 
      
@@ -155,7 +157,7 @@ function Cloth(settings){
         this.copyMaterial = copyMaterial;
         this.copyScene = copyScene;
 
-        this.copyMaterial.uniforms.inputTexture.value = this.positions1.texture;
+        this.copyMaterial.uniforms.inputTexture.value = this.initialValues;
 
         // collision scene
         var collisionScene = new THREE.Scene();
@@ -175,9 +177,21 @@ function Cloth(settings){
         this.collisionScene = collisionScene;
 
 
+        renderer.render(copyScene, camera2, this.positions1);
 		renderer.render(copyScene, camera2, this.positions2);
 		renderer.render(copyScene, camera2, this.positions3);
+
 		renderer.render(copyScene, camera2, this.startPositions);
+
+		 
+		var positions =  new Float32Array(this.settings.resolutionX * this.settings.resolutionY  * 4)
+	    renderer.readRenderTargetPixels(this.startPositions, 0, 0, this.settings.resolutionX, this.settings.resolutionY, positions);
+
+	    console.log(positions);
+
+
+
+
 		this.constrainMaterial.uniforms.vertexPositionsStart.value = this.startPositions.texture;
 
 
@@ -219,11 +233,10 @@ function Cloth(settings){
 		this.startPositions = vertexPositionsStart;
 
 		var arr =  new Float32Array(lkpWidth * lkpHeight *4 );
-		var arr2 =  new Float32Array(lkpWidth * lkpHeight *4 );
-		var arr3 =  new Float32Array(lkpWidth * lkpHeight *4 );
+		
 
-		var initialValues = new THREE.DataTexture( arr,lkpWidth, lkpHeight, THREE.RGBAFormat, THREE.FloatType);
-
+		var initialValues = new THREE.DataTexture( arr,lkpWidth, lkpHeight, THREE.RGBAFormat, parameters.type);
+		this.initialValues = initialValues;
 		var pixels = initialValues.image.data;
 
 		var p = 0;
@@ -254,7 +267,7 @@ function Cloth(settings){
 
 
 
-		vertexPositions1.texture = initialValues;
+		//vertexPositions1.texture = initialValues;
 
 		
 		this.mesh.material.uniforms.vertexPositions.value = this.positions1.texture;
@@ -278,10 +291,11 @@ function Cloth(settings){
 			
 		if(this.constrainMaterial.uniforms.inverse.value == null	 ){
 			this.updateMatrices();
+			
 		}
 
      
-
+		
 
 
 		
@@ -305,7 +319,8 @@ function Cloth(settings){
 		this.updateMaterial.uniforms.vertexPositionsOld.value = this.positions2.texture;
 
 		renderer.render(this.updateScene, this.camera2, this.positions3);
-		
+		//renderer.render(this.updateScene, this.camera2);
+
 		var tmp1 = this.positions1;
 		var tmp2 = this.positions2;
 		var tmp3 = this.positions3;
@@ -678,7 +693,7 @@ function ClothUpdateShader(){
 		'varying vec2 vuv;',
 		'uniform sampler2D vertexPositions;',
 		'void main() {',
-		'	vuv = uv;',
+		'	vuv = uv + vec2 (0.0, 0.0);',
 		'	gl_Position = projectionMatrix *modelViewMatrix* vec4( position.xyz, 1.0 );',
 
 		'}'
@@ -695,17 +710,17 @@ function ClothUpdateShader(){
 		'void main() {',
 		'	vec2 cellSize  = 1.0 / res;',
 		'	vec4 pos = texture2D(vertexPositions, vuv.xy );',
-		'	pos = transformation * pos;',
+		//'	pos = transformation * pos;',
 		'	vec4 posOld = texture2D(vertexPositionsOld, vuv.xy );',
-		'	posOld = transformation * posOld;',
-		'	vec4 velocity = (pos - posOld) * 0.95 - vec4(0.0, 0.01, 0.0, 0.0);',
+		//'	posOld = transformation * posOld;',
+		'	vec4 velocity = vec4(0.0, 0.0, 0.0, 0.0);',
 
 
-			'	if(pos.w == 0.0){gl_FragColor =  vec4( (inverse *pos).xyz, 1.0 );}',
+			'	if(pos.w == 0.0){gl_FragColor =  vec4( (pos).xyz, 1.0 );}',
 					'	else{',
-		'		if( vuv.x  > 1.0 - (cellSize.x )) ',
-		'			{gl_FragColor =  vec4( (inverse *pos).xyz, 1.0 );}',
-		'		else{gl_FragColor =  vec4( (inverse * (pos + velocity)).xyz, 1.0 );}',
+				
+		
+		'		gl_FragColor =  vec4( ( (pos + velocity )).xyz, 1.0 );',
 		'	}',
 		'}'
 	].join( '\n' )
@@ -863,6 +878,8 @@ function ClothConstrainShader(){
 		'			if(newUV.x > 0.0 && newUV.x < 1.0 && newUV.y > 0.0 && newUV.y < 1.0 && !(i == 0.0 && j == 0.0)){ ',
 		'				vec4 posOld = texture2D(vertexPositionsStart, vuv);' ,
 		'				vec4 posOld2 = texture2D(vertexPositionsStart, newUV);' ,
+		'				posOld = transformation *  posOld; ',
+		'				posOld2 = transformation *  posOld2; ',
 
 		'				float targetDistance = length(posOld - posOld2);',
 		'				vec4 newPos =  texture2D(vertexPositions, newUV);',
@@ -871,6 +888,7 @@ function ClothConstrainShader(){
 		'				float dy = pos.y - newPos.y;',
 		'				float dz = pos.z - newPos.z;',
 		'				float distance = sqrt(dx * dx + dy * dy + dz * dz);',
+
 		'				float difference = targetDistance- distance;',
 		'				float percent = difference / distance / 2.0;',
 		'				float offsetX = dx * percent * rigid;',
