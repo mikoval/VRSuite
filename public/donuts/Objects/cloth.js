@@ -886,9 +886,9 @@ function ClothConstrainShader(){
 
 		
 		'float percent = 1.0;',
-		'float dx = 0.0;',
-		'float dy = 0.0;',
-		'float dz = 0.0;',
+		'float offsetX = 0.0;',
+		'float offsetY = 0.0;',
+		'float offsetZ = 0.0;',
 		'	vec4 totalDisplacement = vec4(0.0);',
 		
 		'			if(newUV.x > 0.0 && newUV.x < 1.0 && newUV.y > 0.0 && newUV.y < 1.0 ){ ',
@@ -900,16 +900,16 @@ function ClothConstrainShader(){
 		'				float targetDistance = length(posOld - posOld2);',
 		'				vec4 newPos =  texture2D(vertexPositions, newUV);',
 		//'				newPos = transformation *  newPos; ',
-		'				 dx = pos.x - newPos.x;',
-		'				 dy = pos.y - newPos.y;',
-		'				 dz = pos.z - newPos.z;',
+		'				float dx = pos.x - newPos.x;',
+		'				float dy = pos.y - newPos.y;',
+		'				float dz = pos.z - newPos.z;',
 		'				float distance = sqrt(dx * dx + dy * dy + dz * dz);',
 
 		'				float difference = targetDistance- distance;',
 		'				 percent = difference / distance / 2.0;',
-		'				float offsetX = dx * percent ;',
-		'				float offsetY = dy * percent ;',
-		'				float offsetZ = dz * percent ;',
+		'				 offsetX = dx * percent ;',
+		'				 offsetY = dy * percent ;',
+		'				 offsetZ = dz * percent ;',
 
 		'				if(offsetX < 0.01 && offsetX > -0.01 ){offsetX = 0.0;}',
 		'				if(offsetY < 0.01 && offsetY > -0.01){offsetY = 0.0;}',
@@ -944,7 +944,7 @@ function ClothConstrainShader(){
 		//	'pos = inverse *  pos; ',
 		
 		'	if(debug == 0){gl_FragColor = vec4( pos.xyz , 1.0 );}',
-		'	if(debug == 1){gl_FragColor = vec4( vuv - newUV , 0.0 , 1.0 );}',
+		'	if(debug == 1){gl_FragColor = vec4( offsetX, offsetY, offsetZ , 1.0 );}',
 	
 
 
