@@ -362,7 +362,7 @@ function Cloth(settings){
 		this.positions3 = tmp1;
 	}
 	this.constrainVertices = function(){
-		this.constrainMaterial.uniforms.rigid.value = 0.4;
+		this.constrainMaterial.uniforms.rigid.value = 1.0;
 		this.constrainMaterial.uniforms.type.value = 0;
 		this.constrainLeft();
 		this.constrainRight();
@@ -724,7 +724,7 @@ function ClothUpdateShader(){
 		//'	pos = transformation * pos;',
 		'	vec4 posOld = texture2D(vertexPositionsOld, vuv.xy );',
 		//'	posOld = transformation * posOld;',
-		'	vec4 velocity =(pos - posOld) * 0.95  -  vec4(0.0, 0.0, 0.0, 0.0);',
+		'	vec4 velocity =(pos - posOld) * 0.95  -  vec4(0.0, 0.03, 0.0, 0.0);',
 
 
 			'	if(pos.w == 0.0){gl_FragColor =  vec4( (pos).xyz, 1.0 );}',
