@@ -290,7 +290,12 @@ function Cloth(settings){
 	}
 	this.update = function(){
 	//	console.time('someFunction');
-			
+		
+		var positions =  new Float32Array(this.settings.resolutionX * this.settings.resolutionY  * 4)
+	    renderer.readRenderTargetPixels(this.positions1, 0, 0, this.settings.resolutionX, this.settings.resolutionY, positions);
+
+	    console.log(positions);
+
 		if(this.constrainMaterial.uniforms.inverse.value == null	 ){
 			this.updateMatrices();
 			
@@ -306,8 +311,8 @@ function Cloth(settings){
 			this.updateVertices();
 
 			for(var i = 0; i < this.settings.iterations; i++){
-				this.constrainVertices();
-				this.collisions();
+				//this.constrainVertices();
+				//this.collisions();
 			}
 		}
 		
@@ -722,7 +727,7 @@ function ClothUpdateShader(){
 					'	else{',
 				
 		
-		'		gl_FragColor =  vec4( ( (pos + velocity )).xyz, 1.0 );',
+		'		gl_FragColor =  vec4( ( (pos  )).xyz, 1.0 );',
 		'	}',
 		'}'
 	].join( '\n' )
