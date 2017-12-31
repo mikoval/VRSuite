@@ -381,7 +381,8 @@ function Cloth(settings){
 		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1.texture;
 		this.constrainMaterial.uniforms.direction.value= new THREE.Vector2(-1.0, 0.0);
 		renderer.render(this.constrainScene, this.camera2, this.positions3);
-		renderer.render(this.constrainScene, this.camera2);
+		if(tmp == true)
+			renderer.render(this.constrainScene, this.camera2);
 		//renderer.render(this.constrainScene, this.camera2);
 		var tmp1 = this.positions1;
 		var tmp2 = this.positions2;
@@ -1001,3 +1002,14 @@ function ClothCollisionShader(){
 		'}'
 	].join( '\n' )
 }
+
+
+var tmp = true;
+
+$(document).on('keydown', function(e){
+	if(e.key == "z"){
+		tmp = !tmp;
+
+
+	}
+})
