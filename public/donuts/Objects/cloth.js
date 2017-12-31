@@ -23,11 +23,6 @@ function Cloth(settings){
 	settings.resolutionX = settings.resolutionX || 10;
 	settings.resolutionY = settings.resolutionY || 10;
 
-	settings.resolutionX = 4;
-	settings.resolutionY = 4;
-
-
-
 	
 
 
@@ -75,8 +70,8 @@ function Cloth(settings){
 
 
 
-		mesh.material.uniforms.res.value.x = this.settings.resolutionX;
-        mesh.material.uniforms.res.value.y = this.settings.resolutionY;
+		mesh.material.uniforms.res.value.x = this.settings.resolutionX + 1;
+        mesh.material.uniforms.res.value.y = this.settings.resolutionY + 1;
         
 
         var inverse = new THREE.Matrix4().getInverse(mesh.matrixWorld);
@@ -109,8 +104,8 @@ function Cloth(settings){
         });
         var updateObject = new THREE.Mesh( plane, updateMaterial );
 
-        updateMaterial.uniforms.res.value.x = this.settings.resolutionX;
-        updateMaterial.uniforms.res.value.y = this.settings.resolutionY;
+        updateMaterial.uniforms.res.value.x = this.settings.resolutionX + 1;
+        updateMaterial.uniforms.res.value.y = this.settings.resolutionY + 1;
 
         updateScene.add(updateObject);
         this.updateMaterial = updateMaterial;
@@ -127,8 +122,8 @@ function Cloth(settings){
         });
         var constrainObject = new THREE.Mesh( plane, constrainMaterial );
 
-        constrainMaterial.uniforms.res.value.x = this.settings.resolutionX;
-        constrainMaterial.uniforms.res.value.y = this.settings.resolutionY;
+        constrainMaterial.uniforms.res.value.x = this.settings.resolutionX + 1;
+        constrainMaterial.uniforms.res.value.y = this.settings.resolutionY + 1;
         constrainMaterial.uniforms.targetDistance.value = this.settings.width / this.settings.resolutionX;
 
         constrainScene.add(constrainObject);
@@ -368,8 +363,8 @@ function Cloth(settings){
 	this.constrainVertices = function(){
 		this.constrainMaterial.uniforms.rigid.value = 0.4;
 		this.constrainMaterial.uniforms.type.value = 0;
-		//this.constrainLeft();
-		//this.constrainRight();
+		this.constrainLeft();
+		this.constrainRight();
 		this.constrainTop();
 		this.constrainBottom();
 
@@ -386,7 +381,8 @@ function Cloth(settings){
 		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1.texture;
 		this.constrainMaterial.uniforms.direction.value= new THREE.Vector2(-1.0, 0.0);
 		renderer.render(this.constrainScene, this.camera2, this.positions3);
-		
+		if(tmp == true)
+			renderer.render(this.constrainScene, this.camera2);
 		//renderer.render(this.constrainScene, this.camera2);
 		var tmp1 = this.positions1;
 		var tmp2 = this.positions2;
@@ -409,8 +405,6 @@ function Cloth(settings){
 		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1.texture;
 		this.constrainMaterial.uniforms.direction.value=new THREE.Vector2(0.0, 1.0);
 		renderer.render(this.constrainScene, this.camera2, this.positions3);
-		if(tmp == true)
-			renderer.render(this.constrainScene, this.camera2);
 		var tmp1 = this.positions1;
 		var tmp2 = this.positions2;
 		var tmp3 = this.positions3;
