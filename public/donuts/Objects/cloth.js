@@ -182,7 +182,7 @@ function Cloth(settings){
 		renderer.render(copyScene, camera2, this.positions3);
 
 		renderer.render(copyScene, camera2, this.startPositions);
-		renderer.render(copyScene, camera2);
+
 		 
 		var positions =  new Float32Array(this.settings.resolutionX * this.settings.resolutionY  * 4)
 	    renderer.readRenderTargetPixels(this.startPositions, 0, 0, this.settings.resolutionX, this.settings.resolutionY, positions);
