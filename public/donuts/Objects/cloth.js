@@ -907,9 +907,9 @@ function ClothConstrainShader(){
 		'				float offsetX = dx * percent ;',
 		'				float offsetY = dy * percent ;',
 		'				float offsetZ = dz * percent ;',
-		'				if(offsetX < 0.01){offsetX = 0.0;}',
-		'				if(offsetY < 0.01){offsetY = 0.0;}',
-		'				if(offsetZ < 0.01){offsetZ = 0.0;}',
+		'				if(offsetX < 0.01 && offsetX > -0.01 ){offsetX = 0.0;}',
+		'				if(offsetY < 0.01 && offsetY > -0.01){offsetY = 0.0;}',
+		'				if(offsetZ < 0.01 && offsetZ > -0.01){offsetZ = 0.0;}',
 
 		'				totalDisplacement.x += offsetX;',
 		'				totalDisplacement.y += offsetY;',
