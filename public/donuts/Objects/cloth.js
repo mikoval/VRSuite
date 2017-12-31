@@ -363,8 +363,8 @@ function Cloth(settings){
 	this.constrainVertices = function(){
 		this.constrainMaterial.uniforms.rigid.value = 0.4;
 		this.constrainMaterial.uniforms.type.value = 0;
-		this.constrainLeft();
-		this.constrainRight();
+		//this.constrainLeft();
+		//this.constrainRight();
 		this.constrainTop();
 		this.constrainBottom();
 
