@@ -364,8 +364,8 @@ function Cloth(settings){
 	this.constrainVertices = function(){
 		this.constrainMaterial.uniforms.rigid.value = 0.4;
 		this.constrainMaterial.uniforms.type.value = 0;
-		this.constrainLeft();
-		this.constrainRight();
+		//this.constrainLeft();
+		//this.constrainRight();
 		this.constrainTop();
 		this.constrainBottom();
 
@@ -904,9 +904,9 @@ function ClothConstrainShader(){
 
 		'				float difference = targetDistance- distance;',
 		'				float percent = difference / distance / 2.0;',
-		'				float offsetX = dx * percent * rigid;',
-		'				float offsetY = dy * percent * rigid;',
-		'				float offsetZ = dz * percent * rigid;',
+		'				float offsetX = dx * percent ;',
+		'				float offsetY = dy * percent ;',
+		'				float offsetZ = dz * percent ;',
 		'				totalDisplacement.x += offsetX;',
 		'				totalDisplacement.y += offsetY;',
 		'				totalDisplacement.z += offsetZ;',
