@@ -944,7 +944,7 @@ function ClothConstrainShader(){
 		//	'pos = inverse *  pos; ',
 		
 		'	if(debug == 0){gl_FragColor = vec4( pos.xyz , 1.0 );}',
-		'	if(debug == 1){gl_FragColor = vec4( dx, dy, dz , 1.0 );}',
+		'	if(debug == 1){gl_FragColor = vec4( vuv - newUV , 0.0 , 1.0 );}',
 	
 
 
