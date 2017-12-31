@@ -395,7 +395,7 @@ function Cloth(settings){
 		this.constrainMaterial.uniforms.vertexPositions.value = this.positions1.texture;
 		this.constrainMaterial.uniforms.direction.value=new THREE.Vector2(1.0, 0.0);
 		renderer.render(this.constrainScene, this.camera2, this.positions3);
-		if(tmp == false){
+		if(tmp == true){
 			this.constrainMaterial.uniforms.debug.value=1;
 			renderer.render(this.constrainScene, this.camera2);
 			this.constrainMaterial.uniforms.debug.value = 0;
@@ -916,7 +916,7 @@ function ClothConstrainShader(){
 		'				 offsetY = dy * percent ;',
 		'				 offsetZ = dz * percent ;',
 
-		'				if(offsetX < 0.01 && offsetX > -0.01 ){offsetX = 0.0;}',
+		'				if(offsetX < 0.01 && offsetX > -0.01){offsetX = 0.0;}',
 		'				if(offsetY < 0.01 && offsetY > -0.01){offsetY = 0.0;}',
 		'				if(offsetZ < 0.01 && offsetZ > -0.01){offsetZ = 0.0;}',
 

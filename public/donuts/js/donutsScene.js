@@ -191,7 +191,7 @@ function animationLoop(){
 	      effect.render(scene, camera);
 	    }
 	    else{
-	    	if(tmp == true)
+	    	if(tmp == false)
 	      		renderer.render(scene, camera);
 
 	      
