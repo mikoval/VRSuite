@@ -306,7 +306,7 @@ function Cloth(settings){
 
 			for(var i = 0; i < this.settings.iterations; i++){
 				this.constrainVertices();
-				//this.collisions();
+				this.collisions();
 			}
 		}
 		
@@ -912,9 +912,9 @@ function ClothConstrainShader(){
 		'				 offsetY = dy * percent ;',
 		'				 offsetZ = dz * percent ;',
 
-		'				if(offsetX < 0.1 && offsetX > -0.1){offsetX = 0.0;}',
-		'				if(offsetY < 0.1 && offsetY > -0.1){offsetY = 0.0;}',
-		'				if(offsetZ < 0.1 && offsetZ > -0.1){offsetZ = 0.0;}',
+		'				if(offsetX < 0.03 && offsetX > -0.03){offsetX = 0.0;}',
+		'				if(offsetY < 0.03 && offsetY > -0.03){offsetY = 0.0;}',
+		'				if(offsetZ < 0.03 && offsetZ > -0.03){offsetZ = 0.0;}',
 
 		'				totalDisplacement.x += offsetX;',
 		'				totalDisplacement.y += offsetY;',
