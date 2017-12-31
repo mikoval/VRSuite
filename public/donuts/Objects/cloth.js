@@ -923,7 +923,7 @@ function ClothConstrainShader(){
 
 		//	'pos = inverse *  pos; ',
 		
-		'	gl_FragColor = vec4( newUV, 0.0 , 1.0 );',
+		'	gl_FragColor = vec4( pos.xyz , 1.0 );',
 	
 
 
